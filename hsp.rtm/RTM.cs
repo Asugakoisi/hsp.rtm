@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.CSharp;
 using System.Windows.Forms;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -30,7 +31,7 @@ namespace hsp.rtm
         {
             if (OnReceiveData != null)
             {
-                COPYDATASTRUCT cds = (COPYDATASTRUCT)m.GetLParam(typeof(COPYDATASTRUCT));
+                var cds = (COPYDATASTRUCT)m.GetLParam(typeof(COPYDATASTRUCT));
                 OnReceiveData(this, new ReceiveDataEventArgs(cds.lpData));
             }
         }
@@ -105,11 +106,25 @@ namespace hsp.rtm
         {
             try
             {
+                //多分他にも初期化しないといけないものある
+                //変数リストを初期化
+                Analyzer.VariableList = new List<string>()
+                {
+                    "strsize",
+                    "stat",
+                    "cnt"
+                };
+
                 //全角スペースとタブを半角スペースに変換し, 改行でスプリット
                 var hspArrayData = str.Split('\n').Where(i => i.Length != 0).ToList();
 
                 //HSPのコードをC#のコードに変換
                 var code = Analyzer.GenerateCode(hspArrayData);
+
+                //デバッグ用のコード出力
+                //var sw = new StreamWriter("code.cs", false, Encoding.UTF8);
+                //sw.WriteLine(code);
+                //sw.Close();
 
                 //生成したコードを実行
                 var param = new CompilerParameters();
@@ -135,15 +150,15 @@ namespace hsp.rtm
                 oldInstance = instance;
 
                 //Programのインスタンスを作成
-                instance = Activator.CreateInstance(dataType);
+                instance = Activator.CreateInstance(dataType, Core.window);
 
                 //既に追加されているイベントを破棄
                 if (oldInstance != null)
                 {
-                    DeleteEvent("Paint", typeof (PaintEventHandler), "Paint");
+                    DeleteEvent("Paint", typeof(PaintEventHandler), "Paint");
                 }
                 //新しくコンパイルしたイベントを追加
-                AddEvent("Paint", typeof (PaintEventHandler), "Paint");
+                AddEvent("Paint", typeof(PaintEventHandler), "Paint");
                 //リフレッシュ
                 Core.window.Refresh();
             }

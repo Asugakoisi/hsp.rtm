@@ -68,7 +68,7 @@ namespace hsp.rtm
                                           "form.ClientSize = new Size(width, height);\n}\n\n";
             }
 
-            return "program.screen(form" + p[0] + ", " + p[1] + ", " + p[2] + ")";
+            return "screen(form" + p[0] + ", " + p[1] + ", " + p[2] + ")";
         }
 
         public static string Bgscr(string strings)
@@ -88,7 +88,7 @@ namespace hsp.rtm
                                           "form.ClientSize = new Size(width, height);\n}\n\n";
             }
 
-            return "program.screen(form" + p[0] + ", " + p[1] + ", " + p[2] + ");\n" +
+            return "screen(form" + p[0] + ", " + p[1] + ", " + p[2] + ");\n" +
                    "CurrentScreenID.FormBorderStyle = FormBorderStyle.None;";
         }
 
@@ -100,7 +100,7 @@ namespace hsp.rtm
                                           "form.Text = strings;\n}\n\n";
             }
 
-            return "program.Title(CurrentScreenID, " + strings + ")";
+            return "Title(CurrentScreenID, " + strings + ")";
         }
 
         public static string Redraw(string strings)
@@ -389,7 +389,7 @@ namespace hsp.rtm
             if (p.Count() == 1)
             {
                 return "Image img = Image.FromFile(" + p[0] + ");\n" +
-                       "program.screen(CurrentScreenID, img.Width, img.Height);\n" +
+                       "screen(CurrentScreenID, img.Width, img.Height);\n" +
                        str + "DrawImage(img, 0, 0, img.Width, img.Height)";
             }
             if (p.Count() == 2)
@@ -397,7 +397,7 @@ namespace hsp.rtm
                 if (p[1] == "0")
                 {
                     return "Image img = Image.FromFile(" + p[0] + ");\n" +
-                           "program.screen(CurrentScreenID, img.Width, img.Height);\n" +
+                           "screen(CurrentScreenID, img.Width, img.Height);\n" +
                            str + "DrawImage(img, 0, 0, img.Width, img.Height)";
                 }
                 if (p[1] == "1")

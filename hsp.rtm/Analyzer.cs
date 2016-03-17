@@ -520,9 +520,9 @@ namespace hsp.rtm
             }
 
             //C#のコードを完成
-            var code = Using + ProgramHeader + ProgramField + SubFunction + "\n" + MainFunction + VariableDefinition +
-                       AddMainFunction + "}\n\n" + AddFunction[0] + AddFunction[1] + string.Join("\n", hspArrayData) +
-                       "\n}\ncatch(Exception)\n{\n}\n}\n\n" + ProgramFooter;
+            var code = Using + ProgramHeader + ProgramField + "\n" + SubFunction + "\n" + MainFunction + VariableDefinition +
+                       AddMainFunction + AddFunction[0] + AddFunction[1] + string.Join("\n", hspArrayData) +
+                       "\n}\ncatch(Exception)\n{\n}\n}\n}\n" + ProgramFooter;
 
             return code;
         }
@@ -1061,20 +1061,21 @@ namespace hsp.rtm
         //header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
         //field
-        public static string ProgramField = "public static Form form0 = new Form();\n" +
-                                            "public static Form CurrentScreenID = form0;\n" +
-                                            "public static Program program = new Program();\n";
+        public static string ProgramField = "public Form form0;\n" +
+                                            "public Form CurrentScreenID;\n" +
+                                            "public Program(Form _form)\n" +
+                                            "{\n" +
+                                            "form0 = _form;\n" +
+                                            "CurrentScreenID = form0;\n" +
+                                            "}\n";
         //Main関数以外の関数の定義
         public static string SubFunction = "";
         //Main関数の定義
-        private const string MainFunction = "public static void Main()\n{\n" +
-                                            "program.initScreen(form0);\n";
+        private const string MainFunction = "";
         //システム変数宣言
         public static string VariableDefinition = "";
         //ウィンドウを動かすためのコードの追加
-        private const string AddMainFunction = "Application.EnableVisualStyles();\n" +
-                                               "//Application.SetCompatibleTextRenderingDefault(false);\n" +
-                                               "form0.ShowDialog();\n";
+        private const string AddMainFunction = "";
         //Main関数とSub関数以外で必要な関数
         public static List<string> AddFunction = new List<string>()
         {
@@ -1098,7 +1099,7 @@ namespace hsp.rtm
         };
 
         //footer
-        public const string ProgramFooter = "\n}\n}";
+        public const string ProgramFooter = "\n}class Test\n{\nstatic void Main()\n{\n}\n}";
 
         //if文の末尾に"}"を付けるためのフラグ
         private static readonly List<int> IfFlag = new List<int>();

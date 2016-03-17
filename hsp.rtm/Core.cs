@@ -13,7 +13,6 @@ namespace hsp.rtm
         static void Main()
         {
             window.Load += window._Load;
-            window.ClientSize = new Size(640, 480);
             Application.Run(window);
         }
     }
