@@ -106,6 +106,16 @@ namespace hsp.rtm
         {
             try
             {
+                //変数の退避と復元について
+                //変数は全てこちらで管理して, 実行プログラムでは参照するだけにしたほうが良さそう
+                //初めに, VariablesというDictionary(キーが変数名, バリューが実値)を宣言
+                //HSPをC#に変換後, Analyzer.VariableListを元にDictionaryを作成
+                //キーがもともと存在する場合はそのままで, 存在しない場合は追加
+                //必要なくなった要素はDictionaryから削除するのを忘れないように
+                //バリューは一切操作しないので, 値は変化しないで継続出来る
+                //変更点は生成コードでは一切変数定義しないことと, しっかりこちら側を参照するようにすること
+                //(例) Parent.Variables["x"] = 10;
+
                 //多分他にも初期化しないといけないものある
                 //変数リストを初期化
                 Analyzer.VariableList = new List<string>()
@@ -122,9 +132,9 @@ namespace hsp.rtm
                 var code = Analyzer.GenerateCode(hspArrayData);
 
                 //デバッグ用のコード出力
-                //var sw = new StreamWriter("code.cs", false, Encoding.UTF8);
-                //sw.WriteLine(code);
-                //sw.Close();
+                var sw = new StreamWriter("code.cs", false, Encoding.UTF8);
+                sw.WriteLine(code);
+                sw.Close();
 
                 //生成したコードを実行
                 var param = new CompilerParameters();
