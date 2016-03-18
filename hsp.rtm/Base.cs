@@ -793,15 +793,5 @@ namespace hsp.rtm
                     break;
             }
         }
-
-        public static void Ginfo_mx(List<string> sentence, int i)
-        {
-            sentence[i] = "Cursor.Position.X";
-        }
-
-        public static void Ginfo_my(List<string> sentence, int i)
-        {
-            sentence[i] = "Cursor.Position.Y";
-        }
     }
 }

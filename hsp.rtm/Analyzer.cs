@@ -761,10 +761,8 @@ namespace hsp.rtm
                             Base.BitwiseOperation(sentence, i, sentence[i]);
                             break;
                         case "mousex":
-                            GUI.Mousex(sentence, i);
-                            break;
                         case "mousey":
-                            GUI.Mousey(sentence, i);
+                            GUI.Mouse(sentence, i, sentence[i].Substring(5));
                             break;
                         case "dir_cmdline":
                         case "dir_cur":
@@ -776,52 +774,22 @@ namespace hsp.rtm
                             Base.Directory(sentence, i, sentence[i].Substring(4));
                             break;
                         case "ginfo_mx":
-                            Base.Ginfo_mx(sentence, i);
-                            break;
                         case "ginfo_my":
-                            Base.Ginfo_my(sentence, i);
-                            break;
                         case "ginfo_sizex":
-                            GUI.Ginfo_sizeX(sentence, i);
-                            break;
                         case "ginfo_sizey":
-                            GUI.Ginfo_sizeY(sentence, i);
-                            break;
                         case "ginfo_r":
-                            GUI.Ginfo_r(sentence, i);
-                            break;
                         case "ginfo_g":
-                            GUI.Ginfo_g(sentence, i);
-                            break;
                         case "ginfo_b":
-                            GUI.Ginfo_b(sentence, i);
-                            break;
                         case "ginfo_cx":
-                            GUI.Ginfo_cx(sentence, i);
-                            break;
                         case "ginfo_cy":
-                            GUI.Ginfo_cy(sentence, i);
-                            break;
                         case "ginfo_dispx":
-                            GUI.Ginfo_dispx(sentence, i);
-                            break;
                         case "ginfo_dispy":
-                            GUI.Ginfo_dispy(sentence, i);
-                            break;
                         case "ginfo_wx1":
-                            GUI.Ginfo_wx1(sentence, i);
-                            break;
                         case "ginfo_wx2":
-                            GUI.Ginfo_wx2(sentence, i);
-                            break;
                         case "ginfo_wy1":
-                            GUI.Ginfo_wy1(sentence, i);
-                            break;
                         case "ginfo_wy2":
-                            GUI.Ginfo_wy2(sentence, i);
-                            break;
                         case "ginfo_sel":
-                            GUI.Ginfo_sel(sentence, i);
+                            GUI.Ginfo(sentence, i, sentence[i].Substring(6));
                             break;
                         case "hwnd":
                             GUI.Hwnd(sentence, i);
@@ -832,41 +800,23 @@ namespace hsp.rtm
                         case "__time__":
                             GUI.__time__(sentence, i);
                             break;
-                        case "msgothic":
-                            GUI.Msgothic(sentence, i);
-                            break;
+                        case "msgothic":              
                         case "msmincho":
-                            GUI.Msmincho(sentence, i);
+                            GUI.Ms(sentence, i, sentence[i].Substring(2));
                             break;
-                        case "font_normal":
-                            GUI.Font_normal(sentence, i);
-                            break;
-                        case "font_bold":
-                            GUI.Font_bold(sentence, i);
-                            break;
+                        case "font_normal":                            
+                        case "font_bold":                            
                         case "font_italic":
-                            GUI.Font_italic(sentence, i);
-                            break;
                         case "font_underline":
-                            GUI.Font_underline(sentence, i);
-                            break;
                         case "font_strikeout":
-                            GUI.Font_strikeout(sentence, i);
+                            GUI.Font(sentence, i, sentence[i].Substring(5));
                             break;
                         case "screen_normal":
-                            GUI.Screen_normal(sentence, i);
-                            break;
                         case "screen_hide":
-                            GUI.Screen_hide(sentence, i);
-                            break;
                         case "screen_fixedsize":
-                            GUI.Screen_fixedsize(sentence, i);
-                            break;
                         case "screen_tool":
-                            GUI.Screen_tool(sentence, i);
-                            break;
                         case "screen_frame":
-                            GUI.Screen_frame(sentence, i);
+                            GUI.Screen(sentence, i, sentence[i].Substring(7));
                             break;
                     }
                 }
