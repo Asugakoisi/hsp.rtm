@@ -525,9 +525,9 @@ namespace hsp.rtm
             }
 
             //C#のコードを完成
-            var code = Using + ProgramHeader + ProgramField + "\n" + SubFunction + "\n" + MainFunction + VariableDefinition +
-                       AddMainFunction + AddFunction[0] + AddFunction[1] + string.Join("\n", hspArrayData) +
-                       "\n}\ncatch(Exception)\n{\n}\n}\n}\n" + ProgramFooter;
+            var code = Using + ProgramHeader + ProgramField + "\n" + DebugWindowPaint + "\n" + SubFunction + "\n" + MainFunction + 
+                       VariableDefinition + AddMainFunction + AddFunction[0] + AddFunction[1] + string.Join("\n", hspArrayData) +
+                       ProgramFooter;
 
             return code;
         }
@@ -1026,7 +1026,7 @@ namespace hsp.rtm
                                             "CurrentScreenID = form0;\n" +
                                             "Variables = _variables;\n" +
                                             "DebugWindow = _debugWindow;\n" +
-                                            "DebugWindow.Paint += dPaint;" +
+                                            "DebugWindow.Paint += dPaint;\n" +
                                             "DebugWindow.Show();\n" +
                                             "}\n";
 
