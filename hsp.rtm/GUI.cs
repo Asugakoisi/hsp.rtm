@@ -40,7 +40,7 @@ namespace hsp.rtm
                 }
             }
 
-            return "g.DrawString(" + string.Join(" ", str) + ".ToString(), font, brush, CurrentPosX, CurrentPosY);\n" +
+            return "g.DrawString((" + string.Join(" + ", str) + ").ToString(), font, brush, CurrentPosX, CurrentPosY);\n" +
                    "CurrentPosY += FontSize";
         }
 

@@ -76,6 +76,7 @@ namespace hsp.rtm
                     .Replace("-", " - ")
                     .Replace("*", " * ")
                     .Replace("/", " / ")
+                    .Replace(",", " , ")
                     //連続する演算子を修正
                     .Replace("=  =", "==")
                     .Replace("!  =", "!=")
@@ -99,6 +100,17 @@ namespace hsp.rtm
                 var firstSentence = spaceIndex < 0
                     ? hspArrayData[i].Trim()
                     : hspArrayData[i].Substring(0, spaceIndex).Trim();
+
+                //変数の処理
+                var str = hspArrayData[i].Split(' ').Select(j => j.Trim()).ToList();
+                for (var j = 0; j < str.Count; j++)
+                {
+                    if (VariableList.Contains((str[j])))
+                    {
+                        str[j] = "Variables[\"" + str[j] + "\"]";
+                    }
+                }
+                hspArrayData[i] = string.Join(" ", str);
 
                 //配列処理
                 hspArrayData[i] = ArrayVariable(hspArrayData[i]);
