@@ -4,7 +4,9 @@ using Microsoft.CSharp;
 using System.Windows.Forms;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Management;
 using System.Text;
 
 namespace hsp.rtm
@@ -77,6 +79,34 @@ namespace hsp.rtm
                 message.ReceiveData(m);
             }
             base.WndProc(ref m);
+        }
+
+        /// <summary>
+        /// watcherを終了させる
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void ExitWatcher(object sender, EventArgs e)
+        {
+            var watcherID = GetParentProcess(Process.GetCurrentProcess().Id);
+            var watcher = Process.GetProcessById(watcherID);
+            watcher.Kill();
+        }
+
+        /// <summary>
+        /// 親プロセスのIDを得る
+        /// </summary>
+        /// <param name="Id">自分のプロセスID</param>
+        /// <returns></returns>
+        public static int GetParentProcess(int Id)
+        {
+            var parentPid = 0;
+            using (var mo = new ManagementObject("win32_process.handle='" + Id + "'"))
+            {
+                mo.Get();
+                parentPid = Convert.ToInt32(mo["ParentProcessId"]);
+            }
+            return parentPid;
         }
     }
 
@@ -163,7 +193,7 @@ namespace hsp.rtm
                 param.ReferencedAssemblies.AddRange(new[]
                 {
                     "mscorlib.dll", "System.dll", "System.Core.dll", "Microsoft.CSharp.dll", "System.IO.dll",
-                    "System.Windows.Forms.dll", "System.Drawing.dll"
+                    "System.Windows.Forms.dll", "System.Drawing.dll", "System.Linq.dll"
                 });
 
                 //GUIアプリケーションとしてコンパイルするためのオプション
@@ -181,7 +211,7 @@ namespace hsp.rtm
                 oldInstance = instance;
 
                 //Programのインスタンスを作成
-                instance = Activator.CreateInstance(dataType, new object[]{ Core.window , Manager.Variables });
+                instance = Activator.CreateInstance(dataType, new object[]{ Core.window , Manager.Variables, Core.DebugWindow });
 
                 //既に追加されているイベントを破棄
                 if (oldInstance != null)

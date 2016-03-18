@@ -800,12 +800,12 @@ namespace hsp.rtm
                         case "__time__":
                             GUI.__time__(sentence, i);
                             break;
-                        case "msgothic":              
+                        case "msgothic":
                         case "msmincho":
                             GUI.Ms(sentence, i, sentence[i].Substring(2));
                             break;
-                        case "font_normal":                            
-                        case "font_bold":                            
+                        case "font_normal":
+                        case "font_bold":
                         case "font_italic":
                         case "font_underline":
                         case "font_strikeout":
@@ -1012,19 +1012,34 @@ namespace hsp.rtm
         };
 
         //using
-        public static string Using = "using System;\nusing System.Drawing;\nusing System.Windows.Forms;\nusing System.Collections.Generic;\n\n";
+        public static string Using = "using System;\nusing System.Drawing;\nusing System.Windows.Forms;\nusing System.Collections.Generic;\nusing System.Linq;\n\n";
         //header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
         //field
         public static string ProgramField = "public Form form0;\n" +
                                             "public Form CurrentScreenID;\n" +
+                                            "public Form DebugWindow;\n" +
                                             "public Dictionary<string, dynamic> Variables;\n\n" +
-                                            "public Program(Form _form, Dictionary<string, dynamic> _variables)\n" +
+                                            "public Program(Form _form, Dictionary<string, dynamic> _variables, Form _debugWindow)\n" +
                                             "{\n" +
                                             "form0 = _form;\n" +
                                             "CurrentScreenID = form0;\n" +
                                             "Variables = _variables;\n" +
+                                            "DebugWindow = _debugWindow;\n" +
+                                            "DebugWindow.Paint += dPaint;" +
+                                            "DebugWindow.Show();\n" +
                                             "}\n";
+
+        public static string DebugWindowPaint = "private void dPaint(object sender, PaintEventArgs e)\n" +
+                                                "{\n" +
+                                                "var keys = Variables.Keys.ToList();\n" +
+                                                "var values = Variables.Values.ToList();\n" +
+                                                "for(var i=0; i<keys.Count; i++)\n" +
+                                                "{\n" +
+                                                "e.Graphics.DrawString(keys[i] + \" => \" + values[i], new Font(\"FixedSys\", 14), new SolidBrush(Color.FromArgb(0, 0, 0)), 0, i*50);\n" +
+                                                "}\n" +
+                                                "}\n";
+
         //Main関数以外の関数の定義
         public static string SubFunction = "";
         //Main関数の定義
@@ -1056,7 +1071,20 @@ namespace hsp.rtm
         };
 
         //footer
-        public const string ProgramFooter = "\n}class Test\n{\nstatic void Main()\n{\n}\n}";
+        public const string ProgramFooter = "\n}\n" +
+                                            "catch(Exception)\n" +
+                                            "{\n" +
+                                            "}\n" +
+                                            "DebugWindow.Refresh();" +
+                                            "}\n" +
+                                            "}\n" +
+                                            "}\n\n" +
+                                            "class Test\n" +
+                                            "{\n" +
+                                            "static void Main()\n" +
+                                            "{\n" +
+                                            "}\n" +
+                                            "}";
 
         //if文の末尾に"}"を付けるためのフラグ
         private static readonly List<int> IfFlag = new List<int>();
