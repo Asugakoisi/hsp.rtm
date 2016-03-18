@@ -472,11 +472,16 @@ namespace hsp.rtm
                         //変数リストに含まれていない場合
                         if (!VariableList.Contains(firstSentence) && !ArrayVariableList.Contains(firstSentence))
                         {
-                            //変数宣言
-                            hspArrayData[i] = "dynamic " + hspArrayData[i];
                             //変数リストに追加
                             VariableList.Add(firstSentence);
                         }
+                        //変数がVariablesを示すように参照
+                        var removeFirst = "";
+                        for (var h = 1; h < hspArrayData[i].Split('=').Length; h++)
+                        {
+                            removeFirst += hspArrayData[i].Split('=')[h];
+                        }
+                        hspArrayData[i] = "Variables[\"" + hspArrayData[i].Split(' ')[0] + "\"] = " + removeFirst;
                     }
                 }
 
@@ -1057,16 +1062,18 @@ namespace hsp.rtm
         };
 
         //using
-        public static string Using = "using System;\nusing System.Drawing;\nusing System.Windows.Forms;\n";
+        public static string Using = "using System;\nusing System.Drawing;\nusing System.Windows.Forms;\nusing System.Collections.Generic;\n\n";
         //header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
         //field
         public static string ProgramField = "public Form form0;\n" +
                                             "public Form CurrentScreenID;\n" +
-                                            "public Program(Form _form)\n" +
+                                            "public Dictionary<string, dynamic> Variables;\n\n" +
+                                            "public Program(Form _form, Dictionary<string, dynamic> _variables)\n" +
                                             "{\n" +
                                             "form0 = _form;\n" +
                                             "CurrentScreenID = form0;\n" +
+                                            "Variables = _variables;\n" +
                                             "}\n";
         //Main関数以外の関数の定義
         public static string SubFunction = "";

@@ -10,6 +10,17 @@ using System.Text;
 namespace hsp.rtm
 {
     /// <summary>
+    /// HSPの変数の実体を管理するクラス
+    /// </summary>
+    public class Manager
+    {
+        //HSPの変数の実体
+        //キーが変数名
+        //バリューが実際の値
+        public static Dictionary<string, dynamic> Variables = new Dictionary<string, dynamic>(); 
+    }
+
+    /// <summary>
     /// Watcherから送信されてくるコードを受け取るクラス
     /// </summary>
     public class WindowMessage
@@ -106,16 +117,6 @@ namespace hsp.rtm
         {
             try
             {
-                //変数の退避と復元について
-                //変数は全てこちらで管理して, 実行プログラムでは参照するだけにしたほうが良さそう
-                //初めに, VariablesというDictionary(キーが変数名, バリューが実値)を宣言
-                //HSPをC#に変換後, Analyzer.VariableListを元にDictionaryを作成
-                //キーがもともと存在する場合はそのままで, 存在しない場合は追加
-                //必要なくなった要素はDictionaryから削除するのを忘れないように
-                //バリューは一切操作しないので, 値は変化しないで継続出来る
-                //変更点は生成コードでは一切変数定義しないことと, しっかりこちら側を参照するようにすること
-                //(例) Parent.Variables["x"] = 10;
-
                 //多分他にも初期化しないといけないものある
                 //変数リストを初期化
                 Analyzer.VariableList = new List<string>()
@@ -130,6 +131,26 @@ namespace hsp.rtm
 
                 //HSPのコードをC#のコードに変換
                 var code = Analyzer.GenerateCode(hspArrayData);
+
+                //更新された変数リストをもとに, Manager.Variablesを更新する
+                foreach (var variableName in Manager.Variables.Keys.ToList())
+                {
+                    //変数が使われなくなった場合, Dictionaryから削除
+                    if (!Analyzer.VariableList.Contains(variableName))
+                    {
+                        Manager.Variables.Remove(variableName);
+                    }
+                }
+                //Manager.Variablesに存在しない変数が定義された場合は追加する
+                foreach (var variableName in Analyzer.VariableList)
+                {
+                    if (!Manager.Variables.Keys.ToList().Contains(variableName))
+                    {
+                        //変数の追加
+                        //初期値はnullにしてるけど, 大丈夫？
+                        Manager.Variables.Add(variableName, null);
+                    }
+                }
 
                 //デバッグ用のコード出力
                 var sw = new StreamWriter("code.cs", false, Encoding.UTF8);
@@ -160,7 +181,7 @@ namespace hsp.rtm
                 oldInstance = instance;
 
                 //Programのインスタンスを作成
-                instance = Activator.CreateInstance(dataType, Core.window);
+                instance = Activator.CreateInstance(dataType, new object[]{ Core.window , Manager.Variables });
 
                 //既に追加されているイベントを破棄
                 if (oldInstance != null)
@@ -172,7 +193,7 @@ namespace hsp.rtm
                 //リフレッシュ
                 Core.window.Refresh();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //何かしらのエラー
                 //構文エラーとかは別途で警告出したい

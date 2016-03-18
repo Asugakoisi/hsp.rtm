@@ -4,6 +4,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace hsp.watcher

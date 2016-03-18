@@ -16,7 +16,31 @@ namespace hsp.rtm
                 return "g.DrawString(\"\", font, brush, CurrentPosX, CurrentPosY);\n" +
                        "CurrentPosY += FontSize";
             }
-            return "g.DrawString(" + strings + ".ToString(), font, brush, CurrentPosX, CurrentPosY);\n" +
+            var str = strings.Split('+').Select(i => i.Trim()).ToList();
+            for (var i = 0; i < str.Count; i++)
+            {
+                if (str[i].Contains("\"") || str[i].Contains("'"))
+                {
+                    //これは文字か文字列
+                }
+                else
+                {
+                    //それ以外は数値か変数
+                    double d;
+                    if (double.TryParse(str[i], out d))
+                    {
+                        //TryParse出来た場合は数値
+                    }
+                    else
+                    {
+                        //それ以外は変数
+                        //変数はManager.Variablesを参照するように変更
+                        str[i] = "Variables[\"" + str[i] + "\"]";
+                    }
+                }
+            }
+
+            return "g.DrawString(" + string.Join(" ", str) + ".ToString(), font, brush, CurrentPosX, CurrentPosY);\n" +
                    "CurrentPosY += FontSize";
         }
 
