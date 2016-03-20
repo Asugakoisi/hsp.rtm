@@ -443,6 +443,9 @@ namespace hsp.rtm
                         case "line":
                             hspArrayData[i] = GUI.Line(commandArguments);
                             break;
+                        case "cls":
+                            hspArrayData[i] = GUI.Cls(commandArguments);
+                            break;
                         case "color":
                             hspArrayData[i] = GUI.Color(commandArguments);
                             break;
@@ -958,6 +961,7 @@ namespace hsp.rtm
             "circle",
             "boxf",
             "line",
+            "cls",
             "color",
             "picload",
             "getkey",

@@ -354,6 +354,33 @@ namespace hsp.rtm
             }
             return "Console.WriteLine(\"error\")";
         }
+        
+        public static string Cls(string strings)
+        {
+            var str = "";
+            if (BufferFlag)
+            {
+                str = "bgr.Graphics.";
+            }
+            else
+            {
+                str = "g.";
+            }
+            switch (strings)
+            {
+                case "0":
+                    return str + "FillRectangle(new SolidBrush(Color.FromArgb(255, 255, 255)), 0, 0, CurrentScreenID.Width, CurrentScreenID.Height)";
+                case "1":
+                    return str + "FillRectangle(new SolidBrush(Color.FromArgb(192, 192, 192)), 0, 0, CurrentScreenID.Width, CurrentScreenID.Height)";
+                case "2":
+                    return str + "FillRectangle(new SolidBrush(Color.FromArgb(128, 128, 128)), 0, 0, CurrentScreenID.Width, CurrentScreenID.Height)";
+                case "3":
+                    return str + "FillRectangle(new SolidBrush(Color.FromArgb(64, 64, 64)), 0, 0, CurrentScreenID.Width, CurrentScreenID.Height)";
+                case "4":
+                    return str + "FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)), 0, 0, CurrentScreenID.Width, CurrentScreenID.Height)";
+            }
+            return "Console.WriteLine(\"error\")";
+        }
 
         public static string Color(string strings)
         {
@@ -484,6 +511,11 @@ namespace hsp.rtm
                     : p[0] + " = GetAsyncKeyState(" + p[1] + ") >> 15";
             }
             return "Console.WriteLine(\"error\")";
+        }
+
+        public static string Stick(string strings)
+        {
+            return "あとで書く";
         }
 
         public static string Objsize(string strings)
