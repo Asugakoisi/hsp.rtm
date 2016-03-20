@@ -156,6 +156,9 @@ namespace hsp.rtm
                     "cnt"
                 };
 
+                //配列のリストを初期化
+                Analyzer.ArrayVariableList = new List<string>();
+
                 //全角スペースとタブを半角スペースに変換し, 改行でスプリット
                 var hspArrayData = str.Split('\n').Where(i => i.Length != 0).ToList();
 
