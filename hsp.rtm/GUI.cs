@@ -454,7 +454,7 @@ namespace hsp.rtm
             {
                 p[i] = p[i].Trim();
             }
-            var str = "";
+            var notExistVarialbe = false;
             //変数名として正しいか
             if (Analyzer.VariableNameRule.Contains(p[0][0]))
             {
@@ -467,17 +467,21 @@ namespace hsp.rtm
                 {
                     //変数リストに追加
                     Analyzer.VariableList.Add(p[0]);
-                    str = "dynamic ";
+                    notExistVarialbe = true;
                 }
             }
 
             if (p.Count() == 1)
             {
-                return str + p[0] + " = GetAsyncKeyState(1) >> 15";
+                return notExistVarialbe
+                    ? "Variables[\"" + p[0] + "\"] = GetAsyncKeyState(1) >> 15"
+                    : p[0] + " = GetAsyncKeyState(1) >> 15";
             }
             if (p.Count() == 2)
             {
-                return str + p[0] + " = GetAsyncKeyState(" + p[1] + ") >> 15";
+                return notExistVarialbe
+                    ? "Variables[\"" + p[0] + "\"] = GetAsyncKeyState(" + p[1] + ") >> 15"
+                    : p[0] + " = GetAsyncKeyState(" + p[1] + ") >> 15";
             }
             return "Console.WriteLine(\"error\")";
         }

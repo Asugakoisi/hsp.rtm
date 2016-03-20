@@ -484,16 +484,11 @@ namespace hsp.rtm
                         //変数リストに含まれていない場合
                         if (!VariableList.Contains(firstSentence) && !ArrayVariableList.Contains(firstSentence))
                         {
+                            //変数宣言
+                            hspArrayData[i] = "Variables[\"" + firstSentence + "\"]" + hspArrayData[i].Substring(spaceIndex);
                             //変数リストに追加
                             VariableList.Add(firstSentence);
                         }
-                        //変数がVariablesを示すように参照
-                        var removeFirst = "";
-                        for (var h = 1; h < hspArrayData[i].Split('=').Length; h++)
-                        {
-                            removeFirst += hspArrayData[i].Split('=')[h];
-                        }
-                        hspArrayData[i] = "Variables[\"" + hspArrayData[i].Split(' ')[0] + "\"] = " + removeFirst;
                     }
                 }
 
@@ -537,9 +532,17 @@ namespace hsp.rtm
             }
 
             //C#のコードを完成
-            var code = Using + ProgramHeader + ProgramField + "\n" + DebugWindowPaint + "\n" + SubFunction + "\n" + MainFunction + 
-                       VariableDefinition + AddMainFunction + AddFunction[0] + AddFunction[1] + string.Join("\n", hspArrayData) +
-                       ProgramFooter;
+            var code = Using
+                       + ProgramHeader
+                       + ProgramField
+                       + DebugWindowPaint
+                       + SubFunction
+                       + MainFunction
+                       + VariableDefinition
+                       + AddMainFunction
+                       + string.Join("\n", AddFunction)
+                       + string.Join("\n", hspArrayData)
+                       + ProgramFooter;
 
             return code;
         }
@@ -1024,7 +1027,11 @@ namespace hsp.rtm
         };
 
         //using
-        public static string Using = "using System;\nusing System.Drawing;\nusing System.Windows.Forms;\nusing System.Collections.Generic;\nusing System.Linq;\n\n";
+        public static string Using = "using System;\n" +
+                                     "using System.Linq;\n" +
+                                     "using System.Drawing;\n" +
+                                     "using System.Windows.Forms;\n" +
+                                     "using System.Collections.Generic;\n\n";
         //header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
         //field
@@ -1040,7 +1047,7 @@ namespace hsp.rtm
                                             "DebugWindow = _debugWindow;\n" +
                                             "DebugWindow.Paint += dPaint;\n" +
                                             "DebugWindow.Show();\n" +
-                                            "}\n";
+                                            "}\n\n";
 
         public static string DebugWindowPaint = "private void dPaint(object sender, PaintEventArgs e)\n" +
                                                 "{\n" +
@@ -1055,7 +1062,7 @@ namespace hsp.rtm
         //Main関数以外の関数の定義
         public static string SubFunction = "";
         //Main関数の定義
-        private const string MainFunction = "";
+        private const string MainFunction = "\n";
         //システム変数宣言
         public static string VariableDefinition = "";
         //ウィンドウを動かすためのコードの追加
