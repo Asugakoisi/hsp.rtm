@@ -1,13 +1,17 @@
 # hsp.rtm
-HSPをリアルタイムデバッグするためのプログラムです
+HSPをリアルタイムデバッグするためのプログラムです  
+試験的にVisual Studio Codeの拡張機能として動かしています
 
 ## Usage
-1. hsp.watcher.exeを起動すると, hsp.rtm.exeとnotepad.exeが起動します
-2. notepad.exeにHSPを書くと, その結果をhsp.rtm.exeがリアルタイムデバッグします
-3. 終了する際はhsp.rtm.exeを終了して下さい
+1. hsp.rtm.slnを開き, プロジェクト全てをビルドする
+2. 作成されたhsp.rtm.exeとhsp.watcher.exeをCドライブのhsp.rtmフォルダにコピーする
+3. vs-extensionフォルダをVisual Studio Codeで開く
+4. F5等で実行する
 
 ## Bugs
 現在認識しているバグは以下です
+- 洒落にならないレベルで重い
+ - VSCと連動させる部分で恐らくバグがあると思います
 - gosubの実装ミス
  - 多段的なgosubが処理出来ていません
    - 次Releaseで修正する予定です
@@ -15,6 +19,8 @@ HSPをリアルタイムデバッグするためのプログラムです
  - 複数のウィンドウを表示することに対応する予定は今のところありません
 
 ## ETC
+- Visual Studio Code上のシンタックスハイライトはpotato4dさんのtmLanguageファイルを利用させて頂きました
+ - [https://github.com/potato4d/sublime-HSP](https://github.com/potato4d/sublime-HSP)
 - バグが非常に多いです  
  - システムに対してクリティカルなバグはないと思っていますが, まだ開発段階であるということを理解した上でご利用下さい
 - 実装出来ている命令・コマンドは限りがあります
@@ -23,6 +29,9 @@ HSPをリアルタイムデバッグするためのプログラムです
 
 ## LICENSE
 [The MIT License](https://github.com/kkrnt/hsp.cs/blob/master/LICENSE)
+  
+potato4dさんのsublime-HSPもMIT Licenseです  
+[https://github.com/potato4d/sublime-HSP/blob/master/LICENSE](https://github.com/potato4d/sublime-HSP/blob/master/LICENSE)
 
 ## 実装済みのもの
 ### Basic Grammar

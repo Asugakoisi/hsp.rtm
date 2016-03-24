@@ -1,48 +1,11 @@
-﻿//Windowsアプリケーションとしてビルドすること
-
-using System;
+﻿using System;
 using System.Text;
 using System.Threading;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace hsp.watcher
 {
-    /// <summary>
-    /// メモ帳からコードを取得するクラス
-    /// </summary>
-    class NotepadText
-    {
-        private const int WM_GETTEXT = 0xd;
-        private const int WM_GETTEXTLENGTH = 0xe;
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, StringBuilder lParam);
-
-        /// <summary>
-        /// メモ帳からコードを取得
-        /// </summary>
-        /// <param name="hWnd">メモ帳のテキストエリアのウィンドウハンドル</param>
-        /// <returns></returns>
-        public static string GetText(IntPtr hWnd)
-        {
-            var textLength = SendMessage(hWnd, WM_GETTEXTLENGTH, 0, 0) + 1;
-            var sb = new StringBuilder(textLength);
-            if (textLength > 0)
-            {
-                SendMessage(hWnd, WM_GETTEXT, textLength, sb);
-            }
-            return sb.ToString();
-        }
-    }
-
     /// <summary>
     /// RTMにメッセージを送信するクラス
     /// </summary>
@@ -78,33 +41,21 @@ namespace hsp.watcher
         }
     }
 
-    public class Sender
+    public class Program
     {
         private static void Main()
         {
-            //メモ帳を起動
-            var notepad = Process.Start("notepad");
-
             //RTM本体を起動
-            var rtm = Process.Start("hsp.rtm.exe");
+            var rtm = Process.Start("C:\\hsp.rtm\\hsp.rtm.exe");
             rtm.WaitForInputIdle();
 
-            //コード差分用のバックアップ
-            var old = "";
             while (true)
             {
-                //メモ帳のテキストエリアのウィンドウハンドルを取得
-                var hWnd = NotepadText.FindWindowEx(notepad.MainWindowHandle, IntPtr.Zero, "Edit", "");
-                //メモ帳のテキストエリアの文字列を取得
-                var str = NotepadText.GetText(hWnd);
-                //コードが変更されていた場合
-                if (!str.Equals(old))
-                {
-                    //メッセージとして変更されたコードを送信
-                    var message = new WindowMessage();
-                    message.SendData(rtm.MainWindowHandle, str);
-                    old = str;
-                }
+                var code = Console.ReadLine();
+
+                var message = new WindowMessage();
+                message.SendData(rtm.MainWindowHandle, code.Replace("@@@@@", "\n"));
+
                 Thread.Sleep(100);
             }
         }
