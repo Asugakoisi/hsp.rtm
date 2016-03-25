@@ -1,6 +1,0 @@
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.rtm\bin\Release\hsp.rtm.exe.config
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.rtm\bin\Release\hsp.rtm.exe
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.rtm\bin\Release\hsp.rtm.pdb
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.rtm\obj\Release\hsp.rtm.csprojResolveAssemblyReference.cache
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.rtm\obj\Release\hsp.rtm.exe
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.rtm\obj\Release\hsp.rtm.pdb

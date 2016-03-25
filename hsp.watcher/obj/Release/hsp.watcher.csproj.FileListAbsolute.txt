@@ -1,6 +1,0 @@
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.watcher\bin\Release\hsp.watcher.exe.config
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.watcher\bin\Release\hsp.watcher.exe
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.watcher\bin\Release\hsp.watcher.pdb
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.watcher\obj\Release\hsp.watcher.csprojResolveAssemblyReference.cache
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.watcher\obj\Release\hsp.watcher.exe
-C:\Users\kkrnt\Documents\hsp.rtm\hsp.watcher\obj\Release\hsp.watcher.pdb
