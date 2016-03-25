@@ -92,7 +92,10 @@ namespace hsp.rtm
             {
                 var watcherID = GetParentProcess(Process.GetCurrentProcess().Id);
                 var watcher = Process.GetProcessById(watcherID);
-                watcher.Kill();
+                if (watcher.ProcessName.Equals("hsp.watcher"))
+                {
+                    watcher.Kill();
+                }
             }
             catch (Exception)
             {
@@ -233,7 +236,7 @@ namespace hsp.rtm
                 //リフレッシュ
                 Core.window.Refresh();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //何かしらのエラー
                 //構文エラーとかは別途で警告出したい

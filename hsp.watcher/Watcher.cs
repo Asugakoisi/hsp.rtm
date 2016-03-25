@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace hsp.watcher
@@ -46,7 +47,7 @@ namespace hsp.watcher
         private static void Main()
         {
             //RTM本体を起動
-            var rtm = Process.Start("C:\\hsp.rtm\\hsp.rtm.exe");
+            var rtm = Process.Start(Directory.GetCurrentDirectory() + "\\vscode-extension\\bin\\hsp.rtm.exe");
             rtm.WaitForInputIdle();
 
             while (true)
