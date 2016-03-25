@@ -88,9 +88,16 @@ namespace hsp.rtm
         /// <param name="e"></param>
         public void ExitWatcher(object sender, EventArgs e)
         {
-            var watcherID = GetParentProcess(Process.GetCurrentProcess().Id);
-            var watcher = Process.GetProcessById(watcherID);
-            watcher.Kill();
+            try
+            {
+                var watcherID = GetParentProcess(Process.GetCurrentProcess().Id);
+                var watcher = Process.GetProcessById(watcherID);
+                watcher.Kill();
+            }
+            catch (Exception)
+            {
+                //既に終了していた場合は何もしない
+            }
         }
 
         /// <summary>

@@ -26,7 +26,8 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage('HSP Real-Time Debugging')
         
         var spawn = require('child_process').spawn;
-        ipc = spawn("C:\\hsp.rtm\\hsp.watcher.exe"); 
+        var path = process.cwd().replace(":\\", ":\\\\");
+        ipc = spawn(path +  "\\vscode-extension\\bin\\hsp.watcher.exe"); 
         ipc.stdin.setEncoding("utf8");
     });
 
