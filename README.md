@@ -3,15 +3,16 @@ HSPをリアルタイムデバッグするためのプログラムです
 試験的にVisual Studio Codeの拡張機能として動かしています
 
 ## Usage
-1. hsp.rtm.slnを開き, プロジェクト全てをビルドする
-2. 作成されたhsp.rtm.exeとhsp.watcher.exeをCドライブのhsp.rtmフォルダにコピーする
-3. vs-extensionフォルダをVisual Studio Codeで開く
+1. ```hsp.rtm.sln```を開き, プロジェクト全てをビルドする
+2. 作成された```hsp.rtm.exe```と```hsp.watcher.exe```を```C:\\hsp.rtm```にコピーする
+3. ```vscode-extension```フォルダをVisual Studio Codeで開く
 4. F5等で実行する
+5. 終了するときは, Visual Studio Codeのデバッグモードと```hsp.rtm.exe```を閉じて下さい
 
 ## Bugs
 現在認識しているバグは以下です
 - 洒落にならないレベルで重い
- - VSCと連動させる部分で恐らくバグがあると思います
+ - Visual Studio Codeと連動させる部分で恐らくバグがあると思います
 - gosubの実装ミス
  - 多段的なgosubが処理出来ていません
    - 次Releaseで修正する予定です
