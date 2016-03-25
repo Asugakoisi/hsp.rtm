@@ -1,4 +1,6 @@
 # hsp.rtm
+[![Bintray](https://img.shields.io/badge/Download-0.1.3-green.svg)](https://github.com/kkrnt/hsp.rtm/releases/download/v0.1.3/hsp.rtm_v0.1.3.zip) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)  
+
 HSPをリアルタイムデバッグするためのプログラムです  
 試験的にVisual Studio Codeの拡張機能として動かしています
 
@@ -29,7 +31,7 @@ HSPをリアルタイムデバッグするためのプログラムです
 何かありましたら[@kkrnt](https://twitter.com/kkrnt)まで連絡頂けると幸いです
 
 ## LICENSE
-[The MIT License](https://github.com/kkrnt/hsp.cs/blob/master/LICENSE)
+[The MIT License](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)
   
 potato4dさんのsublime-HSPもMIT Licenseです  
 [https://github.com/potato4d/sublime-HSP/blob/master/LICENSE](https://github.com/potato4d/sublime-HSP/blob/master/LICENSE)
