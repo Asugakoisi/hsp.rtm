@@ -5,7 +5,7 @@ HSPをリアルタイムデバッグするためのプログラムです
 試験的にVisual Studio Codeの拡張機能として動かしています
 
 ## Usage
-1. プロジェクトをビルドしたい場合は```hsp.rtm.sln```をVisual Studioで開き, ビルドして下さい
+1. プロジェクトをビルドしたい場合は```hsp.rtm.sln```をVisual Studioで開いてビルドし, ```bin```に配置して下さい
 2. ```vscode-extension```をVisual Studio Codeで開きます
 3. F5等で実行して下さい
 4. 言語タブからHSPを指定するとHSPのシンタックスハイライトが入ります
@@ -19,10 +19,10 @@ HSPをリアルタイムデバッグするためのプログラムです
 - gosubの実装ミス
  - 多段的なgosubが処理出来ていません
    - 次Releaseで修正する予定です
-- 複数のウィンドウは表示
+- 複数のウィンドウの表示
  - 複数のウィンドウを表示することに対応する予定は今のところありません
 
-## ETC
+## etc
 - Visual Studio Code上のシンタックスハイライトはpotato4dさんのtmLanguageファイルを利用させて頂きました
  - [https://github.com/potato4d/sublime-HSP](https://github.com/potato4d/sublime-HSP)
 - バグが非常に多いです  
