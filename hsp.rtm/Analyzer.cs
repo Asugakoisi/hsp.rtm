@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace hsp.rtm
 {
-    class Analyzer
+    public static class Analyzer
     {
         public static string GenerateCode(List<string> hspArrayData)
         {

@@ -5,14 +5,8 @@ using System.Collections.Generic;
 
 namespace hsp.rtm
 {
-    public class Base
+    public static class Base
     {
-        private Base()
-        {
-            //
-        }
-
-
         /*========================================
         　　　　　　　　コマンドの定義
         ========================================*/

@@ -53,7 +53,7 @@ export default class DocumentWatcher implements vscode.Disposable {
         const self = this;
         if (!self._isEnabled) return;
         
-        var code = arg.document.getText().replace(/\r?\n/g, '@@@@@');
+        var code = arg.document.getText().replace(/\r?\n/g, 'Producer-San, Is a new line! new line!!');
 
         ipc.stdin.write(code + "\n");
         var stdin = process.stdin;

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace hsp.rtm
 {
-    class Core
+    public static class Core
     {
         public static Window window = new Window();
         public static Form DebugWindow = new Form();
@@ -14,6 +14,7 @@ namespace hsp.rtm
         static void Main()
         {
             window.Load += window._Load;
+            window.Size = new Size(640, 480);
             window.Text = "HSP Real-Time Debug";
 
             DebugWindow.Text = "Debug Window";

@@ -14,7 +14,7 @@ namespace hsp.rtm
     /// <summary>
     /// HSPの変数の実体を管理するクラス
     /// </summary>
-    public class Manager
+    public static class Manager
     {
         //HSPの変数の実体
         //キーが変数名
@@ -120,7 +120,7 @@ namespace hsp.rtm
         }
     }
 
-    public class RTM
+    public static class RTM
     {
         private static dynamic instance;
         private static dynamic oldInstance;
