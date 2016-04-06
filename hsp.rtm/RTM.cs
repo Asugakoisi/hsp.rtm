@@ -97,9 +97,9 @@ namespace hsp.rtm
                     watcher.Kill();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //既に終了していた場合は何もしない
+                Error.AlertError(ex);
             }
         }
 
@@ -133,9 +133,9 @@ namespace hsp.rtm
         /// <param name="instanceMethodName">追加するイベントのインスタンス内での名前</param>
         public static void AddEvent(string eventName, Type eventType, string instanceMethodName)
         {
-            Core.window.GetType()
+            Core.MainWindow.GetType()
                 .GetEvent(eventName)
-                .AddEventHandler(Core.window,
+                .AddEventHandler(Core.MainWindow,
                     Delegate.CreateDelegate(eventType, instance, instance.GetType().GetMethod(instanceMethodName)));
         }
 
@@ -147,9 +147,9 @@ namespace hsp.rtm
         /// <param name="instanceMethodName">削除するイベントのインスタンス内での名前</param>
         public static void DeleteEvent(string eventName, Type eventType, string instanceMethodName)
         {
-            Core.window.GetType()
+            Core.MainWindow.GetType()
                 .GetEvent(eventName)
-                .RemoveEventHandler(Core.window,
+                .RemoveEventHandler(Core.MainWindow,
                     Delegate.CreateDelegate(eventType, oldInstance, oldInstance.GetType().GetMethod(instanceMethodName)));
         }
 
@@ -224,7 +224,7 @@ namespace hsp.rtm
                 oldInstance = instance;
 
                 //Programのインスタンスを作成
-                instance = Activator.CreateInstance(dataType, new object[]{ Core.window , Manager.Variables, Core.DebugWindow });
+                instance = Activator.CreateInstance(dataType, new object[]{ Core.MainWindow , Manager.Variables, Core.DebugWindow });
 
                 //既に追加されているイベントを破棄
                 if (oldInstance != null)
@@ -234,12 +234,13 @@ namespace hsp.rtm
                 //新しくコンパイルしたイベントを追加
                 AddEvent("Paint", typeof(PaintEventHandler), "Paint");
                 //リフレッシュ
-                Core.window.Refresh();
+                Core.MainWindow.Refresh();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //何かしらのエラー
                 //構文エラーとかは別途で警告出したい
+                Error.AlertError(ex);
             }
         }
     }

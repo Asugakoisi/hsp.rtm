@@ -140,7 +140,7 @@ namespace hsp.rtm
                                 {
                                     //条件文の後に処理が書かれていないため無効な文
                                     //エラーとして吐き出すよりも警告として表示したほうが良い？
-                                    Console.WriteLine("条件文の後に実行すべき処理が書かれていません");
+                                    Error.AlertError("条件文の後に実行すべき処理が書かれていません");
                                 }
                                 else
                                 {
@@ -203,8 +203,8 @@ namespace hsp.rtm
                             if (forConditionalSentence.Count() != 4)
                             {
                                 //要素数がオカシイのでエラー
-                                Console.WriteLine("for文の要素数がオカシイです");
-                                Console.WriteLine("現在の要素数 = " + forConditionalSentence.Count());
+                                Error.AlertError("for文の要素数が不正です\n" +
+                                                 "現在の要素数 = " + forConditionalSentence.Count);
                             }
                             else
                             {
@@ -250,7 +250,7 @@ namespace hsp.rtm
                             else
                             {
                                 //repeatに渡されている値が数字ではないのでエラー
-                                Console.WriteLine("repeatに渡されている値(" + repeatConditionalSentence + ")は数字ではありません");
+                                Error.AlertError("repeatに渡されている値(" + repeatConditionalSentence + ")は数字ではありません");
                             }
                             break;
 
@@ -260,7 +260,7 @@ namespace hsp.rtm
                             if (switchSpaceIndex < 0)
                             {
                                 //switchの条件文としてオカシイのでエラー
-                                Console.WriteLine("switch文の条件文が書かれていません");
+                                Error.AlertError("switch文の条件文が書かれていません");
                             }
                             else
                             {
@@ -326,7 +326,7 @@ namespace hsp.rtm
                             if (caseSpaceIndex < 0)
                             {
                                 //case文の値が不正なのでエラー
-                                Console.WriteLine("case文の値が不正です");
+                                Error.AlertError("case文の値が不正です");
                             }
                             else
                             {
@@ -374,7 +374,6 @@ namespace hsp.rtm
                     {
                         case "print":
                         case "mes":
-                            //hspArrayData[i] = HSP.Print(commandArguments);
                             hspArrayData[i] = GUI.Print(commandArguments);
                             break;
                         case "exist":
@@ -657,7 +656,7 @@ namespace hsp.rtm
                         /*============================
                         //カッコの数がオカシイのでエラー
                         =============================*/
-                        Console.WriteLine("Error");
+                        Error.AlertError("関数呼び出しの括弧の数が足りません");
                     }
                 }
 

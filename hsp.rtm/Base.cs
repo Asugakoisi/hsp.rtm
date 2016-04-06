@@ -11,7 +11,7 @@ namespace hsp.rtm
         　　　　　　　　コマンドの定義
         ========================================*/
 
-
+        
         /// <summary>
         ///     メッセージ表示
         /// </summary>
@@ -53,7 +53,7 @@ namespace hsp.rtm
             filename = filename.Replace("\"", "");
             if (!File.Exists(filename))
             {
-                Console.WriteLine("エラー12(「ファイルが見つからないか無効な名前です」)");
+                Error.AlertError("ファイルが見つからないか無効な名前です");
             }
             return "File.Delete(\"" + filename + "\")";
         }
@@ -572,11 +572,11 @@ namespace hsp.rtm
 
             if (p.Count() > 3)
             {
-                Console.WriteLine("関数のパラメーター記述が不正です");
+                Error.AlertError("関数のパラメーター記述が不正です");
             }
             else if (p.Count() < 3)
             {
-                Console.WriteLine("パラメーターの省略はできません");
+                Error.AlertError("パラメーターの省略はできません");
             }
             else
             {
@@ -626,11 +626,11 @@ namespace hsp.rtm
 
             if (p.Count() > 3)
             {
-                Console.WriteLine("関数のパラメーター記述が不正です");
+                Error.AlertError("関数のパラメーター記述が不正です");
             }
             else if (p.Count() < 3)
             {
-                Console.WriteLine("パラメーターの省略はできません");
+                Error.AlertError("パラメーターの省略はできません");
             }
             else
             {

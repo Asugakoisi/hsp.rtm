@@ -52,6 +52,7 @@
     <Compile Include="Analyzer.cs" />
     <Compile Include="Base.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="Error.cs" />
     <Compile Include="GUI.cs">
       <SubType>Form</SubType>
     </Compile>

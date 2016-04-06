@@ -57,7 +57,7 @@ namespace hsp.watcher
                 var message = new WindowMessage();
                 message.SendData(rtm.MainWindowHandle, code.Replace("Producer-San, Is a new line! new line!!", "\n"));
 
-                Thread.Sleep(100);
+                Thread.Sleep(10);
             }
         }
     }
