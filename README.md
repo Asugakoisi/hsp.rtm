@@ -1,5 +1,5 @@
 # hsp.rtm
-[![Bintray](https://img.shields.io/badge/Download-0.2.1-green.svg)](https://github.com/kkrnt/hsp.rtm/releases/download/v0.2.1/hsp.rtm_v0.2.1.zip) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)  
+[![Bintray](https://img.shields.io/badge/Download-0.2.2-green.svg)](https://github.com/kkrnt/hsp.rtm/releases/download/v0.2.2/hsp.rtm_v0.2.2.zip) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)  
 
 HSPをリアルタイムデバッグするためのプログラムです  
 試験的にVisual Studio Codeの拡張機能として動かしています
@@ -14,12 +14,7 @@ HSPをリアルタイムデバッグするためのプログラムです
 
 ## Bugs
 現在認識しているバグは以下です
-- 洒落にならないレベルで重い
- - Visual Studio Codeと連動させる部分で恐らくバグがあると思います
-- gosubの実装ミス
- - 多段的なgosubが処理出来ていません
-   - 次Releaseで修正する予定です
-- 複数のウィンドウは表示
+- 複数のウィンドウの表示
  - 複数のウィンドウを表示することに対応する予定は今のところありません
 
 ## ETC
@@ -34,7 +29,7 @@ HSPをリアルタイムデバッグするためのプログラムです
 ## LICENSE
 [The MIT License](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)
   
-potato4dさんのsublime-HSPもMIT Licenseです  
+potato4dさんのsublime-HSPを一部利用させて頂きました  
 [https://github.com/potato4d/sublime-HSP/blob/master/LICENSE](https://github.com/potato4d/sublime-HSP/blob/master/LICENSE)
 
 ## 実装済みのもの

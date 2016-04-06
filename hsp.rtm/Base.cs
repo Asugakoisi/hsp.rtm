@@ -231,7 +231,7 @@ namespace hsp.rtm
         {
             if (p1.Equals(""))
             {
-                return "Application.Exit();";
+                return "return;";
             }
             return "return " /*+p1*/;
         }

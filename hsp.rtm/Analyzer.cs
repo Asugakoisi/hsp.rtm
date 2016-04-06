@@ -7,6 +7,14 @@ namespace hsp.rtm
 {
     public static class Analyzer
     {
+        //ラベルからジャンプ台を生成するためのリスト
+        public static List<string> LabelList = new List<string>();
+         
+        /// <summary>
+        /// HSPのコードをC#に変換する
+        /// </summary>
+        /// <param name="hspArrayData">HSPのコード</param>
+        /// <returns></returns>
         public static string GenerateCode(List<string> hspArrayData)
         {
             for (var i = 0; i < hspArrayData.Count; i++)
@@ -351,10 +359,14 @@ namespace hsp.rtm
                             break;
 
                         case "gosub":
-                            hspArrayData[i] = "goto " + hspArrayData[i].Substring("gosub".Length).Replace("*", "");
                             var label = __LocalName("label");
-                            hspArrayData.Insert(i + 1, label + ":");
-                            ReturnLabelList.Add(label);
+                            if (!LabelList.Contains(label))
+                            {
+                                LabelList.Add(label);
+                            }
+                            hspArrayData[i] = "LabelList.Add(\"" + label + "\");\n" +
+                                              "goto " + hspArrayData[i].Substring("gosub".Length).Replace("*", "") + ";\n" +
+                                              label + ":\n";
                             break;
                     }
                 }
@@ -508,9 +520,7 @@ namespace hsp.rtm
             {
                 if (hspArrayData[i].Equals("return"))
                 {
-                    var returnLabel = ReturnLabelList[ReturnLabelList.Count - 1];
-                    ReturnLabelList.RemoveAt(ReturnLabelList.Count - 1);
-                    hspArrayData[i] = "goto " + returnLabel;
+                    hspArrayData[i] = "goto multi;";
                 }
             }
 
@@ -533,6 +543,18 @@ namespace hsp.rtm
                 }
             }
 
+            //ラベルのジャンプ台を生成する
+            var jump = "\nmulti:\n" +
+                       "switch(LabelList[0])\n" +
+                       "{";
+            for (var i = 0; i < LabelList.Count; i++)
+            {
+                jump += "case \"" + LabelList[i] + "\":\n" +
+                        "LabelList.RemoveAt(LabelList.Count - 1);\n" +
+                        "goto " + LabelList[i] + ";\n";
+            }
+            jump += "}\n";
+
             //C#のコードを完成
             var code = Using
                        + ProgramHeader
@@ -544,6 +566,7 @@ namespace hsp.rtm
                        + AddMainFunction
                        + string.Join("\n", AddFunction)
                        + string.Join("\n", hspArrayData)
+                       + jump
                        + ProgramFooter;
 
             return code;
@@ -1038,7 +1061,8 @@ namespace hsp.rtm
         //header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
         //field
-        public static string ProgramField = "public Form form0;\n" +
+        public static string ProgramField = "public static List<string> LabelList = new List<string>();\n" +
+                                            "public Form form0;\n" +
                                             "public Form CurrentScreenID;\n" +
                                             "public Form DebugWindow;\n" +
                                             "public Dictionary<string, dynamic> Variables;\n\n" +
@@ -1124,8 +1148,6 @@ namespace hsp.rtm
         //変数名の先頭として存在してはいけない文字
         public static List<char> VariableNameRule =
             "0123456789!\"#$%&'()-^\\=~|@[`{;:]+*},./<>?".ToCharArray().ToList();
-
-        private static readonly List<string> ReturnLabelList = new List<string>();
 
         public static List<Form> Window = new List<Form>();
 
