@@ -23,11 +23,11 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Display a message box to the user
         watcher.toggle();
-        vscode.window.showInformationMessage('HSP Real-Time Debugging')
+        vscode.window.showInformationMessage('HSP Real-Time Debugging!');
         
         var spawn = require('child_process').spawn;
 
-        ipc = spawn(process.cwd() +  "\\vscode-extension\\bin\\hsp.watcher.exe");
+        ipc = spawn(process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "\\.vscode\\extensions\\hsp-rtm\\hsp.watcher.exe");
         ipc.stdin.setEncoding("utf8");
     });
 

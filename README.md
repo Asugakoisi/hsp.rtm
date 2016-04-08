@@ -1,16 +1,16 @@
 # hsp.rtm
-[![Bintray](https://img.shields.io/badge/Download-0.2.2-green.svg)](https://github.com/kkrnt/hsp.rtm/releases/download/v0.2.2/hsp.rtm_v0.2.2.zip) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)  
+[![Bintray](https://img.shields.io/badge/Download-0.3.0-green.svg)](https://github.com/kkrnt/hsp.rtm/releases/download/v0.3.0/hsp.rtm_v0.3.0.zip) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)  
 
 HSPをリアルタイムデバッグするためのプログラムです  
 試験的にVisual Studio Codeの拡張機能として動かしています
 
+## Install
+- ```install.exe```を実行し, 案内に従ってインストールを行って下さい
+- アンインストールする場合は```install.exe```に対して```remove```をコマンドライン引数として渡して実行して下さい
+
 ## Usage
-1. プロジェクトをビルドしたい場合は```hsp.rtm.sln```をVisual Studioで開き, ビルドして下さい
-2. ```vscode-extension```をVisual Studio Codeで開きます
-3. F5等で実行して下さい
-4. 言語タブからHSPを指定するとHSPのシンタックスハイライトが入ります
-5. コマンドパレットで```start hsp.rtm```を選択するとReal-Time Debugが出来ます
-6. 終了するときはhsp.rtm.exeとVisual Studio Codeを閉じて下さい
+- ```Select Language Mode```から```HSP```を選択することでHSPのシンタックスハイライトが付きます
+- ```Command Palet (Ctrl + Shift + P)```から```Start hsp.rtm```を選択することでHSPのリアルタイムデバッグが行えます
 
 ## Bugs
 現在認識しているバグは以下です
@@ -20,6 +20,7 @@ HSPをリアルタイムデバッグするためのプログラムです
 ## ETC
 - Visual Studio Code上のシンタックスハイライトはpotato4dさんのtmLanguageファイルを利用させて頂きました
  - [https://github.com/potato4d/sublime-HSP](https://github.com/potato4d/sublime-HSP)
+ - MITライセンスです([https://github.com/potato4d/sublime-HSP/blob/master/LICENSE](https://github.com/potato4d/sublime-HSP/blob/master/LICENSE))
 - バグが非常に多いです  
  - システムに対してクリティカルなバグはないと思っていますが, まだ開発段階であるということを理解した上でご利用下さい
 - 実装出来ている命令・コマンドは限りがあります
@@ -28,9 +29,6 @@ HSPをリアルタイムデバッグするためのプログラムです
 
 ## LICENSE
 [The MIT License](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)
-  
-potato4dさんのsublime-HSPを一部利用させて頂きました  
-[https://github.com/potato4d/sublime-HSP/blob/master/LICENSE](https://github.com/potato4d/sublime-HSP/blob/master/LICENSE)
 
 ## 実装済みのもの
 ### Basic Grammar
