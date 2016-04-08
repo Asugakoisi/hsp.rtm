@@ -55,7 +55,7 @@ namespace install
                 }
                 else if (args[0].Equals("remove"))
                 {
-                    var agree = MessageBox.Show("hsp.rtmをアンインストールしますか？", "Step 2", MessageBoxButtons.OKCancel);
+                    var agree = MessageBox.Show("hsp.rtmをアンインストールしますか？", "hsp.rtm", MessageBoxButtons.OKCancel);
                     if (agree == DialogResult.OK)
                     {
                         Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\.vscode\\extensions\\hsp-rtm", true);

@@ -195,11 +195,6 @@ namespace hsp.rtm
                     }
                 }
 
-                //デバッグ用のコード出力
-                var sw = new StreamWriter("code.cs", false, Encoding.UTF8);
-                sw.WriteLine(code);
-                sw.Close();
-
                 //生成したコードを実行
                 var param = new CompilerParameters();
 
