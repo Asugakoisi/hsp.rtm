@@ -424,6 +424,9 @@ namespace hsp.rtm
                         case "wait":
                             hspArrayData[i] = GUI.Wait(commandArguments);
                             break;
+                        case "mci":
+                            hspArrayData[i] = GUI.Mci(commandArguments);
+                            break;
                         case "pos":
                             hspArrayData[i] = GUI.Pos(commandArguments);
                             break;
@@ -976,6 +979,7 @@ namespace hsp.rtm
             "end",
             "stop",
             "wait",
+            "mci",
             "pos",
             "screen",
             "bgscr",

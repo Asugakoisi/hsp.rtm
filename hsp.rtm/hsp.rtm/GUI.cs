@@ -74,6 +74,21 @@ namespace hsp.rtm
                    "Application.DoEvents()";
         }
 
+        public static string Mci(string strings)
+        {
+            Analyzer.UsingCheck("using System.Runtime.InteropServices");
+            Analyzer.UsingCheck("using System.Text");
+
+
+            if (!Analyzer.ProgramField.Contains("private static extern int mciSendString(string command, " +
+                                                    "StringBuilder buffer, int bufferSize, IntPtr hwndCallback);\n"))
+            {
+                Analyzer.ProgramField += "[DllImport(\"winmm.dll\")]\n" +
+                                         "private static extern int mciSendString(string command, " +
+                                         "StringBuilder buffer, int bufferSize, IntPtr hwndCallback);\n";
+            }
+            return "mciSendString(" + strings + ", null, 0, IntPtr.Zero);";
+        }
 
         public static string Screen(string strings)
         {
