@@ -469,7 +469,7 @@ namespace hsp.rtm
         {
             Analyzer.UsingCheck("using System.Runtime.InteropServices");
 
-            if (!Analyzer.ProgramField.Contains("[DllImport(\"user32.dll\")]\n"))
+            if (!Analyzer.ProgramField.Contains("private static extern ushort GetAsyncKeyState(int vKey);\n"))
             {
                 Analyzer.ProgramField += "[DllImport(\"user32.dll\")]\n" +
                                         "private static extern ushort GetAsyncKeyState(int vKey);\n";
@@ -515,7 +515,84 @@ namespace hsp.rtm
 
         public static string Stick(string strings)
         {
-            return "あとで書く";
+            Analyzer.UsingCheck("using System.Runtime.InteropServices");
+
+            if (!Analyzer.ProgramField.Contains("private static extern ushort GetAsyncKeyState(int vKey);\n"))
+            {
+                Analyzer.ProgramField += "[DllImport(\"user32.dll\")]\n" +
+                                         "private static extern ushort GetAsyncKeyState(int vKey);\n";
+            }
+            if (!Analyzer.ProgramField.Contains("private static extern IntPtr GetActiveWindow();\n"))
+            {
+                Analyzer.ProgramField += "[DllImport(\"user32.dll\")]\n" +
+                                        "private static extern IntPtr GetActiveWindow();\n";
+            }
+
+        var p = strings.Split(',');
+
+            for (var i = 0; i < p.Count(); i++)
+            {
+                p[i] = p[i].Trim();
+            }
+            //変数名として正しいか
+            if (Analyzer.VariableNameRule.Contains(p[0][0]))
+            {
+                //変数名ではない
+            }
+            else
+            {
+                //変数リストに含まれていない場合
+                if (!Analyzer.VariableList.Contains(p[0]))
+                {
+                    //変数リストに追加
+                    Analyzer.VariableList.Add(p[0]);
+                }
+            }
+
+            if (!Analyzer.AddFunction[0].Contains("public int stick"))
+            {
+                Analyzer.AddFunction[0] += "public int stick(int nonTriggerKey, bool isActiveWindow)\n{\n" +
+                                           "if (isActiveWindow == true)\n{\n" +
+                                           "if (GetActiveWindow() != CurrentScreenID.Handle) return 0;\n}\n" +
+                                           "int key = 0;\n" +
+                                           "int justKey = 0;\n" +
+                                           "if (GetAsyncKeyState(37) >> 15 == 1) key |= 1;\n" +
+                                           "if (GetAsyncKeyState(38) >> 15 == 1) key |= 2;\n" +
+                                           "if (GetAsyncKeyState(39) >> 15 == 1) key |= 4;\n" +
+                                           "if (GetAsyncKeyState(40) >> 15 == 1) key |= 8;\n" +
+                                           "if (GetAsyncKeyState(32) >> 15 == 1) key |= 16;\n" +
+                                           "if (GetAsyncKeyState(13) >> 15 == 1) key |= 32;\n" +
+                                           "if (GetAsyncKeyState(17) >> 15 == 1) key |= 64;\n" +
+                                           "if (GetAsyncKeyState(27) >> 15 == 1) key |= 128;\n" +
+                                           "if (GetAsyncKeyState(1) >> 15 == 1) key |= 256;\n" +
+                                           "if (GetAsyncKeyState(2) >> 15 == 1) key |= 512;\n" +
+                                           "if (GetAsyncKeyState(9) >> 15 == 1) key |= 1024;\n" +
+                                           "justKey = (key ^ lastKey | nonTriggerKey) & key;" +
+                                           "lastKey = key;\n" +
+                                           "return justKey;\n}\n";
+            }
+
+            if (p.Count() == 1)
+            {
+                return "Variables[\"" + p[0] + "\"] = stick(0, true);";
+            }
+            if (p.Count() == 2)
+            {
+                return "Variables[\"" + p[0] + "\"] = stick(" + p[1] + ", true);";
+            }
+            if (p.Count() == 3)
+            {
+                if (p[2] == "0")
+                {
+                    p[2] = "false";
+                }
+                if (p[2] == "1")
+                {
+                    p[2] = "true";
+                }
+                return "Variables[\"" + p[0] + "\"] = stick(" + p[1] + ", " + p[2] + ");";
+            }
+            return "Console.WriteLine(\"error\")";
         }
 
         public static string Objsize(string strings)

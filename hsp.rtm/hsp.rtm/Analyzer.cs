@@ -466,6 +466,9 @@ namespace hsp.rtm
                         case "getkey":
                             hspArrayData[i] = GUI.Getkey(commandArguments);
                             break;
+                        case "stick":
+                            hspArrayData[i] = GUI.Stick(commandArguments);
+                            break;
                         case "objsize":
                             hspArrayData[i] = GUI.Objsize(commandArguments);
                             break;
@@ -987,6 +990,7 @@ namespace hsp.rtm
             "color",
             "picload",
             "getkey",
+            "stick",
             "objsize",
             "dialog"
         };
@@ -1065,6 +1069,7 @@ namespace hsp.rtm
                                             "public Form form0;\n" +
                                             "public Form CurrentScreenID;\n" +
                                             "public Form DebugWindow;\n" +
+                                            "public int lastKey = 0;\n" +
                                             "public Dictionary<string, dynamic> Variables;\n\n" +
                                             "public Program(Form _form, Dictionary<string, dynamic> _variables, Form _debugWindow)\n" +
                                             "{\n" +
