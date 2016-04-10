@@ -487,7 +487,7 @@ namespace hsp.rtm
             if (!Analyzer.ProgramField.Contains("private static extern ushort GetAsyncKeyState(int vKey);\n"))
             {
                 Analyzer.ProgramField += "[DllImport(\"user32.dll\")]\n" +
-                                        "private static extern ushort GetAsyncKeyState(int vKey);\n";
+                                         "private static extern ushort GetAsyncKeyState(int vKey);\n";
             }
 
             var p = strings.Split(',');
@@ -532,6 +532,11 @@ namespace hsp.rtm
         {
             Analyzer.UsingCheck("using System.Runtime.InteropServices");
 
+            if (!Analyzer.ProgramField.Contains("public int lastKey = 0;\n"))
+            {
+                Analyzer.ProgramField += "public int lastKey = 0;\n";
+            }                
+
             if (!Analyzer.ProgramField.Contains("private static extern ushort GetAsyncKeyState(int vKey);\n"))
             {
                 Analyzer.ProgramField += "[DllImport(\"user32.dll\")]\n" +
@@ -540,7 +545,7 @@ namespace hsp.rtm
             if (!Analyzer.ProgramField.Contains("private static extern IntPtr GetActiveWindow();\n"))
             {
                 Analyzer.ProgramField += "[DllImport(\"user32.dll\")]\n" +
-                                        "private static extern IntPtr GetActiveWindow();\n";
+                                         "private static extern IntPtr GetActiveWindow();\n";
             }
 
         var p = strings.Split(',');

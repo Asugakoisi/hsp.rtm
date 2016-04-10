@@ -565,6 +565,7 @@ namespace hsp.rtm
             var code = Using
                        + ProgramHeader
                        + ProgramField
+                       + ProgramConstructor
                        + DebugWindowPaint
                        + SubFunction
                        + MainFunction
@@ -1065,7 +1066,7 @@ namespace hsp.rtm
                                      "using System.Linq;\n" +
                                      "using System.Drawing;\n" +
                                      "using System.Windows.Forms;\n" +
-                                     "using System.Collections.Generic;\n\n";
+                                     "using System.Collections.Generic;\n";
         //header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
         //field
@@ -1073,17 +1074,17 @@ namespace hsp.rtm
                                             "public Form form0;\n" +
                                             "public Form CurrentScreenID;\n" +
                                             "public Form DebugWindow;\n" +
-                                            "public int lastKey = 0;\n" +
-                                            "public Dictionary<string, dynamic> Variables;\n\n" +
-                                            "public Program(Form _form, Dictionary<string, dynamic> _variables, Form _debugWindow)\n" +
-                                            "{\n" +
-                                            "form0 = _form;\n" +
-                                            "CurrentScreenID = form0;\n" +
-                                            "Variables = _variables;\n" +
-                                            "DebugWindow = _debugWindow;\n" +
-                                            "DebugWindow.Paint += dPaint;\n" +
-                                            "DebugWindow.Show();\n" +
-                                            "}\n\n";
+                                            "public Dictionary<string, dynamic> Variables;\n";
+                                            
+        private const string ProgramConstructor = "public Program(Form _form, Dictionary<string, dynamic> _variables, Form _debugWindow)\n" +
+                                                  "{\n" +
+                                                  "form0 = _form;\n" +
+                                                  "CurrentScreenID = form0;\n" +
+                                                  "Variables = _variables;\n" +
+                                                  "DebugWindow = _debugWindow;\n" +
+                                                  "DebugWindow.Paint += dPaint;\n" +
+                                                  "DebugWindow.Show();\n" +
+                                                  "}\n\n";
 
         public static string DebugWindowPaint = "private void dPaint(object sender, PaintEventArgs e)\n" +
                                                 "{\n" +

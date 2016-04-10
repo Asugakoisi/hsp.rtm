@@ -720,7 +720,12 @@ namespace hsp.rtm
 
         public static void Rnd(List<string> sentence, int j, int k)
         {
-            sentence[j] = "Random random = new Random();\n" + "random.Next(" + sentence[j + 2] + ")";
+            if (!Analyzer.ProgramField.Contains("Random random = new Random();\n"))
+            {
+                Analyzer.ProgramField += "Random random = new Random();\n";
+            }
+
+            sentence[j] = "random.Next(" + sentence[j + 2] + ")";
 
             for (var i = j + 1; i <= k; i++)
             {
