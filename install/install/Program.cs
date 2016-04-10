@@ -1,8 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
-using System.IO;
 using System.Security.Principal;
 
 namespace install
@@ -11,7 +11,7 @@ namespace install
     {
         static void Main(string[] args)
         {
-            if (!IsAdmin)
+            if (!IsAdministrator)
             {
                 var psi = new ProcessStartInfo
                 {
@@ -65,7 +65,10 @@ namespace install
             }
         }
 
-        static bool IsAdmin
+        /// <summary>
+        /// 管理者権限として起動しているか
+        /// </summary>
+        static bool IsAdministrator
         {
             get
             {
