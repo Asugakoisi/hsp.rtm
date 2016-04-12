@@ -153,8 +153,10 @@ namespace hsp.rtm
                     Delegate.CreateDelegate(eventType, oldInstance, oldInstance.GetType().GetMethod(instanceMethodName)));
         }
 
-        public static void Execute(string str)
+        public static void Execute(string base64String)
         {
+            var str = Encoding.Default.GetString(Convert.FromBase64String(base64String));
+
             try
             {
                 //多分他にも初期化しないといけないものある

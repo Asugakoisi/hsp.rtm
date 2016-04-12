@@ -43,7 +43,7 @@ namespace hsp.rtm
                 var commentOutIndex = hspArrayData[i].IndexOf("//", StringComparison.Ordinal);
                 if (commentOutIndex > -1)
                 {
-                    hspArrayData[i] = hspArrayData[i].Substring(0, commentOutIndex).Trim();
+                    continue;
                 }
 
                 //スラッシュとアスタリスクによるコメントアウトをエスケープする

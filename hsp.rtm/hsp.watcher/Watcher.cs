@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using System.Threading;
 using System.Diagnostics;
@@ -55,7 +54,7 @@ namespace hsp.watcher
                 var code = Console.ReadLine();
 
                 var message = new WindowMessage();
-                message.SendData(rtm.MainWindowHandle, code.Replace("Producer-San, Is a new line! new line!!", "\n"));
+                message.SendData(rtm.MainWindowHandle, code);
 
                 Thread.Sleep(10);
             }

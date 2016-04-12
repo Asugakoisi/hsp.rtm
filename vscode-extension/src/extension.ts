@@ -53,8 +53,10 @@ export default class DocumentWatcher implements vscode.Disposable {
         const self = this;
         if (!self._isEnabled) return;
         
-        var code = arg.document.getText().replace(/\r?\n/g, 'Producer-San, Is a new line! new line!!');
-
+        var code = arg.document.getText();
+        var buffer = new Buffer(code, 'utf8');
+        code = buffer.toString('base64');
+        
         ipc.stdin.write(code + "\n");
         var stdin = process.stdin;
         stdin.on('data', function (data) {
