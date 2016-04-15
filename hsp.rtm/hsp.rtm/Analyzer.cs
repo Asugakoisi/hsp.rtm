@@ -9,7 +9,7 @@ namespace hsp.rtm
     {
         //ラベルからジャンプ台を生成するためのリスト
         public static List<string> LabelList = new List<string>();
-         
+
         /// <summary>
         /// HSPのコードをC#に変換する
         /// </summary>
@@ -1075,25 +1075,46 @@ namespace hsp.rtm
                                             "public Form CurrentScreenID;\n" +
                                             "public Form DebugWindow;\n" +
                                             "public Dictionary<string, dynamic> Variables;\n";
-                                            
-        private const string ProgramConstructor = "public Program(Form _form, Dictionary<string, dynamic> _variables, Form _debugWindow)\n" +
-                                                  "{\n" +
-                                                  "form0 = _form;\n" +
-                                                  "CurrentScreenID = form0;\n" +
-                                                  "Variables = _variables;\n" +
-                                                  "DebugWindow = _debugWindow;\n" +
-                                                  "DebugWindow.Paint += dPaint;\n" +
-                                                  "DebugWindow.Show();\n" +
-                                                  "}\n\n";
 
-        public static string DebugWindowPaint = "private void dPaint(object sender, PaintEventArgs e)\n" +
+        private const string ProgramConstructor =
+            "private static DataGridView view;\n" +
+            "public Program(Form _form, Dictionary<string, dynamic> _variables, Form _debugWindow)\n" +
+            "{\n" +
+            "form0 = _form;\n" +
+            "CurrentScreenID = form0;\n" +
+            "Variables = _variables;\n" +
+            "DebugWindow = _debugWindow;\n" +
+            "dPaint();\n" +
+            "DebugWindow.Show();\n" +
+            "}\n\n" +
+            "private void CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)" +
+            "{" +
+            "    e.Cancel = true;" +
+            "}\n\n";
+
+        public static string DebugWindowPaint = "private void dPaint()\n" +
                                                 "{\n" +
+                                                "view = new DataGridView" +
+                                                "{" +
+                                                "    Size = new Size(DebugWindow.Size.Width - 20, DebugWindow.Size.Height - 50)," +
+                                                "    RowHeadersVisible = false," +
+                                                "    AllowUserToAddRows = false," +
+                                                "    ScrollBars = ScrollBars.Vertical," +
+                                                "    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill" +
+                                                "};" +
+                                                "view.CellBeginEdit += CellBeginEdit;\n" +
+                                                "view.Columns.Clear();\n" +
+                                                "view.Rows.Clear();\n" +
+                                                "view.Columns.Add(\"n\", \"変数名\");\n" +
+                                                "view.Columns.Add(\"v\", \"値\");\n" +
                                                 "var keys = Variables.Keys.ToList();\n" +
                                                 "var values = Variables.Values.ToList();\n" +
                                                 "for(var i=0; i<keys.Count; i++)\n" +
                                                 "{\n" +
-                                                "e.Graphics.DrawString(keys[i] + \" => \" + values[i], new Font(\"FixedSys\", 14), new SolidBrush(Color.FromArgb(0, 0, 0)), 0, i*50);\n" +
+                                                "view.Rows.Add(keys[i], values[i]);\n" +
                                                 "}\n" +
+                                                "view.CellBeginEdit += CellBeginEdit;\n" +
+                                                "DebugWindow.Controls.Add(view);\n" +
                                                 "}\n";
 
         //Main関数以外の関数の定義
@@ -1131,7 +1152,8 @@ namespace hsp.rtm
                                             "catch(Exception)\n" +
                                             "{\n" +
                                             "}\n" +
-                                            "DebugWindow.Refresh();" +
+                                            "DebugWindow.Controls.Clear();\n" +
+                                            "dPaint();\n" +
                                             "}\n" +
                                             "}\n" +
                                             "}\n\n" +

@@ -18,7 +18,7 @@ namespace hsp.rtm
             MainWindow.Text = "HSP Real-Time Debug";
 
             DebugWindow.Text = "Debug Window";
-            DebugWindow.Size = new Size(640, 480);
+            DebugWindow.Size = new Size(600, 800);
 
             //RTMが終了したときに, 一緒にwatcherも終了させる
             MainWindow.FormClosed += MainWindow.ExitWatcher;

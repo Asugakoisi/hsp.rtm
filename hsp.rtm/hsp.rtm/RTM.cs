@@ -197,6 +197,18 @@ namespace hsp.rtm
                     }
                 }
 
+                using (var sw = new StreamWriter("C:\\Users\\kkrnt\\Desktop\\code.cs", false, Encoding.UTF8))
+                {
+                    sw.WriteLine(code);
+                }
+
+                //code内でウィンドウのサイズを定義しているか
+                if (!code.Contains("public void screen(Form form, int width, int height)"))
+                {
+                    //含まれていない場合は追加
+                    code = code.Replace("form0 = _form;\n", "form0 = _form;\n" + "form0.Size = new Size(640, 480);\n");
+                }
+
                 //生成したコードを実行
                 var param = new CompilerParameters();
 
