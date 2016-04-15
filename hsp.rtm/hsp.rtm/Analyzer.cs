@@ -355,7 +355,15 @@ namespace hsp.rtm
 
                         //gotoの処理
                         case "goto":
-                            hspArrayData[i] = hspArrayData[i].Replace("*", "");
+                            hspArrayData[i] = "var now = DateTime.Now;\n" +
+                                              "var span = now - pre;\n" +
+                                              "if((span.Minutes*60 + span.Seconds) * 1000 + span.Milliseconds > 500)\n" +
+                                              "{\n" +
+                                              "DebugWindow.Controls.Clear();\n" +
+                                              "dPaint();\n" +
+                                              "pre = now\n;" +
+                                              "}\n" +
+                                              hspArrayData[i].Replace("*", "");
                             break;
 
                         case "gosub":
@@ -365,7 +373,16 @@ namespace hsp.rtm
                                 LabelList.Add(label);
                             }
                             hspArrayData[i] = "LabelList.Add(\"" + label + "\");\n" +
-                                              "goto " + hspArrayData[i].Substring("gosub".Length).Replace("*", "") + ";\n" +
+                                              "var now = DateTime.Now;\n" +
+                                              "var span = now - pre;\n" +
+                                              "if((span.Minutes*60 + span.Seconds) * 1000 + span.Milliseconds > 500)\n" +
+                                              "{\n" +
+                                              "DebugWindow.Controls.Clear();\n" +
+                                              "dPaint();\n" +
+                                              "pre = now\n;" +
+                                              "}\n" +
+                                              "goto " + hspArrayData[i].Substring("gosub".Length).Replace("*", "") +
+                                              ";\n" +
                                               label + ":\n";
                             break;
                     }
@@ -1070,7 +1087,8 @@ namespace hsp.rtm
         //header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
         //field
-        public static string ProgramField = "public static List<string> LabelList = new List<string>();\n" +
+        public static string ProgramField = "public static DateTime pre = DateTime.Now;\n" +
+                                            "public static List<string> LabelList = new List<string>();\n" +
                                             "public Form form0;\n" +
                                             "public Form CurrentScreenID;\n" +
                                             "public Form DebugWindow;\n" +
@@ -1084,7 +1102,14 @@ namespace hsp.rtm
             "CurrentScreenID = form0;\n" +
             "Variables = _variables;\n" +
             "DebugWindow = _debugWindow;\n" +
-            "dPaint();\n" +
+            "view = new DataGridView" +
+            "{" +
+            "    Size = new Size(DebugWindow.Size.Width - 20, DebugWindow.Size.Height - 50)," +
+            "    RowHeadersVisible = false," +
+            "    AllowUserToAddRows = false," +
+            "    ScrollBars = ScrollBars.Vertical," +
+            "    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill" +
+            "};" +
             "DebugWindow.Show();\n" +
             "}\n\n" +
             "private void CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)" +
@@ -1094,14 +1119,7 @@ namespace hsp.rtm
 
         public static string DebugWindowPaint = "private void dPaint()\n" +
                                                 "{\n" +
-                                                "view = new DataGridView" +
-                                                "{" +
-                                                "    Size = new Size(DebugWindow.Size.Width - 20, DebugWindow.Size.Height - 50)," +
-                                                "    RowHeadersVisible = false," +
-                                                "    AllowUserToAddRows = false," +
-                                                "    ScrollBars = ScrollBars.Vertical," +
-                                                "    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill" +
-                                                "};" +
+                                                "DebugWindow.Controls.Clear();\n" +
                                                 "view.CellBeginEdit += CellBeginEdit;\n" +
                                                 "view.Columns.Clear();\n" +
                                                 "view.Rows.Clear();\n" +
@@ -1152,7 +1170,6 @@ namespace hsp.rtm
                                             "catch(Exception)\n" +
                                             "{\n" +
                                             "}\n" +
-                                            "DebugWindow.Controls.Clear();\n" +
                                             "dPaint();\n" +
                                             "}\n" +
                                             "}\n" +
