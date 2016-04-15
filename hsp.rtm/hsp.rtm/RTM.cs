@@ -197,11 +197,6 @@ namespace hsp.rtm
                     }
                 }
 
-                using (var sw = new StreamWriter("C:\\Users\\kkrnt\\Desktop\\code.cs", false, Encoding.UTF8))
-                {
-                    sw.WriteLine(code);
-                }
-
                 //code内でウィンドウのサイズを定義しているか
                 if (!code.Contains("public void screen(Form form, int width, int height)"))
                 {

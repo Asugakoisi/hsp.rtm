@@ -4,7 +4,7 @@
 HSPをリアルタイムデバッグするためのプログラムです  
 Visual Studio Codeの拡張機能として動作します
 
-![hsp.rtm.gif](hsp.rtm.gif)
+![hsp.rtm.gif](media/hsp.rtm.gif)
 
 ## Install
 - ```install.exe```を実行し, 案内に従ってインストールを行って下さい
