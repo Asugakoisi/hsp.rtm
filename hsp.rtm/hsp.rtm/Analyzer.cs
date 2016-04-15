@@ -238,7 +238,15 @@ namespace hsp.rtm
                         //whileの処理
                         case "while":
                             var whileConditionalSentence = hspArrayData[i].Substring(spaceIndex).Trim();
-                            hspArrayData[i] = "while (" + whileConditionalSentence + ")\n{";
+                            hspArrayData[i] = "while (" + whileConditionalSentence + ")\n{\n" +
+                                              "var now = DateTime.Now;\n" +
+                                              "var span = now - pre;\n" +
+                                              "if((span.Minutes*60 + span.Seconds) * 1000 + span.Milliseconds > 500)\n" +
+                                              "{\n" +
+                                              "DebugWindow.Controls.Clear();\n" +
+                                              "dPaint();\n" +
+                                              "pre = now\n;" +
+                                              "}\n";
                             break;
 
                         //repeatの処理
