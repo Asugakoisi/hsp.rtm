@@ -14,7 +14,7 @@ namespace hsp.rtm
             if (strings == string.Empty)
             {
                 return "g.DrawString(\"\", font, brush, CurrentPosX, CurrentPosY);\n" +
-                       "CurrentPosY += FontSize";
+                       "CurrentPosY += FontSize * 2";
             }
             var str = strings.Split('+').Select(i => i.Trim()).ToList();
             for (var i = 0; i < str.Count; i++)
@@ -71,12 +71,13 @@ namespace hsp.rtm
                 return "CurrentPosX = " + p[0] + ";\n" +
                        "CurrentPosY = " + p[1];
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Wait(string strings)
         {
-            Analyzer.UsingCheck("using System.Threading");
+            Analyzer.UsingCheck("System.Threading");
 
             return "Thread.Sleep(" + strings + " * 10);\n" +
                    "Application.DoEvents()";
@@ -84,8 +85,8 @@ namespace hsp.rtm
 
         public static string Mci(string strings)
         {
-            Analyzer.UsingCheck("using System.Runtime.InteropServices");
-            Analyzer.UsingCheck("using System.Text");
+            Analyzer.UsingCheck("System.Runtime.InteropServices");
+            Analyzer.UsingCheck("System.Text");
 
 
             if (!Analyzer.ProgramField.Contains("private static extern int mciSendString(string command, " +
@@ -174,10 +175,12 @@ namespace hsp.rtm
                     case "3":
                         return "";
                     default:
-                        return "Console.WriteLine(\"error\")";
+                        Error.AlertError("エラーが発生しました");
+                        return null;
                 }
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Mouse(string strings)
@@ -201,7 +204,8 @@ namespace hsp.rtm
             {
                 return "Cursor.Position = new Point(" + p[0] + ", " + p[1] + ")";
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public new static string Font(string strings)
@@ -227,7 +231,8 @@ namespace hsp.rtm
                 return "FontSize = " + p[1] + ";\n" +
                        "font = new Font(\"" + p[0] + "\", FontSize, " + p[2] + ")";
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Circle(string strings)
@@ -276,7 +281,8 @@ namespace hsp.rtm
                 return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " +
                        p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Boxf(string strings)
@@ -343,7 +349,8 @@ namespace hsp.rtm
                 return str + "FillRectangle(brush, " + p[0] + ", " + p[1] + ", " +
                        p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Line(string strings)
@@ -375,7 +382,8 @@ namespace hsp.rtm
                 return str + "DrawLine(pen, " + p[2] + ", " + p[3] + ", " + p[0] + ", " + p[1] + ");\n" +
                        "CurrentPosX = " + p[0] + ";\nCurrentPosY = " + p[1];
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
         
         public static string Cls(string strings)
@@ -402,7 +410,8 @@ namespace hsp.rtm
                 case "4":
                     return str + "FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)), 0, 0, CurrentScreenID.Width, CurrentScreenID.Height)";
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Color(string strings)
@@ -432,7 +441,8 @@ namespace hsp.rtm
                 return "brush = new SolidBrush(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "));\n" +
                        "pen = new Pen(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "))";
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Picload(string strings)
@@ -483,14 +493,16 @@ namespace hsp.rtm
                 {
                     return ""; ////
                 }
-                return "Console.WriteLine(\"error\")";
+                Error.AlertError("エラーが発生しました");
+                return null;
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Getkey(string strings)
         {
-            Analyzer.UsingCheck("using System.Runtime.InteropServices");
+            Analyzer.UsingCheck("System.Runtime.InteropServices");
 
             if (!Analyzer.ProgramField.Contains("private static extern ushort GetAsyncKeyState(int vKey);\n"))
             {
@@ -533,12 +545,13 @@ namespace hsp.rtm
                     ? "Variables[\"" + p[0] + "\"] = GetAsyncKeyState(" + p[1] + ") >> 15"
                     : p[0] + " = GetAsyncKeyState(" + p[1] + ") >> 15";
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Stick(string strings)
         {
-            Analyzer.UsingCheck("using System.Runtime.InteropServices");
+            Analyzer.UsingCheck("System.Runtime.InteropServices");
 
             if (!Analyzer.ProgramField.Contains("public int lastKey = 0;\n"))
             {
@@ -620,7 +633,8 @@ namespace hsp.rtm
                 }
                 return "Variables[\"" + p[0] + "\"] = stick(" + p[1] + ", " + p[2] + ");";
             }
-            return "Console.WriteLine(\"error\")";
+            Error.AlertError("エラーが発生しました");
+            return null;
         }
 
         public static string Objsize(string strings)
@@ -675,7 +689,8 @@ namespace hsp.rtm
                 case "33":
                     return "";
                 default:
-                    return "Console.WriteLine(\"error\")";
+                    Error.AlertError("エラーが発生しました");
+                    return null;
             }
         }
 

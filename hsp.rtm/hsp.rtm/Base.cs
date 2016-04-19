@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -29,7 +28,7 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string Exist(string filename)
         {
-            Analyzer.UsingCheck("using System.IO");
+            Analyzer.UsingCheck("System.IO");
 
             //if (Program.hspStringData.Contains("dynamic strsize = 0;"))
             //{
@@ -48,7 +47,7 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string Delete(string filename)
         {
-            Analyzer.UsingCheck("using System.IO");
+            Analyzer.UsingCheck("System.IO");
 
             filename = filename.Replace("\"", "");
             if (!File.Exists(filename))
@@ -65,7 +64,7 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string Bcopy(string strings)
         {
-            Analyzer.UsingCheck("using System.IO");
+            Analyzer.UsingCheck("System.IO");
 
             var p = strings.Split(',');
 
@@ -84,7 +83,7 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string Mkdir(string dirname)
         {
-            Analyzer.UsingCheck("using System.IO");
+            Analyzer.UsingCheck("System.IO");
 
             return "Directory.CreateDirectory(" + dirname + ")";
         }
@@ -129,7 +128,7 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string Strrep(string strings)
         {
-            Analyzer.UsingCheck("using System.Text.RegularExpressions");
+            Analyzer.UsingCheck("System.Text.RegularExpressions");
 
             var p = strings.Split(',');
 
@@ -178,7 +177,8 @@ namespace hsp.rtm
                 case 5:
                     return str + p[0] + " = new dynamic [" + p[1] + "," + p[2] + "," + p[3] + "," + p[4] + "]";
                 default:
-                    return "Console.WriteLine(\"エラー16(「パラメータの数が多すぎます」)\")";
+                    Error.AlertError("パラメータの数が多すぎます");
+                    return null;
             }
         }
 
@@ -218,7 +218,8 @@ namespace hsp.rtm
                 case 5:
                     return str + p[0] + " = new double [" + p[1] + "," + p[2] + "," + p[3] + "," + p[4] + "]";
                 default:
-                    return "Console.WriteLine(\"エラー16(「パラメータの数が多すぎます」)\")";
+                    Error.AlertError("パラメータの数が多すぎます");
+                    return null;
             }
         }
 

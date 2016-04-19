@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace hsp.rtm
 {
@@ -7,13 +8,15 @@ namespace hsp.rtm
     /// </summary>
     public static class Error
     {
+        public static List<string> ErrorMessages = new List<string>();
+
         /// <summary>
         /// HSPのようにエラー出力
         /// </summary>
         /// <param name="message"></param>
         public static void AlertError(string message)
         {
-            Console.WriteLine(message);
+            ErrorMessages.Add(message);
         }
 
         /// <summary>
@@ -22,7 +25,7 @@ namespace hsp.rtm
         /// <param name="ex"></param>
         public static void AlertError(Exception ex)
         {
-            Console.WriteLine(ex);
+            ErrorMessages.Add(ex.ToString());
         }
     }
 }

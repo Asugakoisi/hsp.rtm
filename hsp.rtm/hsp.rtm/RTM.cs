@@ -1,13 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Linq;
 using Microsoft.CSharp;
+using System.Management;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Management;
-using System.Text;
 
 namespace hsp.rtm
 {
@@ -155,6 +155,8 @@ namespace hsp.rtm
 
         public static void Execute(string base64String)
         {
+            Error.ErrorMessages = new List<string>();
+
             var str = Encoding.Default.GetString(Convert.FromBase64String(base64String));
 
             try
@@ -207,11 +209,8 @@ namespace hsp.rtm
                 //生成したコードを実行
                 var param = new CompilerParameters();
 
-                param.ReferencedAssemblies.AddRange(new[]
-                {
-                    "mscorlib.dll", "System.dll", "System.Core.dll", "Microsoft.CSharp.dll", "System.IO.dll",
-                    "System.Windows.Forms.dll", "System.Drawing.dll", "System.Linq.dll"
-                });
+                //DLLの参照を指定
+                param.ReferencedAssemblies.AddRange(Analyzer.Reference.ToArray());
 
                 //GUIアプリケーションとしてコンパイルするためのオプション
                 param.CompilerOptions = "/t:winexe";
@@ -228,7 +227,7 @@ namespace hsp.rtm
                 oldInstance = instance;
 
                 //Programのインスタンスを作成
-                instance = Activator.CreateInstance(dataType, new object[]{ Core.MainWindow , Manager.Variables, Core.DebugWindow });
+                instance = Activator.CreateInstance(dataType, new object[]{ Core.MainWindow , Manager.Variables, Core.DebugWindow});
 
                 //既に追加されているイベントを破棄
                 if (oldInstance != null)
@@ -240,12 +239,14 @@ namespace hsp.rtm
                 //リフレッシュ
                 Core.MainWindow.Refresh();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                //何かしらのエラー
                 //構文エラーとかは別途で警告出したい
-                Error.AlertError(ex);
+                Error.AlertError("コンパイルエラーが発生しました\n" +
+                                 "コードを完成させるか, 修正して下さい");
             }
+
+            Core.ErrorWindow.Refresh();
         }
     }
 }

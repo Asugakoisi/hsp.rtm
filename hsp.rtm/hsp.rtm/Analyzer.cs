@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace hsp.rtm
 {
@@ -23,8 +22,49 @@ namespace hsp.rtm
 
             for (var i = 0; i < hspArrayData.Count; i++)
             {
+                //C#としてのusing
+                /* 
+                 * System
+                 * System.Linq
+                 * System.Drawing
+                 * System.Windows.Forms
+                 * System.Collections.Generic
+                 */
+                //上記は標準でusingしているが, それ以外は@usingステートメントで定義
+                //[例] @using System.Diagnostics
+                if (hspArrayData[i].Trim().Length >= "@using".Length &&
+                    hspArrayData[i].Trim().Substring(0, "@using".Length).Equals("@using"))
+                {
+                    Using.Add(hspArrayData[i].Trim().Replace("@using", "").Replace(";", "").Trim());
+                }
+
+                //C#としてのDLLの参照
+                /*
+                 * System.dll
+                 * mscorlib.dll
+                 * System.IO.dll
+                 * System.Linq.dll
+                 * System.Core.dll
+                 * System.Drawing.dll
+                 * Microsoft.CSharp.dll
+                 * System.Windows.Forms.dll
+                 */
+                //上記のDLLは標準で参照しているが, それ以外は@refステートメントで定義
+                //DLLはパスが通るように指定すること
+                //[例] @ref Microsoft.VisualBasic.dll
+                if (hspArrayData[i].Trim().Length >= "@ref".Length &&
+                    hspArrayData[i].Trim().Substring(0, "@ref".Length).Equals("@ref"))
+                {
+                    Reference.Add(hspArrayData[i].Trim().Replace("@ref", "").Trim());
+                }
+
+                /* 
+                 * C#のコードを埋め込む場合は@csharpステートメントと@endステートメントで括る
+                 */
+
                 //C#のコードが始まる場合は変数の情報を更新
-                if (hspArrayData[i].Contains("@csharp"))
+                if (hspArrayData[i].Trim().Length >= "@csharp".Length &&
+                    hspArrayData[i].Trim().Substring(0, "@csharp".Length).Equals("@csharp"))
                 {
                     //変数を更新
                     hspArrayData[i] =
@@ -35,10 +75,12 @@ namespace hsp.rtm
                 }
 
                 //C#のコードが終了したらフラグも戻す
-                if (hspArrayData[i].Contains("@end"))
+                if (hspArrayData[i].Trim().Length >= "@end".Length &&
+                    hspArrayData[i].Trim().Substring(0, "@end".Length).Equals("@end"))
                 {
                     //変更を反映
-                    hspArrayData[i] = VariableList.Aggregate("", (current, v) => current + ("Variables[\"" + v + "\"] = " + v + ";\n"));
+                    hspArrayData[i] = VariableList.Aggregate("",
+                        (current, v) => current + ("Variables[\"" + v + "\"] = " + v + ";\n"));
                     isCSharp = false;
                     continue;
                 }
@@ -611,7 +653,7 @@ namespace hsp.rtm
             jump += "}\n";
 
             //C#のコードを完成
-            var code = Using
+            var code = string.Join("\n", Using.Select(i => "using " + i + ";"))
                        + ProgramHeader
                        + string.Join("\n", VariableList.Select(i => "public static dynamic " + i + ";").ToList())
                        + ProgramField
@@ -1110,12 +1152,29 @@ namespace hsp.rtm
             "screen_frame"
         };
 
+        //ref
+        public static List<string> Reference = new List<string>()
+        {
+            "System.dll",
+            "mscorlib.dll",
+            "System.IO.dll",
+            "System.Linq.dll",
+            "System.Core.dll",
+            "System.Drawing.dll",
+            "Microsoft.CSharp.dll",
+            "System.Windows.Forms.dll",
+        };
+
         //using
-        public static string Using = "using System;\n" +
-                                     "using System.Linq;\n" +
-                                     "using System.Drawing;\n" +
-                                     "using System.Windows.Forms;\n" +
-                                     "using System.Collections.Generic;\n";
+        public static List<string> Using = new List<string>()
+        {
+            "System",
+            "System.Linq",
+            "System.Drawing",
+            "System.Windows.Forms",
+            "System.Collections.Generic"
+        };
+
         //header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
 
@@ -1247,7 +1306,7 @@ namespace hsp.rtm
         {
             if (!Using.Contains(usingName))
             {
-                Using += usingName + ";\n";
+                Using.Add(usingName);
             }
         }
     }
