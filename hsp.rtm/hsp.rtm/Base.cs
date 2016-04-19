@@ -162,7 +162,7 @@ namespace hsp.rtm
             {
                 //変数リストに追加
                 Analyzer.ArrayVariableList.Add(p[0]);
-                str = "dynamic ";
+                str = "var ";
             }
 
             switch (p.Count())
@@ -202,7 +202,7 @@ namespace hsp.rtm
             {
                 //変数リストに追加
                 Analyzer.ArrayVariableList.Add(p[0]);
-                str = "dynamic ";
+                str = "var ";
             }
 
             switch (p.Count())

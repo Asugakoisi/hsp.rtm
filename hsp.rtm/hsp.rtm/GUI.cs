@@ -35,13 +35,21 @@ namespace hsp.rtm
                     {
                         //それ以外は変数
                         //変数はManager.Variablesを参照するように変更
-                        str[i] = "Variables[\"" + str[i] + "\"]";
+                        if (str[i].Contains("[") && str[i].Contains("]"))
+                        {
+                            //配列の場合
+                            str[i] = str[i] + ".ToString()";
+                        }
+                        else
+                        {
+                            str[i] = "Variables[\"" + str[i] + "\"]";
+                        }
                     }
                 }
             }
 
             return "g.DrawString((" + string.Join(" + ", str) + ").ToString(), font, brush, CurrentPosX, CurrentPosY);\n" +
-                   "CurrentPosY += FontSize";
+                   "CurrentPosY += FontSize*2";
         }
 
         public static string Pos(string strings)

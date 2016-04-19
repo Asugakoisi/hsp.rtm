@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace hsp.rtm
 {
@@ -36,7 +37,8 @@ namespace hsp.rtm
                 //C#のコードが終了したらフラグも戻す
                 if (hspArrayData[i].Contains("@end"))
                 {
-                    hspArrayData[i] = "";
+                    //変更を反映
+                    hspArrayData[i] = VariableList.Aggregate("", (current, v) => current + ("Variables[\"" + v + "\"] = " + v + ";\n"));
                     isCSharp = false;
                     continue;
                 }
