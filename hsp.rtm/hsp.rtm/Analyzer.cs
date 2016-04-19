@@ -17,8 +17,36 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string GenerateCode(List<string> hspArrayData)
         {
+            //C#のコードとして定義されているか
+            var isCSharp = false;
+
             for (var i = 0; i < hspArrayData.Count; i++)
             {
+                //C#のコードが始まる場合は変数の情報を更新
+                if (hspArrayData[i].Contains("@csharp"))
+                {
+                    //変数を更新
+                    hspArrayData[i] =
+                        VariableList.Aggregate("", (current, v) => current + (v + " = Variables[\"" + v + "\"];\n"));
+
+                    isCSharp = true;
+                    continue;
+                }
+
+                //C#のコードが終了したらフラグも戻す
+                if (hspArrayData[i].Contains("@end"))
+                {
+                    hspArrayData[i] = "";
+                    isCSharp = false;
+                    continue;
+                }
+
+                //C#のコードの場合は全てエスケープ
+                if (isCSharp)
+                {
+                    continue;
+                }
+
                 if (hspArrayData[i].Equals("{") || hspArrayData[i].Equals("}")) continue;
 
                 //データの整形
@@ -255,13 +283,7 @@ namespace hsp.rtm
                             int counter;
                             if (int.TryParse(repeatConditionalSentence, out counter))
                             {
-                                hspArrayData[i] = "for (cnt=0; cnt<" + counter + "; cnt++)\n{";
-
-                                //システム変数cntが定義されていない場合は定義
-                                if (!VariableDefinition.Contains("int cnt = 0;"))
-                                {
-                                    VariableDefinition += "int cnt = 0;\n";
-                                }
+                                hspArrayData[i] = "for (Variables[\"cnt\"] = 0; Variables[\"cnt\"] < " + counter + "; Variables[\"cnt\"]++)\n{";
                             }
                             else
                             {
@@ -589,12 +611,12 @@ namespace hsp.rtm
             //C#のコードを完成
             var code = Using
                        + ProgramHeader
+                       + string.Join("\n", VariableList.Select(i => "public static dynamic " + i + ";").ToList())
                        + ProgramField
                        + ProgramConstructor
                        + DebugWindowPaint
                        + SubFunction
                        + MainFunction
-                       + VariableDefinition
                        + AddMainFunction
                        + string.Join("\n", AddFunction)
                        + string.Join("\n", hspArrayData)
@@ -1094,6 +1116,7 @@ namespace hsp.rtm
                                      "using System.Collections.Generic;\n";
         //header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
+
         //field
         public static string ProgramField = "public static DateTime pre = DateTime.Now;\n" +
                                             "public static List<string> LabelList = new List<string>();\n" +
@@ -1147,8 +1170,7 @@ namespace hsp.rtm
         public static string SubFunction = "";
         //Main関数の定義
         private const string MainFunction = "\n";
-        //システム変数宣言
-        public static string VariableDefinition = "";
+
         //ウィンドウを動かすためのコードの追加
         private const string AddMainFunction = "";
         //Main関数とSub関数以外で必要な関数
