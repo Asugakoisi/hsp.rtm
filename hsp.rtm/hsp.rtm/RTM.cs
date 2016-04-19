@@ -204,11 +204,6 @@ namespace hsp.rtm
                     code = code.Replace("form0 = _form;\n", "form0 = _form;\n" + "form0.Size = new Size(640, 480);\n");
                 }
 
-                using (var sw = new StreamWriter("C:\\Users\\kkrnt\\Desktop\\code.cs", false, Encoding.UTF8))
-                {
-                    sw.WriteLine(code);
-                }
-
                 //生成したコードを実行
                 var param = new CompilerParameters();
 
