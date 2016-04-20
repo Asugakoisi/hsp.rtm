@@ -13,13 +13,6 @@ Visual Studio Codeの拡張機能として動作します
 ## Usage
 - ```Select Language Mode```から```HSP```を選択することでHSPのシンタックスハイライトが付きます
 - ```Command Palet (Ctrl + Shift + P)```から```Start hsp.rtm```を選択することでHSPのリアルタイムデバッグが行えます
-
-## Bugs
-現在認識しているバグは以下です
-- ループ中にDebug Windowが更新されない
- - gotoとwhileを用いた無限loopには対応しましたが, それ以外は未対応です
-- 複数のウィンドウの表示
- - 複数のウィンドウを表示することに対応する予定は今のところありません
  
 ## Extension Grammar
 - @using
@@ -30,8 +23,7 @@ Visual Studio Codeの拡張機能として動作します
  - @csharpという行から@endという行までC#のコードとして解釈します
 
 ```csharp
-//System.Linqはデフォルトで読み込んでいるため
-//実際には書く必要はない
+// System.Linqはデフォルトで読み込んでいるので書く必要はない
 @ref System.Linq.dll
 @using System.Linq
 
@@ -41,7 +33,7 @@ for i, 0, 10, 1
     arr(i) = i
 next
 
-//C#のコード
+// C#のコードを埋め込む
 @csharp
 arr = arr.Select(i => int.Parse(i.ToString())*3).ToArray()
 @end
@@ -52,6 +44,9 @@ next
 ```
 
 ## ETC
+- 複数ウィンドウには対応していません
+ - バグではなく, 仕様です
+   - 対応して欲しいという要望があれば考えますが, 今のところ対応する予定はありません
 - Visual Studio Code上のシンタックスハイライトはpotato4dさんのtmLanguageファイルを利用させて頂きました
  - [https://github.com/potato4d/sublime-HSP](https://github.com/potato4d/sublime-HSP)
  - MITライセンスです([https://github.com/potato4d/sublime-HSP/blob/master/LICENSE](https://github.com/potato4d/sublime-HSP/blob/master/LICENSE))
