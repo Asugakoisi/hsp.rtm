@@ -29,6 +29,23 @@ Visual Studio Codeの拡張機能として動作します
 - @csharp ~ @end
  - @csharpという行から@endという行までC#のコードとして解釈します
 
+```csharp
+@using System.Linq
+screen 0, 1000, 1000
+dim arr, 10
+for i, 0, 10, 1
+    arr(i) = i
+next
+
+@csharp
+arr = arr.Select(i => int.Parse(i.ToString())*3).ToArray()
+@end
+
+for i, 0, 10, 1
+    print arr(i)
+next
+```
+
 ## ETC
 - Visual Studio Code上のシンタックスハイライトはpotato4dさんのtmLanguageファイルを利用させて頂きました
  - [https://github.com/potato4d/sublime-HSP](https://github.com/potato4d/sublime-HSP)
