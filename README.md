@@ -30,13 +30,18 @@ Visual Studio Codeの拡張機能として動作します
  - @csharpという行から@endという行までC#のコードとして解釈します
 
 ```csharp
+//System.Linqはデフォルトで読み込んでいるため
+//実際には書く必要はない
+@ref System.Linq.dll
 @using System.Linq
+
 screen 0, 1000, 1000
 dim arr, 10
 for i, 0, 10, 1
     arr(i) = i
 next
 
+//C#のコード
 @csharp
 arr = arr.Select(i => int.Parse(i.ToString())*3).ToArray()
 @end
