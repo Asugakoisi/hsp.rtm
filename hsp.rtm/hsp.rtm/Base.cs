@@ -793,5 +793,59 @@ namespace hsp.rtm
                     break;
             }
         }
+
+
+        /*========================================
+　　　　        　プリプロセッサの定義
+       ========================================*/
+
+        public static void Const(List<string> sentence, int i)
+        {
+            if (sentence[i + 1] == "global")
+            {
+                if (sentence[i + 2] == "double")
+                {
+                    sentence[i] = "const double " + sentence[i + 3] + " = " + sentence[i + 4];
+                }
+                else
+                {
+                    double d;
+                    if (double.TryParse(sentence[i + 3], out d))
+                    {
+                        if (d - System.Math.Floor(d) != 0)
+                        {
+                            sentence[i] = "const double " + sentence[i + 2] + " = " + sentence[i + 3];
+                        }
+                        else
+                        {
+                            sentence[i] = "const int " + sentence[i + 2] + " = " + sentence[i + 3];
+                        }
+                    }
+                }
+            }
+            else if (sentence[i + 1] == "double")
+            {
+                sentence[i] = "const double " + sentence[i + 2] + " = " + sentence[i + 3];
+            }
+            else
+            {
+                double d;
+                if (double.TryParse(sentence[i + 2], out d))
+                {
+                    if (d - System.Math.Floor(d) != 0)
+                    {
+                        sentence[i] = "const double " + sentence[i + 1] + " = " + sentence[i + 2];
+                    }
+                    else
+                    {
+                        sentence[i] = "const int " + sentence[i + 1] + " = " + sentence[i + 2];
+                    }
+                }
+            }
+            for (int j = i + 1; j < sentence.Count(); j++)
+            {
+                sentence[j] = string.Empty;
+            }
+        }
     }
 }

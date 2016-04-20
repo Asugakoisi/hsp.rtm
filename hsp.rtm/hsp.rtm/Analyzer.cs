@@ -192,6 +192,9 @@ namespace hsp.rtm
                 }
                 hspArrayData[i] = string.Join(" ", str);
 
+                //プリプロセッサ処理
+                hspArrayData[i] = Preprocessor(hspArrayData[i]);
+
                 //配列処理
                 hspArrayData[i] = ArrayVariable(hspArrayData[i]);
 
@@ -317,7 +320,7 @@ namespace hsp.rtm
                                               "{\n" +
                                               "DebugWindow.Controls.Clear();\n" +
                                               "dPaint();\n" +
-                                              "pre = now\n;" +
+                                              "pre = now;\n" +
                                               "}\n";
                             break;
 
@@ -435,7 +438,7 @@ namespace hsp.rtm
                                               "{\n" +
                                               "DebugWindow.Controls.Clear();\n" +
                                               "dPaint();\n" +
-                                              "pre = now\n;" +
+                                              "pre = now;\n" +
                                               "}\n" +
                                               hspArrayData[i].Replace("*", "");
                             break;
@@ -453,7 +456,7 @@ namespace hsp.rtm
                                               "{\n" +
                                               "DebugWindow.Controls.Clear();\n" +
                                               "dPaint();\n" +
-                                              "pre = now\n;" +
+                                              "pre = now;\n" +
                                               "}\n" +
                                               "goto " + hspArrayData[i].Substring("gosub".Length).Replace("*", "") +
                                               ";\n" +
@@ -965,8 +968,7 @@ namespace hsp.rtm
 
         public static string ArrayVariable(string hspArrayString)
         {
-            hspArrayString = hspArrayString.Replace("  ", " ");
-            var sentence = hspArrayString.Split(' ').ToList();
+            var sentence = hspArrayString.Replace("  ", " ").Split(' ').ToList();
             for (var j = 0; j < sentence.Count; j++)
             {
                 sentence[j] = sentence[j].Trim();
@@ -996,6 +998,32 @@ namespace hsp.rtm
             return string.Join(" ", sentence);
         }
 
+        public static string Preprocessor(string hspArrayString)
+        {
+            //要素単位で分解するために半角スペースでスプリット
+            var sentence = hspArrayString.Replace("  ", " ").Split(' ').ToList();
+            for (var i = 0; i < sentence.Count; i++)
+            {
+                //余計なものは省く
+                sentence[i] = sentence[i].Trim();
+                if (sentence[i] == null ||
+                    sentence[i].Equals("\n") ||
+                    sentence[i].Equals(""))
+                    continue;
+                if (PreprocessorList.Contains(sentence[i]))
+                {
+                    switch (sentence[i])
+                    {
+                        case "#const":
+                            Base.Const(sentence, i);
+                            break;
+                    }
+                }
+            }
+            //結果を反映
+            return string.Join(" ", sentence);
+        }
+
         //基本文法
         public static List<string> BasicList = new List<string>()
         {
@@ -1017,6 +1045,12 @@ namespace hsp.rtm
             "goto",
             "gosub",
             "return"
+        };
+
+        //プリプロセッサリスト
+        public static List<string> PreprocessorList = new List<string>()
+        {
+            "#const"
         };
 
         //文字列を格納するリスト
