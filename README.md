@@ -1,5 +1,5 @@
 # hsp.rtm
-[![Bintray](https://img.shields.io/badge/Download-0.4.0-green.svg)](https://github.com/kkrnt/hsp.rtm/releases/download/v0.4.0/hsp.rtm_v0.4.0.zip) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)  
+[![Bintray](https://img.shields.io/badge/Download-0.4.1-green.svg)](https://github.com/kkrnt/hsp.rtm/releases/download/v0.4.1/hsp.rtm_v0.4.1.zip) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)  
 
 HSPをリアルタイムデバッグするためのプログラムです  
 Visual Studio Codeの拡張機能として動作します
@@ -20,6 +20,14 @@ Visual Studio Codeの拡張機能として動作します
  - gotoとwhileを用いた無限loopには対応しましたが, それ以外は未対応です
 - 複数のウィンドウの表示
  - 複数のウィンドウを表示することに対応する予定は今のところありません
+ 
+## Extension Grammar
+- @using
+ - C#におけるusingと同じようなことが出来ます
+- @ref
+ - C#におけるDLLの参照と同じようなことが出来ます
+- @csharp ~ @end
+ - @csharpという行から@endという行までC#のコードとして解釈します
 
 ## ETC
 - Visual Studio Code上のシンタックスハイライトはpotato4dさんのtmLanguageファイルを利用させて頂きました
