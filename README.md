@@ -8,7 +8,7 @@ Visual Studio Codeの拡張機能として動作します
 
 ## Install
 - ```install.exe```を実行し, 案内に従ってインストールを行って下さい
-- アンインストールする場合は```install.exe```に対して```remove```をコマンドライン引数として渡して実行して下さい
+- アンインストールする場合は```uninstall.exe```を実行して下さい
 
 ## Usage
 - ```Select Language Mode```から```HSP```を選択することでHSPのシンタックスハイライトが付きます
