@@ -6,10 +6,7 @@ namespace hsp.d
     {
         static void Main()
         {
-            while (true)
-            {
-                Thread.Sleep(100);
-            }
+            Thread.Sleep(60 * 60 * 1000);
         }
     }
 }
