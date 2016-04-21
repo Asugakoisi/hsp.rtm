@@ -35,14 +35,10 @@ namespace hsp.rtm
                     {
                         //それ以外は変数
                         //変数はManager.Variablesを参照するように変更
-                        if (str[i].Contains("[") && str[i].Contains("]"))
+                        if (Analyzer.ArrayVariableList.Contains(str[i]))
                         {
                             //配列の場合
                             str[i] = str[i] + ".ToString()";
-                        }
-                        else
-                        {
-                            str[i] = "Variables[\"" + str[i] + "\"]";
                         }
                     }
                 }
