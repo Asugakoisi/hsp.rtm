@@ -1,5 +1,5 @@
 # hsp.rtm
-[![Bintray](https://img.shields.io/badge/Download-0.4.1-green.svg)](https://github.com/kkrnt/hsp.rtm/releases/download/v0.4.1/hsp.rtm_v0.4.1.zip) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)  
+[![Bintray](https://img.shields.io/badge/Download-0.4.2-green.svg)](https://github.com/kkrnt/hsp.rtm/releases/download/v0.4.2/hsp.rtm_v0.4.2.zip) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)  
 
 HSPをリアルタイムデバッグするためのプログラムです  
 Visual Studio Codeの拡張機能として動作します
