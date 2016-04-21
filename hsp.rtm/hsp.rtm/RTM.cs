@@ -173,6 +173,9 @@ namespace hsp.rtm
                 //配列のリストを初期化
                 Analyzer.ArrayVariableList = new List<string>();
 
+                //ifのリストを初期化
+                Analyzer.IfFlag = new List<int>();
+
                 //全角スペースとタブを半角スペースに変換し, 改行でスプリット
                 var hspArrayData = str.Split('\n').Where(i => i.Length != 0).ToList();
 
@@ -204,6 +207,11 @@ namespace hsp.rtm
                 {
                     //含まれていない場合は追加
                     code = code.Replace("form0 = _form;\n", "form0 = _form;\n" + "form0.Size = new Size(640, 480);\n");
+                }
+
+                using (var sw = new StreamWriter("C:\\Users\\kkrnt\\Desktop\\code.cs", false, Encoding.UTF8))
+                {
+                    sw.WriteLine(code);
                 }
 
                 //生成したコードを実行

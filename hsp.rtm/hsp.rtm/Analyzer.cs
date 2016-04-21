@@ -27,6 +27,7 @@ namespace hsp.rtm
                  * System
                  * System.Linq
                  * System.Drawing
+                 * System.Diagnostics
                  * System.Windows.Forms
                  * System.Collections.Generic
                  */
@@ -314,8 +315,8 @@ namespace hsp.rtm
                         case "while":
                             var whileConditionalSentence = hspArrayData[i].Substring(spaceIndex).Trim();
                             hspArrayData[i] = "while (" + whileConditionalSentence + ")\n{\n" +
-                                              "var now = DateTime.Now;\n" +
-                                              "var span = now - pre;\n" +
+                                              "now = DateTime.Now;\n" +
+                                              "span = now - pre;\n" +
                                               "if((span.Minutes*60 + span.Seconds) * 1000 + span.Milliseconds > 500)\n" +
                                               "{\n" +
                                               "DebugWindow.Controls.Clear();\n" +
@@ -432,8 +433,8 @@ namespace hsp.rtm
 
                         //gotoの処理
                         case "goto":
-                            hspArrayData[i] = "var now = DateTime.Now;\n" +
-                                              "var span = now - pre;\n" +
+                            hspArrayData[i] = "now = DateTime.Now;\n" +
+                                              "span = now - pre;\n" +
                                               "if((span.Minutes*60 + span.Seconds) * 1000 + span.Milliseconds > 500)\n" +
                                               "{\n" +
                                               "DebugWindow.Controls.Clear();\n" +
@@ -450,8 +451,8 @@ namespace hsp.rtm
                                 LabelList.Add(label);
                             }
                             hspArrayData[i] = "LabelList.Add(\"" + label + "\");\n" +
-                                              "var now = DateTime.Now;\n" +
-                                              "var span = now - pre;\n" +
+                                              "now = DateTime.Now;\n" +
+                                              "span = now - pre;\n" +
                                               "if((span.Minutes*60 + span.Seconds) * 1000 + span.Milliseconds > 500)\n" +
                                               "{\n" +
                                               "DebugWindow.Controls.Clear();\n" +
@@ -573,15 +574,6 @@ namespace hsp.rtm
                             hspArrayData[i] = GUI.Dialog(commandArguments);
                             break;
                     }
-
-                    //if文の後処理
-                    if (IfFlag.Count > 0)
-                    {
-                        foreach (var t in IfFlag.Where(t => t == i))
-                        {
-                            hspArrayData[i] += "\n}";
-                        }
-                    }
                 }
 
                 //基本文法でもコマンドでもないものは変数
@@ -643,17 +635,25 @@ namespace hsp.rtm
                 }
             }
 
-            //ラベルのジャンプ台を生成する
-            var jump = "\nmulti:\n" +
-                       "switch(LabelList[0])\n" +
-                       "{";
-            for (var i = 0; i < LabelList.Count; i++)
+            //if文の後処理
+            foreach (var f in IfFlag)
             {
-                jump += "case \"" + LabelList[i] + "\":\n" +
-                        "LabelList.RemoveAt(LabelList.Count - 1);\n" +
-                        "goto " + LabelList[i] + ";\n";
+                hspArrayData[f] += "\n}\n";
             }
-            jump += "}\n";
+
+            //ラベルのジャンプ台を生成する
+            var jump =
+                LabelList.Aggregate("\nmulti:\n" + "switch(LabelList[0])\n" + "{",
+                    (current, t) =>
+                        current +
+                        ("case \"" +
+                         t +
+                         "\":\n" +
+                         "LabelList.RemoveAt(LabelList.Count - 1);\n" +
+                         "goto " +
+                         t +
+                         ";\n")) +
+                "}\n";
 
             //C#のコードを完成
             var code = string.Join("\n", Using.Select(i => "using " + i + ";"))
@@ -1205,6 +1205,7 @@ namespace hsp.rtm
             "System",
             "System.Linq",
             "System.Drawing",
+            "System.Diagnostics",
             "System.Windows.Forms",
             "System.Collections.Generic"
         };
@@ -1214,6 +1215,9 @@ namespace hsp.rtm
 
         //field
         public static string ProgramField = "public static DateTime pre = DateTime.Now;\n" +
+                                            "public static DateTime now;\n" +
+                                            "public static TimeSpan span;\n" +
+                                            "public static Process[] ps;\n" +
                                             "public static List<string> LabelList = new List<string>();\n" +
                                             "public Form form0;\n" +
                                             "public Form CurrentScreenID;\n" +
@@ -1307,7 +1311,7 @@ namespace hsp.rtm
                                             "}";
 
         //if文の末尾に"}"を付けるためのフラグ
-        private static readonly List<int> IfFlag = new List<int>();
+        public static List<int> IfFlag = new List<int>();
 
         //コメントをエスケープするためのフラグ
         public static bool CommentFlag = false;
