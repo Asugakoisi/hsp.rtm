@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsp.rtm", "hsp.rtm\hsp.rtm.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsp.watcher", "hsp.watcher\hsp.watcher.csproj", "{8E9362DD-E3EB-453C-B6BE-D1C5E4016818}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsp.d", "hsp.d\hsp.d.csproj", "{4CC937EF-80FD-4078-88EE-C4DA47A5CE1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8E9362DD-E3EB-453C-B6BE-D1C5E4016818}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E9362DD-E3EB-453C-B6BE-D1C5E4016818}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E9362DD-E3EB-453C-B6BE-D1C5E4016818}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CC937EF-80FD-4078-88EE-C4DA47A5CE1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CC937EF-80FD-4078-88EE-C4DA47A5CE1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CC937EF-80FD-4078-88EE-C4DA47A5CE1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CC937EF-80FD-4078-88EE-C4DA47A5CE1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

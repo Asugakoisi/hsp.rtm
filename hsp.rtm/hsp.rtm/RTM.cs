@@ -155,6 +155,27 @@ namespace hsp.rtm
 
         public static void Execute(string base64String)
         {
+            var ps = Process.GetProcessesByName("hsp.d");
+            if (ps.Length > 0)
+            {
+                if (ps.Length == 1)
+                {
+                    ps[0].Kill();
+                }else if (ps.Length > 1)
+                {
+                    var list = ps.Select(p => p.StartTime).ToList();
+                    list.Sort();
+                    foreach (var p in ps)
+                    {
+                        if (list.First() == p.StartTime)
+                        {
+                            p.Kill();
+                            return;
+                        }
+                    }
+                }
+            }
+
             Error.ErrorMessages = new List<string>();
 
             var str = Encoding.Default.GetString(Convert.FromBase64String(base64String));

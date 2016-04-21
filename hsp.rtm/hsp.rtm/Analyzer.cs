@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace hsp.rtm
 {
@@ -315,6 +316,20 @@ namespace hsp.rtm
                         case "while":
                             var whileConditionalSentence = hspArrayData[i].Substring(spaceIndex).Trim();
                             hspArrayData[i] = "while (" + whileConditionalSentence + ")\n{\n" +
+                                              "ps = Process.GetProcessesByName(\"hsp.d\");\n" +
+                                              "if (ps.Length > 0)\n" +
+                                              "{\n" +
+                                              "    var list = ps.Select(p => p.StartTime).ToList();\n" +
+                                              "    list.Sort();\n" +
+                                              "    foreach (var p in ps)\n" +
+                                              "    {\n" +
+                                              "        if (list.First() == p.StartTime)\n" +
+                                              "        {\n" +
+                                              "            p.Kill();\n" +
+                                              "            return;\n" +
+                                              "        }\n" +
+                                              "    }\n" +
+                                              "}\n" +
                                               "now = DateTime.Now;\n" +
                                               "span = now - pre;\n" +
                                               "if((span.Minutes*60 + span.Seconds) * 1000 + span.Milliseconds > 500)\n" +
@@ -433,7 +448,21 @@ namespace hsp.rtm
 
                         //gotoの処理
                         case "goto":
-                            hspArrayData[i] = "now = DateTime.Now;\n" +
+                            hspArrayData[i] = "ps = Process.GetProcessesByName(\"hsp.d\");\n" +
+                                              "if (ps.Length > 0)\n" +
+                                              "{\n" +
+                                              "    var list = ps.Select(p => p.StartTime).ToList();\n" +
+                                              "    list.Sort();\n" +
+                                              "    foreach (var p in ps)\n" +
+                                              "    {\n" +
+                                              "        if (list.First() == p.StartTime)\n" +
+                                              "        {\n" +
+                                              "            p.Kill();\n" +
+                                              "            return;\n" +
+                                              "        }\n" +
+                                              "    }\n" +
+                                              "}\n" + 
+                                              "now = DateTime.Now;\n" +
                                               "span = now - pre;\n" +
                                               "if((span.Minutes*60 + span.Seconds) * 1000 + span.Milliseconds > 500)\n" +
                                               "{\n" +
@@ -450,7 +479,22 @@ namespace hsp.rtm
                             {
                                 LabelList.Add(label);
                             }
-                            hspArrayData[i] = "LabelList.Add(\"" + label + "\");\n" +
+
+                            hspArrayData[i] = "ps = Process.GetProcessesByName(\"hsp.d\");\n" +
+                                              "if (ps.Length > 0)\n" +
+                                              "{\n" +
+                                              "    var list = ps.Select(p => p.StartTime).ToList();\n" +
+                                              "    list.Sort();\n" +
+                                              "    foreach (var p in ps)\n" +
+                                              "    {\n" +
+                                              "        if (list.First() == p.StartTime)\n" +
+                                              "        {\n" +
+                                              "            p.Kill();\n" +
+                                              "            return;\n" +
+                                              "        }\n" +
+                                              "    }\n" +
+                                              "}\n" +
+                                              "LabelList.Add(\"" + label + "\");\n" +
                                               "now = DateTime.Now;\n" +
                                               "span = now - pre;\n" +
                                               "if((span.Minutes*60 + span.Seconds) * 1000 + span.Milliseconds > 500)\n" +

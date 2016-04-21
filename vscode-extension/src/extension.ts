@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
         
         var spawn = require('child_process').spawn;
 
-        ipc = spawn(process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "\\.vscode\\extensions\\hsp-rtm\\hsp.watcher.exe");
+        ipc = spawn(process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "/.vscode/extensions/hsp-rtm/bin/hsp.watcher.exe");
         ipc.stdin.setEncoding("utf8");
     });
 
@@ -52,6 +52,9 @@ export default class DocumentWatcher implements vscode.Disposable {
     onTextDocumentChanged(arg: vscode.TextDocumentChangeEvent){
         const self = this;
         if (!self._isEnabled) return;
+        
+        var spawn = require('child_process').spawn;
+        var daemon = spawn(process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "/.vscode/extensions/hsp-rtm/bin/hsp.d.exe");
         
         var code = arg.document.getText();
         var buffer = new Buffer(code, 'utf8');
