@@ -177,6 +177,8 @@ namespace hsp.rtm
             }
 
             Error.ErrorMessages = new List<string>();
+            //更新しておいたほうが良さそうじゃない？
+            Core.ErrorWindow.Refresh();
 
             var str = Encoding.Default.GetString(Convert.FromBase64String(base64String));
 
@@ -202,6 +204,8 @@ namespace hsp.rtm
 
                 //HSPのコードをC#のコードに変換
                 var code = Analyzer.GenerateCode(hspArrayData);
+                //ここでも一応更新しておく
+                Core.ErrorWindow.Refresh();
 
                 //更新された変数リストをもとに, Manager.Variablesを更新する
                 foreach (var variableName in Manager.Variables.Keys.ToList())
