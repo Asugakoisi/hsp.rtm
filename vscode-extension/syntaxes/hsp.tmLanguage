@@ -52,6 +52,30 @@
 		</dict>
 		<dict>
 			<key>match</key>
+			<string>@using</string>
+			<key>name</key>
+			<string>keyword.hsp</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>@ref</string>
+			<key>name</key>
+			<string>keyword.hsp</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>@csharp</string>
+			<key>name</key>
+			<string>keyword.hsp</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>@end</string>
+			<key>name</key>
+			<string>keyword.hsp</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>comevdisp</string>
 			<key>name</key>
 			<string>keyword.hsp</string>

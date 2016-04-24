@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace hsp.rtm
 {
@@ -34,8 +33,7 @@ namespace hsp.rtm
                  */
                 //上記は標準でusingしているが, それ以外は@usingステートメントで定義
                 //[例] @using System.Diagnostics
-                if (hspArrayData[i].Trim().Length >= "@using".Length &&
-                    hspArrayData[i].Trim().Substring(0, "@using".Length).Equals("@using"))
+                if (hspArrayData[i].Trim().StartsWith("@using"))
                 {
                     Using.Add(hspArrayData[i].Trim().Replace("@using", "").Replace(";", "").Trim());
                 }
@@ -54,8 +52,7 @@ namespace hsp.rtm
                 //上記のDLLは標準で参照しているが, それ以外は@refステートメントで定義
                 //DLLはパスが通るように指定すること
                 //[例] @ref Microsoft.VisualBasic.dll
-                if (hspArrayData[i].Trim().Length >= "@ref".Length &&
-                    hspArrayData[i].Trim().Substring(0, "@ref".Length).Equals("@ref"))
+                if (hspArrayData[i].Trim().StartsWith("@ref"))
                 {
                     Reference.Add(hspArrayData[i].Trim().Replace("@ref", "").Trim());
                 }
@@ -65,8 +62,7 @@ namespace hsp.rtm
                  */
 
                 //C#のコードが始まる場合は変数の情報を更新
-                if (hspArrayData[i].Trim().Length >= "@csharp".Length &&
-                    hspArrayData[i].Trim().Substring(0, "@csharp".Length).Equals("@csharp"))
+                if (hspArrayData[i].Trim().StartsWith("@csharp"))
                 {
                     //変数を更新
                     hspArrayData[i] =
@@ -77,8 +73,7 @@ namespace hsp.rtm
                 }
 
                 //C#のコードが終了したらフラグも戻す
-                if (hspArrayData[i].Trim().Length >= "@end".Length &&
-                    hspArrayData[i].Trim().Substring(0, "@end".Length).Equals("@end"))
+                if (hspArrayData[i].Trim().StartsWith("@end"))
                 {
                     //変更を反映
                     hspArrayData[i] = VariableList.Aggregate("",
