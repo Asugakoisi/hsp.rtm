@@ -7,7 +7,7 @@ namespace hsp.rtm
 {
     public static class Analyzer
     {
-        //ラベルからジャンプ台を生成するためのリスト
+        // ラベルからジャンプ台を生成するためのリスト
         public static List<string> LabelList = new List<string>();
 
         /// <summary>
@@ -18,11 +18,11 @@ namespace hsp.rtm
         public static string GenerateCode(List<string> hspArrayData)
         {
             //C#のコードとして定義されているか
-            var isCSharp = false;
+            bool isCSharp = false;
 
             for (var i = 0; i < hspArrayData.Count; i++)
             {
-                //C#としてのusing
+                // C#としてのusing
                 /* 
                  * System
                  * System.Linq
@@ -31,14 +31,16 @@ namespace hsp.rtm
                  * System.Windows.Forms
                  * System.Collections.Generic
                  */
-                //上記は標準でusingしているが, それ以外は@usingステートメントで定義
-                //[例] @using System.Diagnostics
+                // 上記は標準でusingしているが, それ以外は@usingステートメントで定義
+                // [例] @using System.Diagnostics
                 if (hspArrayData[i].Trim().StartsWith("@using"))
                 {
                     Using.Add(hspArrayData[i].Trim().Replace("@using", "").Replace(";", "").Trim());
+                    hspArrayData[i] = "";
+                    continue;
                 }
 
-                //C#としてのDLLの参照
+                // C#としてのDLLの参照
                 /*
                  * System.dll
                  * mscorlib.dll
@@ -49,22 +51,24 @@ namespace hsp.rtm
                  * Microsoft.CSharp.dll
                  * System.Windows.Forms.dll
                  */
-                //上記のDLLは標準で参照しているが, それ以外は@refステートメントで定義
-                //DLLはパスが通るように指定すること
-                //[例] @ref Microsoft.VisualBasic.dll
+                // 上記のDLLは標準で参照しているが, それ以外は@refステートメントで定義
+                // DLLはパスが通るように指定すること
+                // [例] @ref Microsoft.VisualBasic.dll
                 if (hspArrayData[i].Trim().StartsWith("@ref"))
                 {
                     Reference.Add(hspArrayData[i].Trim().Replace("@ref", "").Trim());
+                    hspArrayData[i] = "";
+                    continue;
                 }
 
                 /* 
                  * C#のコードを埋め込む場合は@csharpステートメントと@endステートメントで括る
                  */
 
-                //C#のコードが始まる場合は変数の情報を更新
+                // C#のコードが始まる場合は変数の情報を更新
                 if (hspArrayData[i].Trim().StartsWith("@csharp"))
                 {
-                    //変数を更新
+                    // 変数を更新
                     hspArrayData[i] =
                         VariableList.Aggregate("", (current, v) => current + (v + " = Variables[\"" + v + "\"];\n"));
 
@@ -72,26 +76,28 @@ namespace hsp.rtm
                     continue;
                 }
 
-                //C#のコードが終了したらフラグも戻す
+                // C#のコードが終了したらフラグも戻す
                 if (hspArrayData[i].Trim().StartsWith("@end"))
                 {
-                    //変更を反映
+                    // 変更を反映
                     hspArrayData[i] = VariableList.Aggregate("",
                         (current, v) => current + ("Variables[\"" + v + "\"] = " + v + ";\n"));
+
                     isCSharp = false;
                     continue;
                 }
 
-                //C#のコードの場合は全てエスケープ
+                // C#のコードの場合は全てエスケープ
                 if (isCSharp)
                 {
                     continue;
                 }
 
+                // if文等の{}だけの行はスキップ
                 if (hspArrayData[i].Equals("{") || hspArrayData[i].Equals("}")) continue;
 
-                //データの整形
-                //前後の空白文字を削除
+                // データの整形
+                // 前後の空白文字を削除
                 hspArrayData[i] = hspArrayData[i].Trim();
 
                 if (hspArrayData[i].Equals(""))
@@ -99,24 +105,24 @@ namespace hsp.rtm
                     continue;
                 }
 
-                //直前にエスケープのないダブルクオーテーションが存在した場合
-                //文字列部分をStringListに格納し
-                //その部分を＠＋＠StringListのindex＠ー＠で置換する
-                //Example: hoge = "fu" + "ga"
-                //         hoge = ＠＋＠0＠ー＠ + ＠＋＠1＠ー＠
-                //StringListには"fu"と"ga"が格納される
-                //このときダブルクオーテーションも含まれているので注意
+                // 直前にエスケープのないダブルクオーテーションが存在した場合
+                // 文字列部分をStringListに格納し
+                // その部分を＠＋＠StringListのindex＠ー＠で置換する
+                // Example: hoge = "fu" + "ga"
+                //          hoge = ＠＋＠0＠ー＠ + ＠＋＠1＠ー＠
+                // StringListには"fu"と"ga"が格納される
+                // このときダブルクオーテーションも含まれているので注意
                 hspArrayData[i] = StringEscape(hspArrayData[i]);
 
-                //コメントを取り除く
-                var commentOutIndex = hspArrayData[i].IndexOf("//", StringComparison.Ordinal);
+                // //によるコメントはスキップ
+                var commentOutIndex = hspArrayData[i].IndexOf("//");
                 if (commentOutIndex > -1)
                 {
                     continue;
                 }
 
-                //スラッシュとアスタリスクによるコメントアウトをエスケープする
-                commentOutIndex = hspArrayData[i].IndexOf("/*", StringComparison.Ordinal);
+                // /* ... */によるコメントアウトをエスケープする
+                commentOutIndex = hspArrayData[i].IndexOf("/*");
                 if (commentOutIndex > -1)
                 {
                     hspArrayData[i] = hspArrayData[i].Substring(0, commentOutIndex).Trim();
@@ -124,7 +130,7 @@ namespace hsp.rtm
                 }
                 if (CommentFlag)
                 {
-                    commentOutIndex = hspArrayData[i].IndexOf("*/", StringComparison.Ordinal);
+                    commentOutIndex = hspArrayData[i].IndexOf("*/");
                     if (commentOutIndex > -1)
                     {
                         hspArrayData[i] = hspArrayData[i].Substring(commentOutIndex + "*/".Length).Trim();
@@ -142,10 +148,10 @@ namespace hsp.rtm
                 }
 
                 hspArrayData[i] = hspArrayData[i]
-                    //データ中の空白文字を全て半角スペースに変換
+                    // データ中の空白文字を全て半角スペースに変換
                     .Replace('　', ' ')
                     .Replace('\t', ' ')
-                    //関数部分で正確にスプリットするために()の直前後に半角スペースを追加
+                    // 関数部分で正確にスプリットするために()の直前後に半角スペースを追加
                     .Replace("(", " ( ")
                     .Replace(")", " ) ")
                     .Replace("=", " = ")
@@ -154,7 +160,7 @@ namespace hsp.rtm
                     .Replace("*", " * ")
                     .Replace("/", " / ")
                     .Replace(",", " , ")
-                    //連続する演算子を修正
+                    // 連続する演算子を修正
                     .Replace("=  =", "==")
                     .Replace("!  =", "!=")
                     .Replace("+  =", "+=")
@@ -166,19 +172,20 @@ namespace hsp.rtm
                     .Replace("\\  =", "\\=")
                     .Trim();
 
-                //ラベルの定義
-                if (hspArrayData[i][0] == '*')
+                // ラベルの定義
+                // HSPだと*で定義するが, C#は:なので置換
+                if (hspArrayData[i].StartsWith("*"))
                 {
                     hspArrayData[i] = hspArrayData[i].Substring(1).Trim() + ":";
                 }
 
-                //１番最初のsentenceを抜き出す
-                var spaceIndex = hspArrayData[i].IndexOf(" ", StringComparison.OrdinalIgnoreCase);
+                // １番最初のsentenceを抜き出す
+                var spaceIndex = hspArrayData[i].IndexOf(" ");
                 var firstSentence = spaceIndex < 0
                     ? hspArrayData[i].Trim()
                     : hspArrayData[i].Substring(0, spaceIndex).Trim();
 
-                //変数の処理
+                // 変数の処理
                 var str = hspArrayData[i].Split(' ').Select(j => j.Trim()).ToList();
                 for (var j = 0; j < str.Count; j++)
                 {
@@ -189,37 +196,37 @@ namespace hsp.rtm
                 }
                 hspArrayData[i] = string.Join(" ", str);
 
-                //プリプロセッサ処理
+                // プリプロセッサ処理
                 hspArrayData[i] = Preprocessor(hspArrayData[i]);
 
-                //配列処理
+                // 配列処理
                 hspArrayData[i] = ArrayVariable(hspArrayData[i]);
 
-                //マクロ処理
+                // マクロ処理
                 hspArrayData[i] = Macro(hspArrayData[i]);
 
-                //関数処理
+                // 関数処理
                 hspArrayData[i] = Function(hspArrayData[i]);
 
-                //基本文法の処理
+                // 基本文法の処理
                 if (BasicList.Contains(firstSentence))
                 {
                     switch (firstSentence)
                     {
-                        //if文の処理
+                        // if文の処理
                         case "if":
-                            //"{}"を使って複数行で書かれている場合
-                            //必ず文中に"{"が入っている
-                            var bracketIndex = hspArrayData[i].IndexOf("{", StringComparison.Ordinal);
+                            // "{}"を使って複数行で書かれている場合
+                            // 必ず文中に"{"が入っている
+                            var bracketIndex = hspArrayData[i].IndexOf("{");
                             if (bracketIndex < 0)
                             {
-                                //処理が1行で書かれている場合
-                                //ifと条件文の間に"()"を入れる
-                                var coronIndex = hspArrayData[i].IndexOf(":", StringComparison.Ordinal);
+                                // 処理が1行で書かれている場合
+                                // ifと条件文の間に"()"を入れる
+                                var coronIndex = hspArrayData[i].IndexOf(":");
                                 if (coronIndex < 0)
                                 {
-                                    //条件文の後に処理が書かれていないため無効な文
-                                    //エラーとして吐き出すよりも警告として表示したほうが良い？
+                                    // 条件文の後に処理が書かれていないため無効な文
+                                    // エラーとして吐き出すよりも警告として表示したほうが良い？
                                     Error.AlertError("条件文の後に実行すべき処理が書かれていません");
                                 }
                                 else
@@ -230,7 +237,7 @@ namespace hsp.rtm
                                                           coronIndex - "if ".Length - 1) +
                                                       ")\n{";
 
-                                    //":"以降をhspArrayDataにInsertする
+                                    // ":"以降をhspArrayDataにInsertする
                                     var tmpArray = tmpString.Split(':');
                                     var index = i + 1;
                                     if (tmpArray.Length > 0)
@@ -242,21 +249,21 @@ namespace hsp.rtm
                                         }
                                     }
 
-                                    //末尾に"}"を付けるためのフラグ
+                                    // 末尾に"}"を付けるためのフラグ
                                     IfFlag.Add(index);
                                 }
                             }
                             else
                             {
-                                //複数行の処理
+                                // 複数行の処理
                                 hspArrayData[i] = "if (" +
                                                   hspArrayData[i].Substring("if ".Length,
                                                       bracketIndex - "if ".Length - 1) + ")\n" +
                                                   hspArrayData[i].Substring(bracketIndex);
                             }
 
-                            //if文の条件における"="の好意的解釈
-                            //"="が1つでも"=="として扱う
+                            // if文の条件における"="の好意的解釈
+                            // "="が1つでも"=="として扱う
                             hspArrayData[i] = hspArrayData[i]
                                 .Replace(" ", "")
                                 .Replace("=", "==")
@@ -271,18 +278,18 @@ namespace hsp.rtm
 
                             break;
 
-                        //elseの処理
+                        // elseの処理
                         case "else":
                             hspArrayData[i] = "}\n else \n{";
                             break;
 
-                        //forの処理
+                        // forの処理
                         case "for":
                             var forConditionalSentence =
                                 hspArrayData[i].Substring(spaceIndex).Split(',').Select(_ => _.Trim()).ToList();
                             if (forConditionalSentence.Count() != 4)
                             {
-                                //要素数がオカシイのでエラー
+                                // 要素数がオカシイのでエラー
                                 Error.AlertError("for文の要素数が不正です\n" +
                                                  "現在の要素数 = " + forConditionalSentence.Count);
                             }
@@ -297,17 +304,17 @@ namespace hsp.rtm
                             }
                             break;
 
-                        //breakの処理
+                        // breakの処理
                         case "_break":
                             hspArrayData[i] = "break";
                             break;
 
-                        //continueの処理
+                        // continueの処理
                         case "_continue":
                             hspArrayData[i] = "continue";
                             break;
 
-                        //whileの処理
+                        // whileの処理
                         case "while":
                             var whileConditionalSentence = hspArrayData[i].Substring(spaceIndex).Trim();
                             hspArrayData[i] = "while (" + whileConditionalSentence + ")\n{\n" +
@@ -335,7 +342,7 @@ namespace hsp.rtm
                                               "}\n";
                             break;
 
-                        //repeatの処理
+                        // repeatの処理
                         case "repeat":
                             var repeatConditionalSentence = hspArrayData[i].Substring(spaceIndex).Trim();
                             int counter;
@@ -345,17 +352,17 @@ namespace hsp.rtm
                             }
                             else
                             {
-                                //repeatに渡されている値が数字ではないのでエラー
+                                // repeatに渡されている値が数字ではないのでエラー
                                 Error.AlertError("repeatに渡されている値(" + repeatConditionalSentence + ")は数字ではありません");
                             }
                             break;
 
-                        //switchの処理
+                        // switchの処理
                         case "switch":
-                            var switchSpaceIndex = hspArrayData[i].IndexOf(" ", StringComparison.Ordinal);
+                            var switchSpaceIndex = hspArrayData[i].IndexOf(" ");
                             if (switchSpaceIndex < 0)
                             {
-                                //switchの条件文としてオカシイのでエラー
+                                // switchの条件文としてオカシイのでエラー
                                 Error.AlertError("switch文の条件文が書かれていません");
                             }
                             else
@@ -368,44 +375,44 @@ namespace hsp.rtm
                             _switchFlag = true;
                             break;
                         case "swend":
-                            //1つ目の要素はswitch文なので取り除く
+                            // 1つ目の要素はswitch文なので取り除く
                             SwitchList.RemoveAt(0);
 
-                            for (var j = 0; j < SwitchList.Count; j++)
+                            foreach (var s in SwitchList)
                             {
-                                if (hspArrayData[SwitchList[j]].Equals("default:"))
+                                if (hspArrayData[s].Equals("default:"))
                                 {
-                                    if (!hspArrayData[SwitchList[j] - 1].Contains("break;"))
+                                    if (!hspArrayData[s - 1].Contains("break;"))
                                     {
                                         var defaultString = "";
-                                        for (var k = SwitchList[j] + 1; k < SwitchList[SwitchList.Count - 1]; k++)
+                                        for (var k = s + 1; k < SwitchList[SwitchList.Count - 1]; k++)
                                         {
                                             defaultString += hspArrayData[k] + "\nbreak;";
                                         }
-                                        hspArrayData[SwitchList[j] - 1] += defaultString;
+                                        hspArrayData[s - 1] += defaultString;
                                     }
                                 }
 
-                                var endIndex = hspArrayData[SwitchList[j]].IndexOf(" ", StringComparison.Ordinal);
+                                var endIndex = hspArrayData[s].IndexOf(" ");
                                 if (endIndex < 0)
                                 {
                                     //
                                 }
                                 else
                                 {
-                                    var caseName = hspArrayData[SwitchList[j]].Substring(endIndex).Trim();
-                                    var first = hspArrayData[SwitchList[j]].Substring(0, endIndex).Trim();
+                                    var caseName = hspArrayData[s].Substring(endIndex).Trim();
+                                    var first = hspArrayData[s].Substring(0, endIndex).Trim();
                                     if (_firstCase)
                                     {
                                         _firstCase = false;
                                     }
                                     else if (first.Equals("case"))
                                     {
-                                        if (!hspArrayData[SwitchList[j] - 1].Contains("break;"))
+                                        if (!hspArrayData[s - 1].Contains("break;"))
                                         {
-                                            hspArrayData[SwitchList[j] - 1] += "\ngoto case " +
-                                                                               caseName.Substring(0, caseName.Length - 1) +
-                                                                               ";";
+                                            hspArrayData[s - 1] += "\ngoto case " +
+                                                                   caseName.Substring(0, caseName.Length - 1) +
+                                                                   ";";
                                         }
                                     }
                                 }
@@ -418,10 +425,10 @@ namespace hsp.rtm
                             hspArrayData[i] = "break;";
                             break;
                         case "case":
-                            var caseSpaceIndex = hspArrayData[i].IndexOf(" ", StringComparison.Ordinal);
+                            var caseSpaceIndex = hspArrayData[i].IndexOf(" ");
                             if (caseSpaceIndex < 0)
                             {
-                                //case文の値が不正なのでエラー
+                                // case文の値が不正なのでエラー
                                 Error.AlertError("case文の値が不正です");
                             }
                             else
@@ -434,14 +441,14 @@ namespace hsp.rtm
                             hspArrayData[i] += ":";
                             break;
 
-                        //色々な後処理
+                        // 色々な後処理
                         case "next":
                         case "wend":
                         case "loop":
                             hspArrayData[i] = "}";
                             break;
 
-                        //gotoの処理
+                        // gotoの処理
                         case "goto":
                             hspArrayData[i] = "ps = Process.GetProcessesByName(\"hsp.d\");\n" +
                                               "if (ps.Length > 0)\n" +
@@ -505,11 +512,11 @@ namespace hsp.rtm
                     }
                 }
 
-                //コマンド処理
-                //sentenceがコマンドかどうか
+                // コマンド処理
+                // sentenceがコマンドかどうか
                 else if (CommandList.Contains(firstSentence))
                 {
-                    //コマンドの引数部分を取得
+                    // コマンドの引数部分を取得
                     var commandArguments = "";
                     if (spaceIndex > -1)
                     {
@@ -615,29 +622,29 @@ namespace hsp.rtm
                     }
                 }
 
-                //基本文法でもコマンドでもないものは変数
+                // 基本文法でもコマンドでもないものは変数
                 else if (!BasicList.Contains(firstSentence) && !FunctionList.Contains(firstSentence) &&
                          hspArrayData[i][hspArrayData[i].Length - 1] != ':')
                 {
-                    //変数名として正しいか
+                    // 変数名として正しいか
                     if (VariableNameRule.Contains(firstSentence[0]))
                     {
-                        //変数名ではない
+                        // 変数名ではない
                     }
                     else
                     {
-                        //変数リストに含まれていない場合
+                        // 変数リストに含まれていない場合
                         if (!VariableList.Contains(firstSentence) && !ArrayVariableList.Contains(firstSentence))
                         {
-                            //変数宣言
+                            // 変数宣言
                             hspArrayData[i] = "Variables[\"" + firstSentence + "\"]" + hspArrayData[i].Substring(spaceIndex);
-                            //変数リストに追加
+                            // 変数リストに追加
                             VariableList.Add(firstSentence);
                         }
                     }
                 }
 
-                //HSPではmodを￥で表記するので%に置換
+                // HSPではmodを￥で表記するので%に置換
                 hspArrayData[i] = hspArrayData[i].Replace("\\", "%");
 
                 if (_switchFlag)
@@ -646,7 +653,7 @@ namespace hsp.rtm
                 }
             }
 
-            //returnの処理
+            // returnの処理
             for (var i = 0; i < hspArrayData.Count; i++)
             {
                 if (hspArrayData[i].Equals("return"))
@@ -655,32 +662,36 @@ namespace hsp.rtm
                 }
             }
 
-            //文字列をアンエスケープ
+            // 文字列をアンエスケープ
             for (var i = 0; i < hspArrayData.Count; i++)
             {
                 hspArrayData[i] = StringUnEscape(hspArrayData[i]);
             }
 
-            //各行の末尾にセミコロンを追加
+            // 各行の末尾にセミコロンを追加
             for (var i = 0; i < hspArrayData.Count; i++)
             {
-                if (hspArrayData[i].Equals("") || hspArrayData[i].Equals("{") || hspArrayData[i].Equals("}") ||
-                    hspArrayData[i][hspArrayData[i].Length - 1].Equals(':')) continue;
+                hspArrayData[i] = hspArrayData[i].Trim();
+                if (hspArrayData[i].Equals("") ||
+                    hspArrayData[i].Equals("{") ||
+                    hspArrayData[i].Equals("}") ||
+                    hspArrayData[i].EndsWith("{") ||
+                    hspArrayData[i].EndsWith("}") ||
+                    hspArrayData[i].EndsWith(":"))
+                    continue;
 
                 if (hspArrayData[i][hspArrayData[i].Length - 1] != '{' &&
                     hspArrayData[i][hspArrayData[i].Length - 1] != ';')
-                {
                     hspArrayData[i] += ';';
-                }
             }
 
-            //if文の後処理
+            // if文の後処理
             foreach (var f in IfFlag)
             {
                 hspArrayData[f] += "\n}\n";
             }
 
-            //ラベルのジャンプ台を生成する
+            // ラベルのジャンプ台を生成する
             var jump =
                 LabelList.Aggregate("\nmulti:\n" + "switch(LabelList[0])\n" + "{",
                     (current, t) =>
@@ -694,7 +705,7 @@ namespace hsp.rtm
                          ";\n")) +
                 "}\n";
 
-            //C#のコードを完成
+            // C#のコードを完成
             var code = string.Join("\n", Using.Select(i => "using " + i + ";"))
                        + ProgramHeader
                        + string.Join("\n", VariableList.Select(i => "public static dynamic " + i + ";").ToList())
@@ -713,19 +724,19 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     コード中の""で括られた文字列をエスケープ
+        /// コード中の""で括られた文字列をエスケープ
         /// </summary>
-        /// <param name="hspArrayString"></param>
-        /// <returns></returns>
+        /// <param name="hspArrayString">エスケープ前の文字列</param>
+        /// <returns>エスケープ後の文字列</returns>
         public static string StringEscape(string hspArrayString)
         {
             var hspStringData = hspArrayString;
             while (true)
             {
-                var preIndex = hspArrayString.IndexOf("\"", StringComparison.OrdinalIgnoreCase);
+                var preIndex = hspArrayString.IndexOf("\"");
                 if (preIndex == -1 || hspArrayString[preIndex - 1] == '\\') break;
                 var x = hspArrayString.Substring(preIndex + 1);
-                var postIndex = x.IndexOf("\"", StringComparison.OrdinalIgnoreCase);
+                var postIndex = x.IndexOf("\"");
                 if (postIndex == -1 || hspArrayString[preIndex + postIndex] == '\\') break;
                 var midString = hspArrayString.Substring(preIndex, postIndex + 2);
                 StringList.Add(midString);
@@ -736,19 +747,19 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     エスケープした文字列を元に戻す
+        /// エスケープした文字列を元に戻す
         /// </summary>
-        /// <param name="hspArrayString"></param>
-        /// <returns></returns>
+        /// <param name="hspArrayString">エスケープ後の文字列</param>
+        /// <returns>エスケープ前の文字列</returns>
         public static string StringUnEscape(string hspArrayString)
         {
             var hspStringData = hspArrayString;
             while (true)
             {
-                var preStringIndex = hspArrayString.IndexOf("＠＋＠", StringComparison.OrdinalIgnoreCase);
+                var preStringIndex = hspArrayString.IndexOf("＠＋＠");
                 if (preStringIndex != -1)
                 {
-                    var postStringIndex = hspArrayString.IndexOf("＠ー＠", StringComparison.OrdinalIgnoreCase);
+                    var postStringIndex = hspArrayString.IndexOf("＠ー＠");
                     if (postStringIndex != -1)
                     {
                         var o = hspArrayString.Substring(preStringIndex, postStringIndex - preStringIndex + 3);
@@ -766,18 +777,18 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     関数呼び出し
+        /// 関数呼び出し
         /// </summary>
-        /// <param name="hspArrayString"></param>
-        /// <returns></returns>
+        /// <param name="hspArrayString">HSPのコード</param>
+        /// <returns>変換後のC#のコード</returns>
         public static string Function(string hspArrayString)
         {
-            //要素単位で分解するために半角スペースでスプリット
+            // 要素単位で分解するために半角スペースでスプリット
             var sentence = hspArrayString.Replace("  ", " ").Split(' ').ToList();
             for (var j = 0; j < sentence.Count; j++)
             {
-                //余計なものは省く
-                //関数は必ず関数名の後に"("が来るはず
+                // 余計なものは省く
+                // 関数は必ず関数名の後に"("が来るはず
                 sentence[j] = sentence[j].Trim();
                 if (sentence[j] == null ||
                     sentence[j].Equals("\n") ||
@@ -786,7 +797,7 @@ namespace hsp.rtm
                     sentence[j + 1][0] != '(')
                     continue;
 
-                //初めに")"が来る行と, それまでに"("が幾つ出てくるか数える
+                // 初めに")"が来る行と, それまでに"("が幾つ出てくるか数える
                 var bracketStartCount = 0;
                 int k;
                 for (k = j + 1; k < sentence.Count; k++)
@@ -801,7 +812,7 @@ namespace hsp.rtm
                     }
                 }
 
-                //"("の数だけ該当する")"をズラす
+                // "("の数だけ該当する")"をズラす
                 for (var l = 0; l < bracketStartCount - 1; l++)
                 {
                     var flag = false;
@@ -817,15 +828,15 @@ namespace hsp.rtm
                     if (!flag)
                     {
                         /*============================
-                        //カッコの数がオカシイのでエラー
+                        // カッコの数がオカシイのでエラー
                         =============================*/
                         Error.AlertError("関数呼び出しの括弧の数が足りません");
                     }
                 }
 
-                //sentence[j]が関数名
-                //sentence[k]が関数の")"
-                //sentence[j + 1]～sentence[k]で"("～")"まで
+                // sentence[j]が関数名
+                // sentence[k]が関数の")"
+                // sentence[j + 1]～sentence[k]で"("～")"まで
                 switch (sentence[j])
                 {
                     case "int":
@@ -911,17 +922,22 @@ namespace hsp.rtm
                         break;
                 }
             }
-            //結果を反映
+            // 結果を反映
             return string.Join(" ", sentence);
         }
 
+        /// <summary>
+        /// マクロ処理
+        /// </summary>
+        /// <param name="hspArrayString">HSPのコード</param>
+        /// <returns>変換後のC#のコード</returns>
         public static string Macro(string hspArrayString)
         {
-            //要素単位で分解するために半角スペースでスプリット
+            // 要素単位で分解するために半角スペースでスプリット
             var sentence = hspArrayString.Replace("  ", " ").Split(' ').ToList();
             for (var i = 0; i < sentence.Count; i++)
             {
-                //余計なものは省く
+                // 余計なものは省く
                 sentence[i] = sentence[i].Trim();
                 if (sentence[i] == null ||
                     sentence[i].Equals("\n") ||
@@ -1001,10 +1017,15 @@ namespace hsp.rtm
                     }
                 }
             }
-            //結果を反映
+            // 結果を反映
             return string.Join(" ", sentence);
         }
 
+        /// <summary>
+        /// 配列の変数を定義する
+        /// </summary>
+        /// <param name="hspArrayString">HSPのコード</param>
+        /// <returns>変換後のC#のコード</returns>
         public static string ArrayVariable(string hspArrayString)
         {
             var sentence = hspArrayString.Replace("  ", " ").Split(' ').ToList();
@@ -1037,13 +1058,18 @@ namespace hsp.rtm
             return string.Join(" ", sentence);
         }
 
+        /// <summary>
+        /// プリプロセッサの処理
+        /// </summary>
+        /// <param name="hspArrayString">HSPのコード</param>
+        /// <returns>変換後のC#のコード</returns>
         public static string Preprocessor(string hspArrayString)
         {
-            //要素単位で分解するために半角スペースでスプリット
+            // 要素単位で分解するために半角スペースでスプリット
             var sentence = hspArrayString.Replace("  ", " ").Split(' ').ToList();
             for (var i = 0; i < sentence.Count; i++)
             {
-                //余計なものは省く
+                // 余計なものは省く
                 sentence[i] = sentence[i].Trim();
                 if (sentence[i] == null ||
                     sentence[i].Equals("\n") ||
@@ -1059,11 +1085,11 @@ namespace hsp.rtm
                     }
                 }
             }
-            //結果を反映
+            // 結果を反映
             return string.Join(" ", sentence);
         }
 
-        //基本文法
+        // 基本文法
         public static List<string> BasicList = new List<string>()
         {
             "if",
@@ -1086,16 +1112,16 @@ namespace hsp.rtm
             "return"
         };
 
-        //プリプロセッサリスト
+        // プリプロセッサリスト
         public static List<string> PreprocessorList = new List<string>()
         {
             "#const"
         };
 
-        //文字列を格納するリスト
+        // 文字列を格納するリスト
         public static List<string> StringList = new List<string>();
 
-        //関数リスト
+        // 関数リスト
         public static readonly List<string> FunctionList = new List<string>()
         {
             "int",
@@ -1127,7 +1153,7 @@ namespace hsp.rtm
             "rnd"
         };
 
-        //コマンドリスト
+        // コマンドリスト
         public static readonly List<string> CommandList = new List<string>()
         {
             "print",
@@ -1164,7 +1190,7 @@ namespace hsp.rtm
             "dialog"
         };
 
-        //変数リスト
+        // 変数リスト
         public static List<string> VariableList = new List<string>()
         {
             "strsize",
@@ -1172,10 +1198,10 @@ namespace hsp.rtm
             "cnt"
         };
 
-        //配列変数リスト
+        // 配列変数リスト
         public static List<string> ArrayVariableList = new List<string>();
 
-        //マクロリスト
+        // マクロリスト
         public static List<string> MacroList = new List<string>()
         {
             "m_pi",
@@ -1225,7 +1251,7 @@ namespace hsp.rtm
             "screen_frame"
         };
 
-        //ref
+        // ref
         public static List<string> Reference = new List<string>()
         {
             "System.dll",
@@ -1238,7 +1264,7 @@ namespace hsp.rtm
             "System.Windows.Forms.dll",
         };
 
-        //using
+        // using
         public static List<string> Using = new List<string>()
         {
             "System",
@@ -1249,10 +1275,10 @@ namespace hsp.rtm
             "System.Collections.Generic"
         };
 
-        //header
+        // header
         private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
 
-        //field
+        // field
         public static string ProgramField = "public static DateTime pre = DateTime.Now;\n" +
                                             "public static DateTime now;\n" +
                                             "public static TimeSpan span;\n" +
@@ -1263,6 +1289,7 @@ namespace hsp.rtm
                                             "public Form DebugWindow;\n" +
                                             "public Dictionary<string, dynamic> Variables;\n";
 
+        // コンストラクタ
         private const string ProgramConstructor =
             "private static DataGridView view;\n" +
             "public Program(Form _form, Dictionary<string, dynamic> _variables, Form _debugWindow)\n" +
@@ -1286,6 +1313,7 @@ namespace hsp.rtm
             "    e.Cancel = true;" +
             "}\n\n";
 
+        // ペイントイベント
         public static string DebugWindowPaint = "private void dPaint()\n" +
                                                 "{\n" +
                                                 "DebugWindow.Controls.Clear();\n" +
@@ -1304,14 +1332,16 @@ namespace hsp.rtm
                                                 "DebugWindow.Controls.Add(view);\n" +
                                                 "}\n";
 
-        //Main関数以外の関数の定義
+        // Main関数以外の関数の定義
         public static string SubFunction = "";
-        //Main関数の定義
+
+        // Main関数の定義
         private const string MainFunction = "\n";
 
-        //ウィンドウを動かすためのコードの追加
+        // ウィンドウを動かすためのコードの追加
         private const string AddMainFunction = "";
-        //Main関数とSub関数以外で必要な関数
+
+        // Main関数とSub関数以外で必要な関数
         public static List<string> AddFunction = new List<string>()
         {
             "public void initScreen(Form form)\n{\n" +
@@ -1333,7 +1363,7 @@ namespace hsp.rtm
             "try\n{\n"
         };
 
-        //footer
+        // footer
         public const string ProgramFooter = "\n}\n" +
                                             "catch(Exception)\n" +
                                             "{\n" +
@@ -1349,20 +1379,22 @@ namespace hsp.rtm
                                             "}\n" +
                                             "}";
 
-        //if文の末尾に"}"を付けるためのフラグ
+        // if文の末尾に"}"を付けるためのフラグ
         public static List<int> IfFlag = new List<int>();
 
-        //コメントをエスケープするためのフラグ
+        // コメントをエスケープするためのフラグ
         public static bool CommentFlag = false;
 
-        //switch文の中にいるかどうか
+        // switch文の中にいるかどうか
         private static bool _switchFlag = false;
-        //switch文の行数を入れるためのリスト
+
+        // switch文の行数を入れるためのリスト
         private static readonly List<int> SwitchList = new List<int>();
-        //1つ目のcase文
+
+        // 1つ目のcase文
         private static bool _firstCase = true;
 
-        //変数名の先頭として存在してはいけない文字
+        // 変数名の先頭として存在してはいけない文字
         public static List<char> VariableNameRule =
             "0123456789!\"#$%&'()-^\\=~|@[`{;:]+*},./<>?".ToCharArray().ToList();
 
@@ -1372,13 +1404,18 @@ namespace hsp.rtm
         /// ローカル変数名を作成する関数
         /// GUIDを生成し, 変数名の末尾に追加する
         /// </summary>
-        /// <param name="variableName"></param>
-        /// <returns></returns>
+        /// <param name="variableName">変数名</param>
+        /// <returns>オリジナルの変数名</returns>
         public static string __LocalName(string variableName)
         {
             return variableName + "_" + Guid.NewGuid().ToString("N");
         }
 
+        /// <summary>
+        /// usingのリストに存在するか
+        /// 存在しない場合は追加する
+        /// </summary>
+        /// <param name="usingName">usingする名前空間</param>
         public static void UsingCheck(string usingName)
         {
             if (!Using.Contains(usingName))

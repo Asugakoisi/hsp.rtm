@@ -45,7 +45,7 @@ namespace hsp.watcher
     {
         private static void Main()
         {
-            //RTM本体を起動
+            // RTM本体を起動
             var rtm = Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) +
                                     "\\.vscode\\extensions\\hsp-rtm\\bin\\hsp.rtm.exe");
             rtm.WaitForInputIdle();

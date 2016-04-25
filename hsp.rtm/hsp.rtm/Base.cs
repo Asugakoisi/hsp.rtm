@@ -12,7 +12,7 @@ namespace hsp.rtm
 
         
         /// <summary>
-        ///     メッセージ表示
+        /// メッセージ表示
         /// </summary>
         /// <param name="strings"></param>
         /// <returns></returns>
@@ -22,7 +22,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     ファイルが存在するか
+        /// ファイルが存在するか
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
@@ -41,7 +41,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     ファイルを削除する
+        /// ファイルを削除する
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
@@ -58,7 +58,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     ファイルのコピー
+        /// ファイルのコピー
         /// </summary>
         /// <param name="strings"></param>
         /// <returns></returns>
@@ -77,7 +77,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     ディレクトリの作成
+        /// ディレクトリの作成
         /// </summary>
         /// <param name="dirname"></param>
         /// <returns></returns>
@@ -95,7 +95,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     文字列から分割された要素を代入
+        /// 文字列から分割された要素を代入
         /// </summary>
         /// <param name="strings"></param>
         /// <returns></returns>
@@ -122,7 +122,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     文字列の置換をする
+        /// 文字列の置換をする
         /// </summary>
         /// <param name="strings"></param>
         /// <returns></returns>
@@ -142,7 +142,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     配列変数の作成
+        /// 配列変数の作成
         /// </summary>
         /// <param name="strings"></param>
         /// <returns></returns>
@@ -156,10 +156,10 @@ namespace hsp.rtm
             }
 
             var str = "";
-            //変数リストに含まれていない場合
+            // 変数リストに含まれていない場合
             if (!Analyzer.ArrayVariableList.Contains(p[0]))
             {
-                //変数リストに追加
+                // 変数リストに追加
                 Analyzer.ArrayVariableList.Add(p[0]);
                 str = "var ";
             }
@@ -183,7 +183,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     実数型配列変数の作成
+        /// 実数型配列変数の作成
         /// </summary>
         /// <param name="strings"></param>
         /// <returns></returns>
@@ -197,10 +197,10 @@ namespace hsp.rtm
             }
 
             var str = "";
-            //変数リストに含まれていない場合
+            // 変数リストに含まれていない場合
             if (!Analyzer.ArrayVariableList.Contains(p[0]))
             {
-                //変数リストに追加
+                // 変数リストに追加
                 Analyzer.ArrayVariableList.Add(p[0]);
                 str = "var ";
             }
@@ -224,7 +224,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     プログラム終了
+        /// プログラム終了
         /// </summary>
         /// <param name="p1">終了コード</param>
         /// <returns></returns>
@@ -238,7 +238,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     プログラム中断
+        /// プログラム中断
         /// </summary>
         /// <param name="p1"></param>
         /// <returns></returns>
@@ -255,7 +255,7 @@ namespace hsp.rtm
 
 
         /// <summary>
-        ///     整数値に変換
+        /// 整数値に変換
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -265,7 +265,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     実数値に変換
+        /// 実数値に変換
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -275,7 +275,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     文字列に変換
+        /// 文字列に変換
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -287,7 +287,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     整数の絶対値を返す
+        /// 整数の絶対値を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -300,7 +300,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     実数の絶対値を返す
+        /// 実数の絶対値を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -311,7 +311,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     正弦値を返す
+        /// 正弦値を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -321,7 +321,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     余弦値を返す
+        /// 余弦値を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -331,7 +331,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     正接値を返す
+        /// 正接値を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -341,7 +341,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     arctan値を返す
+        /// arctan値を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -351,7 +351,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     度をラジアンに変換
+        /// 度をラジアンに変換
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -361,7 +361,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     ラジアンを度に変換
+        /// ラジアンを度に変換
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -371,7 +371,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     指数を返す
+        /// 指数を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -381,7 +381,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     対数を返す
+        /// 対数を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -391,7 +391,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     累乗（べき乗）を求める
+        /// 累乗（べき乗）を求める
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -401,7 +401,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     ルート値を返す
+        /// ルート値を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -411,7 +411,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     文字列の検索をする
+        /// 文字列の検索をする
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -446,7 +446,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     文字列の長さを調べる
+        /// 文字列の長さを調べる
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -462,7 +462,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     文字列の一部を取り出す
+        /// 文字列の一部を取り出す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -491,7 +491,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     指定した文字だけを取り除く
+        /// 指定した文字だけを取り除く
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -552,7 +552,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     一定範囲内の整数を返す
+        /// 一定範囲内の整数を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -606,7 +606,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     一定範囲内の実数を返す
+        /// 一定範囲内の実数を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -659,7 +659,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     配列の1～4次元要素数を返す
+        /// 配列の1～4次元要素数を返す
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>
@@ -676,7 +676,7 @@ namespace hsp.rtm
         }
 
         /// <summary>
-        ///     時間・日付を取得する
+        /// 時間・日付を取得する
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="j"></param>

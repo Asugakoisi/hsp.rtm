@@ -1,5 +1,5 @@
-﻿//Windowsアプリケーションとしてビルドすること
-//System.Windows.FormsとSystem.Drawingを追加
+﻿// Windowsアプリケーションとしてビルドすること
+// System.Windows.FormsとSystem.Drawingを追加
 
 using System.Drawing;
 using System.Windows.Forms;
@@ -26,7 +26,7 @@ namespace hsp.rtm
             ErrorWindow.Paint += ErrorPaint;
             ErrorWindow.Show();
 
-            //RTMが終了したときに, 一緒にwatcherも終了させる
+            // RTMが終了したときに, 一緒にwatcherも終了させる
             MainWindow.FormClosed += MainWindow.ExitWatcher;
 
             Application.Run(MainWindow);

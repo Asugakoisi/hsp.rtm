@@ -21,23 +21,23 @@ namespace hsp.rtm
             {
                 if (str[i].Contains("\"") || str[i].Contains("'"))
                 {
-                    //これは文字か文字列
+                    // これは文字か文字列
                 }
                 else
                 {
-                    //それ以外は数値か変数
+                    // それ以外は数値か変数
                     double d;
                     if (double.TryParse(str[i], out d))
                     {
-                        //TryParse出来た場合は数値
+                        // TryParse出来た場合は数値
                     }
                     else
                     {
-                        //それ以外は変数
-                        //変数はManager.Variablesを参照するように変更
+                        // それ以外は変数
+                        // 変数はManager.Variablesを参照するように変更
                         if (Analyzer.ArrayVariableList.Contains(str[i]))
                         {
-                            //配列の場合
+                            // 配列の場合
                             str[i] = str[i] + ".ToString()";
                         }
                     }
@@ -571,17 +571,17 @@ namespace hsp.rtm
             {
                 p[i] = p[i].Trim();
             }
-            //変数名として正しいか
+            // 変数名として正しいか
             if (Analyzer.VariableNameRule.Contains(p[0][0]))
             {
-                //変数名ではない
+                // 変数名ではない
             }
             else
             {
-                //変数リストに含まれていない場合
+                // 変数リストに含まれていない場合
                 if (!Analyzer.VariableList.Contains(p[0]))
                 {
-                    //変数リストに追加
+                    // 変数リストに追加
                     Analyzer.VariableList.Add(p[0]);
                 }
             }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using System.Linq;
 using Microsoft.CSharp;
@@ -177,15 +176,15 @@ namespace hsp.rtm
             }
 
             Error.ErrorMessages = new List<string>();
-            //更新しておいたほうが良さそうじゃない？
+            // 更新しておいたほうが良さそうじゃない？
             Core.ErrorWindow.Refresh();
 
             var str = Encoding.Default.GetString(Convert.FromBase64String(base64String));
 
             try
             {
-                //多分他にも初期化しないといけないものある
-                //変数リストを初期化
+                // 多分他にも初期化しないといけないものある
+                // 変数リストを初期化
                 Analyzer.VariableList = new List<string>()
                 {
                     "strsize",
@@ -193,83 +192,84 @@ namespace hsp.rtm
                     "cnt"
                 };
 
-                //配列のリストを初期化
+                // 配列のリストを初期化
                 Analyzer.ArrayVariableList = new List<string>();
 
-                //ifのリストを初期化
+                // ifのリストを初期化
                 Analyzer.IfFlag = new List<int>();
 
-                //全角スペースとタブを半角スペースに変換し, 改行でスプリット
+                // 全角スペースとタブを半角スペースに変換し, 改行でスプリット
                 var hspArrayData = str.Split('\n').Where(i => i.Length != 0).ToList();
 
-                //HSPのコードをC#のコードに変換
+                // HSPのコードをC#のコードに変換
                 var code = Analyzer.GenerateCode(hspArrayData);
-                //ここでも一応更新しておく
+                // ここでも一応更新しておく
                 Core.ErrorWindow.Refresh();
 
-                //更新された変数リストをもとに, Manager.Variablesを更新する
+                // 更新された変数リストをもとに, Manager.Variablesを更新する
                 foreach (var variableName in Manager.Variables.Keys.ToList())
                 {
-                    //変数が使われなくなった場合, Dictionaryから削除
+                    // 変数が使われなくなった場合, Dictionaryから削除
                     if (!Analyzer.VariableList.Contains(variableName))
                     {
                         Manager.Variables.Remove(variableName);
                     }
                 }
-                //Manager.Variablesに存在しない変数が定義された場合は追加する
+
+                // Manager.Variablesに存在しない変数が定義された場合は追加する
                 foreach (var variableName in Analyzer.VariableList)
                 {
                     if (!Manager.Variables.Keys.ToList().Contains(variableName))
                     {
-                        //変数の追加
-                        //初期値はnullにしてるけど, 大丈夫？
+                        // 変数の追加
+                        // 初期値はnullにしてるけど, 大丈夫？
                         Manager.Variables.Add(variableName, null);
                     }
                 }
 
-                //code内でウィンドウのサイズを定義しているか
+                // code内でウィンドウのサイズを定義しているか
                 if (!code.Contains("public void screen(Form form, int width, int height)"))
                 {
-                    //含まれていない場合は追加
+                    // 含まれていない場合は追加
                     code = code.Replace("form0 = _form;\n", "form0 = _form;\n" + "form0.Size = new Size(640, 480);\n");
                 }
 
-                //生成したコードを実行
+                // 生成したコードを実行
                 var param = new CompilerParameters();
 
-                //DLLの参照を指定
+                // DLLの参照を指定
                 param.ReferencedAssemblies.AddRange(Analyzer.Reference.ToArray());
 
-                //GUIアプリケーションとしてコンパイルするためのオプション
+                // GUIアプリケーションとしてコンパイルするためのオプション
                 param.CompilerOptions = "/t:winexe";
 
-                //生成したコードをコンパイルしてAssemblyを得る
+                // 生成したコードをコンパイルしてAssemblyを得る
                 var assembly = new CSharpCodeProvider()
                     .CompileAssemblyFromSource(param, code)
                     .CompiledAssembly;
 
-                //Programの型情報を取得
+                // Programの型情報を取得
                 var dataType = assembly.GetType("NameSpace.Program");
 
-                //前のインスタンスをバックアップ
+                // 前のインスタンスをバックアップ
                 oldInstance = instance;
 
-                //Programのインスタンスを作成
+                // Programのインスタンスを作成
                 instance = Activator.CreateInstance(dataType, new object[]{ Core.MainWindow , Manager.Variables, Core.DebugWindow});
 
-                //既に追加されているイベントを破棄
+                // 既に追加されているイベントを破棄
                 if (oldInstance != null)
                 {
                     DeleteEvent("Paint", typeof(PaintEventHandler), "Paint");
                 }
-                //新しくコンパイルしたイベントを追加
+                // 新しくコンパイルしたイベントを追加
                 AddEvent("Paint", typeof(PaintEventHandler), "Paint");
-                //リフレッシュ
+                // リフレッシュ
                 Core.MainWindow.Refresh();
             }
             catch (Exception)
             {
-                //構文エラーとかは別途で警告出したい
+                // 構文エラーとかは別途で警告出したい
                 Error.AlertError("コンパイルエラーが発生しました\n" +
                                  "コードを完成させるか, 修正して下さい");
             }
