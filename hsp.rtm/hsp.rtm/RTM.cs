@@ -89,7 +89,7 @@ namespace hsp.rtm
         {
             try
             {
-                var watcherID = GetParentProcess(Process.GetCurrentProcess().Id);
+                int watcherID = GetParentProcess(Process.GetCurrentProcess().Id);
                 var watcher = Process.GetProcessById(watcherID);
                 if (watcher.ProcessName.Equals("hsp.watcher"))
                 {
@@ -109,7 +109,7 @@ namespace hsp.rtm
         /// <returns></returns>
         public static int GetParentProcess(int Id)
         {
-            var parentPid = 0;
+            int parentPid = 0;
             using (var mo = new ManagementObject("win32_process.handle='" + Id + "'"))
             {
                 mo.Get();
@@ -179,7 +179,7 @@ namespace hsp.rtm
             // 更新しておいたほうが良さそうじゃない？
             Core.ErrorWindow.Refresh();
 
-            var str = Encoding.Default.GetString(Convert.FromBase64String(base64String));
+            string str = Encoding.Default.GetString(Convert.FromBase64String(base64String));
 
             try
             {
@@ -202,12 +202,12 @@ namespace hsp.rtm
                 var hspArrayData = str.Split('\n').Where(i => i.Length != 0).ToList();
 
                 // HSPのコードをC#のコードに変換
-                var code = Analyzer.GenerateCode(hspArrayData);
+                string code = Analyzer.GenerateCode(hspArrayData);
                 // ここでも一応更新しておく
                 Core.ErrorWindow.Refresh();
 
                 // 更新された変数リストをもとに, Manager.Variablesを更新する
-                foreach (var variableName in Manager.Variables.Keys.ToList())
+                foreach (string variableName in Manager.Variables.Keys.ToList())
                 {
                     // 変数が使われなくなった場合, Dictionaryから削除
                     if (!Analyzer.VariableList.Contains(variableName))
@@ -217,7 +217,7 @@ namespace hsp.rtm
                 }
 
                 // Manager.Variablesに存在しない変数が定義された場合は追加する
-                foreach (var variableName in Analyzer.VariableList)
+                foreach (string variableName in Analyzer.VariableList)
                 {
                     if (!Manager.Variables.Keys.ToList().Contains(variableName))
                     {

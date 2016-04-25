@@ -49,7 +49,7 @@ namespace hsp.rtm
         {
             Analyzer.UsingCheck("System.IO");
 
-            filename = filename.Replace("\"", "");
+            filename = filename.Replace("\"", string.Empty);
             if (!File.Exists(filename))
             {
                 Error.AlertError("ファイルが見つからないか無効な名前です");
@@ -66,9 +66,9 @@ namespace hsp.rtm
         {
             Analyzer.UsingCheck("System.IO");
 
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -101,9 +101,9 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string Split(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -130,9 +130,9 @@ namespace hsp.rtm
         {
             Analyzer.UsingCheck("System.Text.RegularExpressions");
 
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -148,14 +148,14 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string Dim(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
 
-            var str = "";
+            string str = string.Empty;
             // 変数リストに含まれていない場合
             if (!Analyzer.ArrayVariableList.Contains(p[0]))
             {
@@ -189,14 +189,14 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string Ddim(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
 
-            var str = "";
+            string str = string.Empty;
             // 変数リストに含まれていない場合
             if (!Analyzer.ArrayVariableList.Contains(p[0]))
             {
@@ -230,7 +230,7 @@ namespace hsp.rtm
         /// <returns></returns>
         public static string End(string p1)
         {
-            if (p1.Equals(""))
+            if (p1.Equals(string.Empty))
             {
                 return "Environment.Exit(0);";
             }
@@ -282,7 +282,7 @@ namespace hsp.rtm
         /// <param name="k"></param>
         public static void Str(List<string> sentence, int j, int k)
         {
-            sentence[j] = "";
+            sentence[j] = string.Empty;
             sentence[k] += ".ToString()";
         }
 
@@ -418,14 +418,14 @@ namespace hsp.rtm
         /// <param name="k"></param>
         public static void Instr(List<string> sentence, int j, int k)
         {
-            for (var i = j + 3; i < k; i++)
+            for (int i = j + 3; i < k; i++)
             {
                 sentence[j + 2] += sentence[i];
             }
 
-            var p = sentence[j + 2].Split(',');
+            string[] p = sentence[j + 2].Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -439,7 +439,7 @@ namespace hsp.rtm
                 sentence[j] = "-1";
             }
 
-            for (var i = j + 1; i <= k; i++)
+            for (int i = j + 1; i <= k; i++)
             {
                 sentence[i] = string.Empty;
             }
@@ -455,7 +455,7 @@ namespace hsp.rtm
         {
             sentence[j] = sentence[j + 2] + ".Length";
 
-            for (var i = j + 1; i <= k; i++)
+            for (int i = j + 1; i <= k; i++)
             {
                 sentence[i] = string.Empty;
             }
@@ -469,14 +469,14 @@ namespace hsp.rtm
         /// <param name="k"></param>
         public static void Strmid(List<string> sentence, int j, int k)
         {
-            for (var i = j + 3; i < k; i++)
+            for (int i = j + 3; i < k; i++)
             {
                 sentence[j + 2] += sentence[i];
             }
 
-            var p = sentence[j + 2].Split(',');
+            string[] p = sentence[j + 2].Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -498,14 +498,14 @@ namespace hsp.rtm
         /// <param name="k"></param>
         public static void Strtrim(List<string> sentence, int j, int k)
         {
-            for (var i = j + 3; i < k; i++)
+            for (int i = j + 3; i < k; i++)
             {
                 sentence[j + 2] += sentence[i];
             }
 
-            var p = sentence[j + 2].Split(',');
+            string[] p = sentence[j + 2].Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -559,14 +559,14 @@ namespace hsp.rtm
         /// <param name="k"></param>
         public static void Limit(List<string> sentence, int j, int k)
         {
-            for (var i = j + 3; i < k; i++)
+            for (int i = j + 3; i < k; i++)
             {
                 sentence[j + 2] += sentence[i];
             }
 
-            var p = sentence[j + 2].Split(',');
+            string[] p = sentence[j + 2].Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -599,7 +599,7 @@ namespace hsp.rtm
                                   p[0] + ";\n}";
                 }
             }
-            for (var i = 1; i <= k; i++)
+            for (int i = 1; i <= k; i++)
             {
                 sentence[i] = string.Empty;
             }
@@ -613,14 +613,14 @@ namespace hsp.rtm
         /// <param name="k"></param>
         public static void Limitf(List<string> sentence, int j, int k)
         {
-            for (var i = j + 3; i < k; i++)
+            for (int i = j + 3; i < k; i++)
             {
                 sentence[j + 2] += sentence[i];
             }
 
-            var p = sentence[j + 2].Split(',');
+            string[] p = sentence[j + 2].Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -652,7 +652,7 @@ namespace hsp.rtm
                                   ";\n}";
                 }
             }
-            for (var i = 1; i <= k; i++)
+            for (int i = 1; i <= k; i++)
             {
                 sentence[i] = string.Empty;
             }
@@ -669,7 +669,7 @@ namespace hsp.rtm
         {
             sentence[j] = sentence[j + 2] + ".GetLength(" + num + " - 1)";
 
-            for (var i = j + 1; i <= k; i++)
+            for (int i = j + 1; i <= k; i++)
             {
                 sentence[i] = string.Empty;
             }
@@ -728,7 +728,7 @@ namespace hsp.rtm
 
             sentence[j] = "random.Next(" + sentence[j + 2] + ")";
 
-            for (var i = j + 1; i <= k; i++)
+            for (int i = j + 1; i <= k; i++)
             {
                 sentence[i] = string.Empty;
             }

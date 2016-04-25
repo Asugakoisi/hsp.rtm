@@ -17,7 +17,7 @@ namespace hsp.rtm
                        "CurrentPosY += FontSize * 2";
             }
             var str = strings.Split('+').Select(i => i.Trim()).ToList();
-            for (var i = 0; i < str.Count; i++)
+            for (int i = 0; i < str.Count; i++)
             {
                 if (str[i].Contains("\"") || str[i].Contains("'"))
                 {
@@ -50,9 +50,9 @@ namespace hsp.rtm
 
         public static string Pos(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -97,9 +97,9 @@ namespace hsp.rtm
 
         public static string Screen(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -117,9 +117,9 @@ namespace hsp.rtm
 
         public static string Bgscr(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -149,9 +149,9 @@ namespace hsp.rtm
 
         public static string Redraw(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -167,9 +167,9 @@ namespace hsp.rtm
                         BufferFlag = false;
                         return "bgr.Render()";
                     case "2":
-                        return "";
+                        return string.Empty;
                     case "3":
-                        return "";
+                        return string.Empty;
                     default:
                         Error.AlertError("エラーが発生しました");
                         return null;
@@ -181,9 +181,9 @@ namespace hsp.rtm
 
         public static string Mouse(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -206,9 +206,9 @@ namespace hsp.rtm
 
         public new static string Font(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -233,9 +233,9 @@ namespace hsp.rtm
 
         public static string Circle(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -252,15 +252,7 @@ namespace hsp.rtm
                 p[1] = p[3];
                 p[3] = temp;
             }*/
-            var str = "";
-            if (BufferFlag)
-            {
-                str = "bgr.Graphics.";
-            }
-            else
-            {
-                str = "g.";
-            }
+            string str = BufferFlag ? "bgr.Graphics." : "g.";
 
             if (p.Count() == 4)
             {
@@ -283,22 +275,14 @@ namespace hsp.rtm
 
         public static string Boxf(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
 
-            var str = "";
-            if (BufferFlag)
-            {
-                str = "bgr.Graphics.";
-            }
-            else
-            {
-                str = "g.";
-            }
+            string str = BufferFlag ? "bgr.Graphics." : "g.";
 
             if (p.Count() == 1)
             {
@@ -351,22 +335,14 @@ namespace hsp.rtm
 
         public static string Line(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
 
-            var str = "";
-            if (BufferFlag)
-            {
-                str = "bgr.Graphics.";
-            }
-            else
-            {
-                str = "g.";
-            }
+            string str = BufferFlag ? "bgr.Graphics." : "g.";
 
             if (p.Count() == 2)
             {
@@ -384,15 +360,7 @@ namespace hsp.rtm
         
         public static string Cls(string strings)
         {
-            var str = "";
-            if (BufferFlag)
-            {
-                str = "bgr.Graphics.";
-            }
-            else
-            {
-                str = "g.";
-            }
+            string str = BufferFlag ? "bgr.Graphics." : "g.";
             switch (strings)
             {
                 case "0":
@@ -412,9 +380,9 @@ namespace hsp.rtm
 
         public static string Color(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -443,22 +411,14 @@ namespace hsp.rtm
 
         public static string Picload(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
 
-            var str = "";
-            if (BufferFlag)
-            {
-                str = "bgr.Graphics.";
-            }
-            else
-            {
-                str = "g.";
-            }
+            string str = BufferFlag ? "bgr.Graphics." : "g.";
 
             if (!Analyzer.AddFunction[0].Contains("public void screen"))
             {
@@ -487,7 +447,7 @@ namespace hsp.rtm
                 }
                 if (p[1] == "2")
                 {
-                    return ""; ////
+                    return string.Empty; ////
                 }
                 Error.AlertError("エラーが発生しました");
                 return null;
@@ -506,24 +466,26 @@ namespace hsp.rtm
                                          "private static extern ushort GetAsyncKeyState(int vKey);\n";
             }
 
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
-            var notExistVarialbe = false;
-            //変数名として正しいか
+
+            bool notExistVarialbe = false;
+
+            // 変数名として正しいか
             if (Analyzer.VariableNameRule.Contains(p[0][0]))
             {
-                //変数名ではない
+                // 変数名ではない
             }
             else
             {
-                //変数リストに含まれていない場合
+                // 変数リストに含まれていない場合
                 if (!Analyzer.VariableList.Contains(p[0]))
                 {
-                    //変数リストに追加
+                    // 変数リストに追加
                     Analyzer.VariableList.Add(p[0]);
                     notExistVarialbe = true;
                 }
@@ -565,9 +527,9 @@ namespace hsp.rtm
                                          "private static extern IntPtr GetActiveWindow();\n";
             }
 
-        var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -635,9 +597,9 @@ namespace hsp.rtm
 
         public static string Objsize(string strings)
         {
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -651,9 +613,9 @@ namespace hsp.rtm
         public static string Dialog(string strings)
         {
             strings = Analyzer.StringUnEscape(strings);
-            var p = strings.Split(',');
+            string[] p = strings.Split(',');
 
-            for (var i = 0; i < p.Count(); i++)
+            for (int i = 0; i < p.Count(); i++)
             {
                 p[i] = p[i].Trim();
             }
@@ -677,13 +639,10 @@ namespace hsp.rtm
                     return "MessageBox.Show(" + p[0] + ", " + p[2] + ", " +
                            "MessageBoxButtons.YesNo, MessageBoxIcon.Warning)";
                 case "16":
-                    return "";
                 case "17":
-                    return "";
                 case "32":
-                    return "";
                 case "33":
-                    return "";
+                    return string.Empty;
                 default:
                     Error.AlertError("エラーが発生しました");
                     return null;
