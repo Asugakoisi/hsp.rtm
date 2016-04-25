@@ -12,12 +12,12 @@ namespace hsp.watcher
     public class WindowMessage
     {
         [DllImport("User32.dll")]
-        private static extern Int32 SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
+        private static extern int SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
 
         private struct COPYDATASTRUCT
         {
             public IntPtr dwData;
-            public Int32 cbData;
+            public int cbData;
             public string lpData;
         }
 

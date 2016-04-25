@@ -35,8 +35,8 @@ namespace hsp.rtm
                 // [例] @using System.Diagnostics
                 if (hspArrayData[i].Trim().StartsWith("@using"))
                 {
-                    Using.Add(hspArrayData[i].Trim().Replace("@using", "").Replace(";", "").Trim());
-                    hspArrayData[i] = "";
+                    Using.Add(hspArrayData[i].Trim().Replace("@using", string.Empty).Replace(";", string.Empty).Trim());
+                    hspArrayData[i] = string.Empty;
                     continue;
                 }
 
@@ -56,8 +56,8 @@ namespace hsp.rtm
                 // [例] @ref Microsoft.VisualBasic.dll
                 if (hspArrayData[i].Trim().StartsWith("@ref"))
                 {
-                    ReferenceCheck(hspArrayData[i].Trim().Replace("@ref", "").Trim());
-                    hspArrayData[i] = "";
+                    ReferenceCheck(hspArrayData[i].Trim().Replace("@ref", string.Empty).Trim());
+                    hspArrayData[i] = string.Empty;
                     continue;
                 }
 
@@ -70,7 +70,8 @@ namespace hsp.rtm
                 {
                     // 変数を更新
                     hspArrayData[i] =
-                        VariableList.Aggregate("", (current, v) => current + (v + " = Variables[\"" + v + "\"];\n"));
+                        VariableList.Aggregate(string.Empty,
+                            (current, v) => current + (v + " = Variables[\"" + v + "\"];\n"));
 
                     isCSharp = true;
                     continue;
@@ -80,7 +81,7 @@ namespace hsp.rtm
                 if (hspArrayData[i].Trim().StartsWith("@end"))
                 {
                     // 変更を反映
-                    hspArrayData[i] = VariableList.Aggregate("",
+                    hspArrayData[i] = VariableList.Aggregate(string.Empty,
                         (current, v) => current + ("Variables[\"" + v + "\"] = " + v + ";\n"));
 
                     isCSharp = false;
@@ -100,7 +101,7 @@ namespace hsp.rtm
                 // 前後の空白文字を削除
                 hspArrayData[i] = hspArrayData[i].Trim();
 
-                if (hspArrayData[i].Equals(""))
+                if (hspArrayData[i].Equals(string.Empty))
                 {
                     continue;
                 }
@@ -142,7 +143,7 @@ namespace hsp.rtm
                     }
                 }
 
-                if (hspArrayData[i].Equals(""))
+                if (hspArrayData[i].Equals(string.Empty))
                 {
                     continue;
                 }
@@ -265,7 +266,7 @@ namespace hsp.rtm
                             // if文の条件における"="の好意的解釈
                             // "="が1つでも"=="として扱う
                             hspArrayData[i] = hspArrayData[i]
-                                .Replace(Space, "")
+                                .Replace(Space, string.Empty)
                                 .Replace("=", "==")
                                 .Replace("====", " == ")
                                 .Replace("!==", " != ")
@@ -472,7 +473,7 @@ namespace hsp.rtm
                                               "dPaint();\n" +
                                               "pre = now;\n" +
                                               "}\n" +
-                                              hspArrayData[i].Replace("*", "");
+                                              hspArrayData[i].Replace("*", string.Empty);
                             break;
 
                         case "gosub":
@@ -505,7 +506,7 @@ namespace hsp.rtm
                                               "dPaint();\n" +
                                               "pre = now;\n" +
                                               "}\n" +
-                                              "goto " + hspArrayData[i].Substring("gosub".Length).Replace("*", "") +
+                                              "goto " + hspArrayData[i].Substring("gosub".Length).Replace("*", string.Empty) +
                                               ";\n" +
                                               label + ":\n";
                             break;
@@ -672,7 +673,7 @@ namespace hsp.rtm
             for (int i = 0; i < hspArrayData.Count; i++)
             {
                 hspArrayData[i] = hspArrayData[i].Trim();
-                if (hspArrayData[i].Equals("") ||
+                if (hspArrayData[i].Equals(string.Empty) ||
                     hspArrayData[i].Equals("{") ||
                     hspArrayData[i].Equals("}") ||
                     hspArrayData[i].EndsWith("{") ||
@@ -740,7 +741,7 @@ namespace hsp.rtm
                 if (postIndex == -1 || hspArrayString[preIndex + postIndex] == '\\') break;
                 string midString = hspArrayString.Substring(preIndex, postIndex + 2);
                 StringList.Add(midString);
-                hspArrayString = hspArrayString.Replace(midString, "");
+                hspArrayString = hspArrayString.Replace(midString, string.Empty);
                 hspStringData = hspStringData.Replace(midString, "＠＋＠" + (StringList.Count - 1) + "＠ー＠");
             }
             return hspStringData;
@@ -763,7 +764,7 @@ namespace hsp.rtm
                     if (postStringIndex != -1)
                     {
                         string o = hspArrayString.Substring(preStringIndex, postStringIndex - preStringIndex + 3);
-                        int index = int.Parse(o.Replace("＠＋＠", "").Replace("＠ー＠", ""));
+                        int index = int.Parse(o.Replace("＠＋＠", string.Empty).Replace("＠ー＠", string.Empty));
                         hspArrayString = hspArrayString.Replace(o, StringList[index]);
                         hspStringData = hspArrayString;
                     }
@@ -792,7 +793,8 @@ namespace hsp.rtm
                 sentence[j] = sentence[j].Trim();
                 if (sentence[j] == null ||
                     sentence[j].Equals("\n") ||
-                    sentence[j].Equals("") ||
+                    sentence[j].Equals(Environment.NewLine) ||
+                    sentence[j].Equals(string.Empty) ||
                     !FunctionList.Contains(sentence[j]) ||
                     sentence[j + 1][0] != '(')
                     continue;
@@ -941,7 +943,7 @@ namespace hsp.rtm
                 sentence[i] = sentence[i].Trim();
                 if (sentence[i] == null ||
                     sentence[i].Equals("\n") ||
-                    sentence[i].Equals(""))
+                    sentence[i].Equals(string.Empty))
                     continue;
                 if (MacroList.Contains(sentence[i]))
                 {
@@ -1073,7 +1075,7 @@ namespace hsp.rtm
                 sentence[i] = sentence[i].Trim();
                 if (sentence[i] == null ||
                     sentence[i].Equals("\n") ||
-                    sentence[i].Equals(""))
+                    sentence[i].Equals(string.Empty))
                     continue;
                 if (PreprocessorList.Contains(sentence[i]))
                 {
@@ -1276,7 +1278,7 @@ namespace hsp.rtm
         };
 
         // header
-        private const string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
+        private static string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
 
         // field
         public static string ProgramField = "public static DateTime pre = DateTime.Now;\n" +
@@ -1290,7 +1292,7 @@ namespace hsp.rtm
                                             "public Dictionary<string, dynamic> Variables;\n";
 
         // コンストラクタ
-        private const string ProgramConstructor =
+        private static string ProgramConstructor =
             "private static DataGridView view;\n" +
             "public Program(Form _form, Dictionary<string, dynamic> _variables, Form _debugWindow)\n" +
             "{\n" +
@@ -1333,13 +1335,13 @@ namespace hsp.rtm
                                                 "}\n";
 
         // Main関数以外の関数の定義
-        public static string SubFunction = "";
+        public static string SubFunction = string.Empty;
 
         // Main関数の定義
-        private const string MainFunction = "\n";
+        private static string MainFunction = "\n";
 
         // ウィンドウを動かすためのコードの追加
-        private const string AddMainFunction = "";
+        private static readonly string AddMainFunction = string.Empty;
 
         // Main関数とSub関数以外で必要な関数
         public static List<string> AddFunction = new List<string>()
@@ -1364,7 +1366,7 @@ namespace hsp.rtm
         };
 
         // footer
-        public const string ProgramFooter = "\n}\n" +
+        public static string ProgramFooter = "\n}\n" +
                                             "catch(Exception)\n" +
                                             "{\n" +
                                             "}\n" +
