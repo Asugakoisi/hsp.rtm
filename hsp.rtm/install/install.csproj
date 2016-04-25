@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{77458E31-D2C5-48A1-BAE3-287A6C2C4AF4}</ProjectGuid>
+    <ProjectGuid>{2A88034B-ECAD-4702-92E9-39178A15E2E3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>uninstall</RootNamespace>
-    <AssemblyName>uninstall</AssemblyName>
+    <RootNamespace>install</RootNamespace>
+    <AssemblyName>install</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -745,7 +745,7 @@ namespace hsp.rtm
             }
         }
 
-        public static void Font(List<string> sentence, int i, string str)
+        public new static void Font(List<string> sentence, int i, string str)
         {
             switch (str)
             {

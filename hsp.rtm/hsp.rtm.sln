@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsp.watcher", "hsp.watcher\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsp.d", "hsp.d\hsp.d.csproj", "{4CC937EF-80FD-4078-88EE-C4DA47A5CE1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "install", "install\install.csproj", "{2A88034B-ECAD-4702-92E9-39178A15E2E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uninstall", "uninstall\uninstall.csproj", "{D28153D0-4C78-4CFF-A75A-1245D24C17A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{4CC937EF-80FD-4078-88EE-C4DA47A5CE1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CC937EF-80FD-4078-88EE-C4DA47A5CE1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CC937EF-80FD-4078-88EE-C4DA47A5CE1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A88034B-ECAD-4702-92E9-39178A15E2E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A88034B-ECAD-4702-92E9-39178A15E2E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A88034B-ECAD-4702-92E9-39178A15E2E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A88034B-ECAD-4702-92E9-39178A15E2E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D28153D0-4C78-4CFF-A75A-1245D24C17A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D28153D0-4C78-4CFF-A75A-1245D24C17A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D28153D0-4C78-4CFF-A75A-1245D24C17A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D28153D0-4C78-4CFF-A75A-1245D24C17A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

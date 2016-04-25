@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.IO;
 
 namespace hsp.rtm
 {
@@ -28,9 +29,16 @@ namespace hsp.rtm
     {
         private struct COPYDATASTRUCT
         {
-            public IntPtr dwData;
-            public Int32 cbData;
+            private IntPtr dwData;
+            private int cbData;
             public string lpData;
+
+            public COPYDATASTRUCT(IntPtr _dwData, int _cbData, string _lpData)
+            {
+                dwData = _dwData;
+                cbData = _cbData;
+                lpData = _lpData;
+            }
         }
 
         public event EventHandler<ReceiveDataEventArgs> OnReceiveData;
@@ -190,6 +198,30 @@ namespace hsp.rtm
                     "strsize",
                     "stat",
                     "cnt"
+                };
+
+                // referenceのリストを初期化
+                Analyzer.Reference = new List<string>()
+                {
+                    "System.dll",
+                    "mscorlib.dll",
+                    "System.IO.dll",
+                    "System.Linq.dll",
+                    "System.Core.dll",
+                    "System.Drawing.dll",
+                    "Microsoft.CSharp.dll",
+                    "System.Windows.Forms.dll",
+                };
+
+                // usingのリストを初期化
+                Analyzer.Using = new List<string>()
+                {
+                    "System",
+                    "System.Linq",
+                    "System.Drawing",
+                    "System.Diagnostics",
+                    "System.Windows.Forms",
+                    "System.Collections.Generic"
                 };
 
                 // 配列のリストを初期化
