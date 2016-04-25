@@ -409,6 +409,75 @@ namespace hsp.rtm
             return null;
         }
 
+        public static string Hsvcolor(string strings)
+        {
+            string[] p = strings.Split(',');
+
+            for (int i = 0; i < p.Count(); i++)
+            {
+                p[i] = p[i].Trim();
+            }
+
+            if (p.Count() == 3)
+            {
+                if (p[0].Equals(string.Empty))
+                {
+                    p[0] = "0";
+                }
+                if (p[1].Equals(string.Empty))
+                {
+                    p[1] = "0";
+                }
+                if (p[2].Equals(string.Empty))
+                {
+                    p[2] = "0";
+                }
+
+                float h = float.Parse(p[0]) % 32 / 32;
+                int max = int.Parse(p[2]);
+                int min = (int)System.Math.Round((1.0 - (float.Parse(p[1]) / 255.0)) * max);
+
+                switch (int.Parse(p[0]) / 32)
+                {
+                    case 0:
+                        p[0] = max.ToString();
+                        p[1] = System.Math.Round((h * (max - min) + min)).ToString();
+                        p[2] = min.ToString();
+                        break;
+                    case 1:
+                        p[0] = System.Math.Round((h * (max - min) + min)).ToString();
+                        p[1] = max.ToString();
+                        p[2] = min.ToString();
+                        break;
+                    case 2:
+                        p[0] = min.ToString();
+                        p[1] = max.ToString();
+                        p[2] = System.Math.Round((h * (max - min) + min)).ToString();
+                        break;
+                    case 3:
+                        p[0] = min.ToString();
+                        p[1] = System.Math.Round((h * (max - min) + min)).ToString();
+                        p[2] = max.ToString();
+                        break;
+                    case 4:
+                        p[0] = System.Math.Round((h * (max - min) + min)).ToString();
+                        p[1] = min.ToString();
+                        p[2] = max.ToString();
+                        break;
+                    case 5:
+                        p[0] = max.ToString();
+                        p[1] = min.ToString();
+                        p[0] = System.Math.Round((h * (max - min) + min)).ToString();
+                        break;
+                }
+
+                return "brush = new SolidBrush(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "));\n" +
+                       "pen = new Pen(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "))";
+            }
+            Error.AlertError("エラーが発生しました");
+            return null;
+        }
+
         public static string Picload(string strings)
         {
             string[] p = strings.Split(',');

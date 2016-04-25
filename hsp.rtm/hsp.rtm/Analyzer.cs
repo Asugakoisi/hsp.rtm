@@ -605,6 +605,9 @@ namespace hsp.rtm
                         case "color":
                             hspArrayData[i] = GUI.Color(commandArguments);
                             break;
+                        case "hsvcolor":
+                            hspArrayData[i] = GUI.Hsvcolor(commandArguments);
+                            break;
                         case "picload":
                             hspArrayData[i] = GUI.Picload(commandArguments);
                             break;
@@ -1185,6 +1188,7 @@ namespace hsp.rtm
             "line",
             "cls",
             "color",
+            "hsvcolor",
             "picload",
             "getkey",
             "stick",
