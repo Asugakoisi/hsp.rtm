@@ -328,7 +328,7 @@ namespace hsp.rtm
                                               "    {\n" +
                                               "        if (list.First() == p.StartTime)\n" +
                                               "        {\n" +
-                                              "            p.Kill();\n" +
+                                              "            try{p.Kill();}catch(Exception){}\n" +
                                               "            return;\n" +
                                               "        }\n" +
                                               "    }\n" +
@@ -460,7 +460,7 @@ namespace hsp.rtm
                                               "    {\n" +
                                               "        if (list.First() == p.StartTime)\n" +
                                               "        {\n" +
-                                              "            p.Kill();\n" +
+                                              "            try{p.Kill();}catch(Exception){}\n" +
                                               "            return;\n" +
                                               "        }\n" +
                                               "    }\n" +
@@ -492,7 +492,7 @@ namespace hsp.rtm
                                               "    {\n" +
                                               "        if (list.First() == p.StartTime)\n" +
                                               "        {\n" +
-                                              "            p.Kill();\n" +
+                                              "            try{p.Kill();}catch(Exception){}\n" +
                                               "            return;\n" +
                                               "        }\n" +
                                               "    }\n" +

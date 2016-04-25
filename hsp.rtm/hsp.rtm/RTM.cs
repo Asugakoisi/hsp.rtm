@@ -167,7 +167,12 @@ namespace hsp.rtm
             {
                 if (ps.Length == 1)
                 {
-                    ps[0].Kill();
+                    try
+                    {
+                        ps[0].Kill(); 
+                        
+                    }
+                    catch (Exception) { }
                 }else if (ps.Length > 1)
                 {
                     var list = ps.Select(p => p.StartTime).ToList();
@@ -176,7 +181,11 @@ namespace hsp.rtm
                     {
                         if (list.First() == p.StartTime)
                         {
-                            p.Kill();
+                            try
+                            {
+                                p.Kill();
+                            }
+                            catch (Exception){ }
                             return;
                         }
                     }
