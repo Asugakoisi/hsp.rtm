@@ -5,6 +5,8 @@ WebSite -> [http://o8o.jp/hsp](http://o8o.jp/hsp)
 HSPをリアルタイムデバッグするためのプログラムです  
 Visual Studio Codeの拡張機能として動作します
 
+![hsp.rtm](hsp.rtm.jpg)
+
 ## Install
 - ```install.exe```を実行し, 案内に従ってインストールを行って下さい
 - アンインストールする場合は```uninstall.exe```を実行して下さい
@@ -57,6 +59,25 @@ next
 
 ## LICENSE
 [The MIT License](https://github.com/kkrnt/hsp.rtm/blob/master/LICENSE)
+
+## Default Reference DLL & Namespace
+### Reference
+- System.dll
+- mscorlib.dll
+- System.IO.dll
+- System.Linq.dll
+- System.Core.dll
+- System.Drawing.dll
+- Microsoft.CSharp.dll
+- System.Windows.Forms.dll
+
+### Using
+- System
+- System.Linq
+- System.Drawing
+- System.Diagnostics
+- System.Windows.Forms
+- System.Collections.Generic
 
 ## 実装済みのもの
 ### Basic Grammar
@@ -127,6 +148,7 @@ next
 - pos
 - screen
 - bgscr
+- width
 - title
 - redraw
 - mouse
@@ -136,6 +158,7 @@ next
 - line
 - cls
 - color
+- hsvcolor
 - picload
 - getkey
 - stick
@@ -188,3 +211,6 @@ next
 - screen_fixedsize
 - screen_tool
 - screen_frame
+
+### Preprocessor
+- #const

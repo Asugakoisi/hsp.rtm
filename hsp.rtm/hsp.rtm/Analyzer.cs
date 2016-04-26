@@ -1271,7 +1271,7 @@ namespace hsp.rtm
             "System.Core.dll",
             "System.Drawing.dll",
             "Microsoft.CSharp.dll",
-            "System.Windows.Forms.dll",
+            "System.Windows.Forms.dll"
         };
 
         // using
