@@ -79,7 +79,7 @@ next
 - System.Windows.Forms
 - System.Collections.Generic
 
-## 実装済みのもの
+## Implemented functions
 ### Basic Grammar
 - if
 - else
