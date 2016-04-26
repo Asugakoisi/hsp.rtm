@@ -578,6 +578,9 @@ namespace hsp.rtm
                         case "bgscr":
                             hspArrayData[i] = GUI.Bgscr(commandArguments);
                             break;
+                        case "width":
+                            hspArrayData[i] = GUI.Width(commandArguments);
+                            break;
                         case "title":
                             hspArrayData[i] = GUI.Title(commandArguments);
                             break;
@@ -1179,6 +1182,7 @@ namespace hsp.rtm
             "pos",
             "screen",
             "bgscr",
+            "width",
             "title",
             "redraw",
             "mouse",
@@ -1428,6 +1432,41 @@ namespace hsp.rtm
             {
                 Using.Add(usingName);
             }
+        }
+
+        /// <summary>
+        /// 引数の数を合わせる
+        /// </summary>
+        /// <param name="strings">元の引数</param>
+        /// <param name="argsNum">本来必要な引数の数</param>
+        /// <returns></returns>
+        public static string completeArgsNum(string strings, int argsNum)
+        {
+            int num = strings.Count(s => s == ',');
+            if (argsNum - 1 - num < 0)
+            {
+                Error.AlertError("エラーが発生しました");
+                return null;
+            }
+            for (int i = 0; i < argsNum - 1 - num; i++)
+            {
+                strings += ",";
+            }
+            return strings;
+        }
+
+        public static string[] defaultArgs(string strings, params string[] args)
+        {
+            string[] p = strings.Split(',');
+            for (int i = 0; i < p.Count(); i++)
+            {
+                p[i] = p[i].Trim();
+                if (p[i] == string.Empty)
+                {
+                    p[i] = args[i];
+                }
+            }
+            return p;
         }
 
         /// <summary>

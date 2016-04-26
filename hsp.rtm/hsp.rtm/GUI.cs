@@ -136,6 +136,17 @@ namespace hsp.rtm
                    "CurrentScreenID.FormBorderStyle = FormBorderStyle.None;";
         }
 
+        public static new string Width(string strings)
+        {
+            strings = Analyzer.completeArgsNum(strings, 4);
+            string[] p = Analyzer.defaultArgs(strings, "-1", "-1", "-1", "-1");
+            p[0] = int.Parse(p[0]) >= 0 ? p[0] : "CurrentScreenID.Bounds.Width";
+            p[1] = int.Parse(p[1]) >= 0 ? p[1] : "CurrentScreenID.Bounds.Height";
+            p[2] = int.Parse(p[2]) >= 0 ? p[2] : "CurrentScreenID.Bounds.X";
+            p[3] = int.Parse(p[3]) >= 0 ? p[3] : "CurrentScreenID.Bounds.Y";
+            return "CurrentScreenID.SetDesktopBounds(" + p[2] + ", " + p[3] + ", " + p[0] + ", " + p[1] + ");";
+        }
+
         public static string Title(string strings)
         {
             if (!Analyzer.AddFunction[0].Contains("public void Title"))
@@ -690,22 +701,22 @@ namespace hsp.rtm
             }
             if (p.Count() == 1)
             {
-                return "MessageBox.Show(" + p[0] + ", \"\", " +
+                return "MessageBox.Show(" + p[0] + ".ToString(), \"\", " +
                        "MessageBoxButtons.OK, MessageBoxIcon.Information)";
             }
             switch (p[1])
             {
                 case "0":
-                    return "MessageBox.Show(" + p[0] + ", " + p[2] + ", " +
+                    return "MessageBox.Show(" + p[0] + ".ToString(), " + p[2] + ".ToString(), " +
                            "MessageBoxButtons.OK, MessageBoxIcon.Information)";
                 case "1":
-                    return "MessageBox.Show(" + p[0] + ", " + p[2] + ", " +
+                    return "MessageBox.Show(" + p[0] + ".ToString(), " + p[2] + ".ToString(), " +
                            "MessageBoxButtons.OK, MessageBoxIcon.Warning);\n";
                 case "2":
-                    return "MessageBox.Show(" + p[0] + ", " + p[2] + ", " +
+                    return "MessageBox.Show(" + p[0] + ".ToString(), " + p[2] + ".ToString(), " +
                            "MessageBoxButtons.YesNo, MessageBoxIcon.Information)";
                 case "3":
-                    return "MessageBox.Show(" + p[0] + ", " + p[2] + ", " +
+                    return "MessageBox.Show(" + p[0] + ".ToString(), " + p[2] + ".ToString(), " +
                            "MessageBoxButtons.YesNo, MessageBoxIcon.Warning)";
                 case "16":
                 case "17":
