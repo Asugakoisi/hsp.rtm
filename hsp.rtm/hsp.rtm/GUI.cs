@@ -50,25 +50,10 @@ namespace hsp.rtm
 
         public static string Pos(string strings)
         {
-            string[] p = strings.Split(',');
+            strings = Analyzer.completeArgsNum(strings, 2);
+            string[] p = Analyzer.defaultArgs(strings, "CurrentPosX", "CurrentPosY");
 
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
-
-            if (strings.Equals(string.Empty))
-            {
-                return "CurrentPosX = CurrentPosX" +
-                       "CurrentPosY = CurrentPosY";
-            }
-            if (p.Count() == 2)
-            {
-                return "CurrentPosX = " + p[0] + ";\n" +
-                       "CurrentPosY = " + p[1];
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return "CurrentPosX = " + p[0] + ";\n" + "CurrentPosY = " + p[1];
         }
 
         public static string Wait(string strings)
@@ -84,7 +69,6 @@ namespace hsp.rtm
             Analyzer.UsingCheck("System.Runtime.InteropServices");
             Analyzer.UsingCheck("System.Text");
 
-
             if (!Analyzer.ProgramField.Contains("private static extern int mciSendString(string command, " +
                                                     "StringBuilder buffer, int bufferSize, IntPtr hwndCallback);\n"))
             {
@@ -97,14 +81,8 @@ namespace hsp.rtm
 
         public static string Screen(string strings)
         {
-            string[] p = strings.Split(',');
-
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
-
-            //Program.Window.Add();
+            strings = Analyzer.completeArgsNum(strings, 3);
+            string[] p = Analyzer.defaultArgs(strings, "0", "640", "480");
 
             if (!Analyzer.AddFunction[0].Contains("public void screen"))
             {
@@ -117,14 +95,8 @@ namespace hsp.rtm
 
         public static string Bgscr(string strings)
         {
-            string[] p = strings.Split(',');
-
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
-
-            //Program.Window.Add();
+            strings = Analyzer.completeArgsNum(strings, 3);
+            string[] p = Analyzer.defaultArgs(strings, "0", "640", "480");
 
             if (!Analyzer.AddFunction[0].Contains("public void screen"))
             {
@@ -140,10 +112,12 @@ namespace hsp.rtm
         {
             strings = Analyzer.completeArgsNum(strings, 4);
             string[] p = Analyzer.defaultArgs(strings, "-1", "-1", "-1", "-1");
+
             p[0] = int.Parse(p[0]) >= 0 ? p[0] : "CurrentScreenID.Bounds.Width";
             p[1] = int.Parse(p[1]) >= 0 ? p[1] : "CurrentScreenID.Bounds.Height";
             p[2] = int.Parse(p[2]) >= 0 ? p[2] : "CurrentScreenID.Bounds.X";
             p[3] = int.Parse(p[3]) >= 0 ? p[3] : "CurrentScreenID.Bounds.Y";
+
             return "CurrentScreenID.SetDesktopBounds(" + p[2] + ", " + p[3] + ", " + p[0] + ", " + p[1] + ");";
         }
 
@@ -160,12 +134,9 @@ namespace hsp.rtm
 
         public static string Redraw(string strings)
         {
-            string[] p = strings.Split(',');
+            strings = Analyzer.completeArgsNum(strings, 1);
+            string[] p = Analyzer.defaultArgs(strings, "1");
 
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
             if (p.Count() == 1)
             {
                 switch (p[0])
@@ -192,64 +163,25 @@ namespace hsp.rtm
 
         public static string Mouse(string strings)
         {
-            string[] p = strings.Split(',');
+            strings = Analyzer.completeArgsNum(strings, 2);
+            string[] p = Analyzer.defaultArgs(strings, "CurrentPosX", "CurrentPosY");
 
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
-
-            if (!p.Any())
-            {
-                return "Cursor.Position = new Point(CurrentPosX, CurrentPosY)";
-            }
-            if (p.Count() == 1)
-            {
-                return "Cursor.Position = new Point(" + p[0] + ", CurrentPosY)";
-            }
-            if (p.Count() == 2)
-            {
-                return "Cursor.Position = new Point(" + p[0] + ", " + p[1] + ")";
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return "Cursor.Position = new Point(" + p[0] + ", " + p[1] + ")";
         }
 
         public new static string Font(string strings)
         {
-            string[] p = strings.Split(',');
+            strings = Analyzer.completeArgsNum(strings, 3);
+            string[] p = Analyzer.defaultArgs(strings, "12", "0");
 
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
-            if (p.Count() == 1)
-            {
-                return "FontSize = 12;\n" +
-                       "font = new Font(\"" + p[0] + "\", FontSize)";
-            }
-            if (p.Count() == 2)
-            {
-                return "FontSize = " + p[1] + ";\n" +
-                       "font = new Font(\"" + p[0] + "\", FontSize)";
-            }
-            if (p.Count() == 3)
-            {
-                return "FontSize = " + p[1] + ";\n" +
-                       "font = new Font(\"" + p[0] + "\", FontSize, " + p[2] + ")";
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return "FontSize = " + p[1] + ";\n" +
+                    "font = new Font(\"" + p[0] + "\", FontSize, " + p[2] + ")";
         }
 
         public static string Circle(string strings)
         {
-            string[] p = strings.Split(',');
-
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
+            strings = Analyzer.completeArgsNum(strings, 5);
+            string[] p = Analyzer.defaultArgs("0", "0", "", "", "1");
 
             /*if (int.Parse(p[0].ToString()) > int.Parse(p[2].ToString()))
             {
@@ -263,110 +195,52 @@ namespace hsp.rtm
                 p[1] = p[3];
                 p[3] = temp;
             }*/
+
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
-            if (p.Count() == 4)
+            if (p[4].Equals("0"))
             {
-                return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " +
-                       p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
+                return str + "DrawEllipse(pen, " + p[0] + ", " + p[1] + ", " +
+                        p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
             }
-            if (p.Count() == 5)
-            {
-                if (p[4].Equals("0"))
-                {
-                    return str + "DrawEllipse(pen, " + p[0] + ", " + p[1] + ", " +
-                           p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
-                }
-                return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " +
-                       p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return str + "FillEllipse(brush, " + p[0] + ", " + p[1] + ", " +
+                    p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
         }
 
         public static string Boxf(string strings)
         {
-            string[] p = strings.Split(',');
-
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
+            strings = Analyzer.completeArgsNum(strings, 4);
+            string[] p = Analyzer.defaultArgs("0", "0", "CurrentScreenID.Width", "CurrentScreenID.Height");
 
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
-            if (p.Count() == 1)
+            /*if (int.Parse(p[0].ToString()) > int.Parse(p[2].ToString()))
             {
-                return str + "FillRectangle(brush, 0, 0, " +
-                       "CurrentScreenID.Width, " + "CurrentScreenID.Height)";
+                var temp = p[0];
+                p[0] = p[2];
+                p[2] = temp;
             }
-            if (p.Count() == 2)
+            if (int.Parse(p[1].ToString()) > int.Parse(p[3].ToString()))
             {
-                return str + "FillRectangle(brush, " + p[0] + ", " + p[1] + ", " +
-                       "CurrentScreenID.Width, " + "CurrentScreenID.Height)";
-            }
-            if (p.Count() == 4)
-            {
-                /*if (int.Parse(p[0].ToString()) > int.Parse(p[2].ToString()))
-                {
-                    var temp = p[0];
-                    p[0] = p[2];
-                    p[2] = temp;
-                }
-                if (int.Parse(p[1].ToString()) > int.Parse(p[3].ToString()))
-                {
-                    var temp = p[1];
-                    p[1] = p[3];
-                    p[3] = temp;
-                }左上と右下じゃなくても動かすための*/
+                var temp = p[1];
+                p[1] = p[3];
+                p[3] = temp;
+            }左上と右下じゃなくても動かすための*/
 
-                if (p[0].Equals(string.Empty))
-                {
-                    p[0] = "0";
-                }
-                if (p[1].Equals(string.Empty))
-                {
-                    p[1] = "0";
-                }
-                if (p[2].Equals(string.Empty))
-                {
-                    p[2] = "CurrentScreenID.Width";
-                }
-                if (p[3].Equals(string.Empty))
-                {
-                    p[3] = "CurrentScreenID.Height";
-                }
 
-                return str + "FillRectangle(brush, " + p[0] + ", " + p[1] + ", " +
-                       p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return str + "FillRectangle(brush, " + p[0] + ", " + p[1] + ", " +
+                    p[2] + " - " + p[0] + ", " + p[3] + " - " + p[1] + ")";
         }
 
         public static string Line(string strings)
         {
-            string[] p = strings.Split(',');
-
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
+            strings = Analyzer.completeArgsNum(strings, 4);
+            string[] p = Analyzer.defaultArgs("", "", "CurrentPosX", "CurrentPosY");
 
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
-            if (p.Count() == 2)
-            {
-                return str + "DrawLine(pen, CurrentPosX, CurrentPosY, " + p[0] + ", " + p[1] + ");\n" +
-                       "CurrentPosX = " + p[0] + ";\nCurrentPosY = " + p[1];
-            }
-            if (p.Count() == 4)
-            {
-                return str + "DrawLine(pen, " + p[2] + ", " + p[3] + ", " + p[0] + ", " + p[1] + ");\n" +
-                       "CurrentPosX = " + p[0] + ";\nCurrentPosY = " + p[1];
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return str + "DrawLine(pen, " + p[2] + ", " + p[3] + ", " + p[0] + ", " + p[1] + ");\n" +
+                    "CurrentPosX = " + p[0] + ";\nCurrentPosY = " + p[1];
         }
         
         public static string Cls(string strings)
@@ -391,112 +265,64 @@ namespace hsp.rtm
 
         public static string Color(string strings)
         {
-            string[] p = strings.Split(',');
+            strings = Analyzer.completeArgsNum(strings, 3);
+            string[] p = Analyzer.defaultArgs("0", "0", "0");
 
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
-
-            if (p.Count() == 3)
-            {
-                if (p[0].Equals(string.Empty))
-                {
-                    p[0] = "0";
-                }
-                if (p[1].Equals(string.Empty))
-                {
-                    p[1] = "0";
-                }
-                if (p[2].Equals(string.Empty))
-                {
-                    p[2] = "0";
-                }
-
-                return "brush = new SolidBrush(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "));\n" +
-                       "pen = new Pen(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "))";
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return "brush = new SolidBrush(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "));\n" +
+                    "pen = new Pen(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "))";
         }
 
         public static string Hsvcolor(string strings)
         {
-            string[] p = strings.Split(',');
+            strings = Analyzer.completeArgsNum(strings, 3);
+            string[] p = Analyzer.defaultArgs("0", "0", "0");
 
-            for (int i = 0; i < p.Count(); i++)
+            float h = float.Parse(p[0]) % 32 / 32;
+            int max = int.Parse(p[2]);
+            int min = (int)System.Math.Round((1.0 - (float.Parse(p[1]) / 255.0)) * max);
+
+            switch (int.Parse(p[0]) / 32)
             {
-                p[i] = p[i].Trim();
+                case 0:
+                    p[0] = max.ToString();
+                    p[1] = System.Math.Round((h * (max - min) + min)).ToString();
+                    p[2] = min.ToString();
+                    break;
+                case 1:
+                    p[0] = System.Math.Round((h * (max - min) + min)).ToString();
+                    p[1] = max.ToString();
+                    p[2] = min.ToString();
+                    break;
+                case 2:
+                    p[0] = min.ToString();
+                    p[1] = max.ToString();
+                    p[2] = System.Math.Round((h * (max - min) + min)).ToString();
+                    break;
+                case 3:
+                    p[0] = min.ToString();
+                    p[1] = System.Math.Round((h * (max - min) + min)).ToString();
+                    p[2] = max.ToString();
+                    break;
+                case 4:
+                    p[0] = System.Math.Round((h * (max - min) + min)).ToString();
+                    p[1] = min.ToString();
+                    p[2] = max.ToString();
+                    break;
+                case 5:
+                    p[0] = max.ToString();
+                    p[1] = min.ToString();
+                    p[0] = System.Math.Round((h * (max - min) + min)).ToString();
+                    break;
             }
 
-            if (p.Count() == 3)
-            {
-                if (p[0].Equals(string.Empty))
-                {
-                    p[0] = "0";
-                }
-                if (p[1].Equals(string.Empty))
-                {
-                    p[1] = "0";
-                }
-                if (p[2].Equals(string.Empty))
-                {
-                    p[2] = "0";
-                }
-
-                float h = float.Parse(p[0]) % 32 / 32;
-                int max = int.Parse(p[2]);
-                int min = (int)System.Math.Round((1.0 - (float.Parse(p[1]) / 255.0)) * max);
-
-                switch (int.Parse(p[0]) / 32)
-                {
-                    case 0:
-                        p[0] = max.ToString();
-                        p[1] = System.Math.Round((h * (max - min) + min)).ToString();
-                        p[2] = min.ToString();
-                        break;
-                    case 1:
-                        p[0] = System.Math.Round((h * (max - min) + min)).ToString();
-                        p[1] = max.ToString();
-                        p[2] = min.ToString();
-                        break;
-                    case 2:
-                        p[0] = min.ToString();
-                        p[1] = max.ToString();
-                        p[2] = System.Math.Round((h * (max - min) + min)).ToString();
-                        break;
-                    case 3:
-                        p[0] = min.ToString();
-                        p[1] = System.Math.Round((h * (max - min) + min)).ToString();
-                        p[2] = max.ToString();
-                        break;
-                    case 4:
-                        p[0] = System.Math.Round((h * (max - min) + min)).ToString();
-                        p[1] = min.ToString();
-                        p[2] = max.ToString();
-                        break;
-                    case 5:
-                        p[0] = max.ToString();
-                        p[1] = min.ToString();
-                        p[0] = System.Math.Round((h * (max - min) + min)).ToString();
-                        break;
-                }
-
-                return "brush = new SolidBrush(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "));\n" +
-                       "pen = new Pen(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "))";
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return "brush = new SolidBrush(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "));\n" +
+                    "pen = new Pen(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "))";
         }
 
         public static string Picload(string strings)
         {
-            string[] p = strings.Split(',');
-
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
+            strings = Analyzer.completeArgsNum(strings, 2);
+            string[] p = Analyzer.defaultArgs("", "0");
 
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
@@ -506,32 +332,22 @@ namespace hsp.rtm
                                           "form.ClientSize = new Size(width, height);\n}\n\n";
             }
 
-            if (p.Count() == 1)
+            if (p[1] == "0")
             {
                 return "Image img = Image.FromFile(" + p[0] + ");\n" +
-                       "screen(CurrentScreenID, img.Width, img.Height);\n" +
-                       str + "DrawImage(img, 0, 0, img.Width, img.Height)";
+                        "screen(CurrentScreenID, img.Width, img.Height);\n" +
+                        str + "DrawImage(img, 0, 0, img.Width, img.Height)";
             }
-            if (p.Count() == 2)
+            if (p[1] == "1")
             {
-                if (p[1] == "0")
-                {
-                    return "Image img = Image.FromFile(" + p[0] + ");\n" +
-                           "screen(CurrentScreenID, img.Width, img.Height);\n" +
-                           str + "DrawImage(img, 0, 0, img.Width, img.Height)";
-                }
-                if (p[1] == "1")
-                {
-                    return "Image img = Image.FromFile(" + p[0] + ");\n" +
-                           str + "DrawImage(img, 0, 0, img.Width, img.Height)";
-                }
-                if (p[1] == "2")
-                {
-                    return string.Empty; ////
-                }
-                Error.AlertError("エラーが発生しました");
-                return null;
+                return "Image img = Image.FromFile(" + p[0] + ");\n" +
+                        str + "DrawImage(img, 0, 0, img.Width, img.Height)";
             }
+            if (p[1] == "2")
+            {
+                return string.Empty; ////
+            }
+
             Error.AlertError("エラーが発生しました");
             return null;
         }
@@ -546,12 +362,8 @@ namespace hsp.rtm
                                          "private static extern ushort GetAsyncKeyState(int vKey);\n";
             }
 
-            string[] p = strings.Split(',');
-
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
+            strings = Analyzer.completeArgsNum(strings, 2);
+            string[] p = Analyzer.defaultArgs("", "1");
 
             bool notExistVarialbe = false;
 
@@ -571,20 +383,9 @@ namespace hsp.rtm
                 }
             }
 
-            if (p.Count() == 1)
-            {
-                return notExistVarialbe
-                    ? "Variables[\"" + p[0] + "\"] = GetAsyncKeyState(1) >> 15"
-                    : p[0] + " = GetAsyncKeyState(1) >> 15";
-            }
-            if (p.Count() == 2)
-            {
-                return notExistVarialbe
-                    ? "Variables[\"" + p[0] + "\"] = GetAsyncKeyState(" + p[1] + ") >> 15"
-                    : p[0] + " = GetAsyncKeyState(" + p[1] + ") >> 15";
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return notExistVarialbe
+                ? "Variables[\"" + p[0] + "\"] = GetAsyncKeyState(" + p[1] + ") >> 15"
+                : p[0] + " = GetAsyncKeyState(" + p[1] + ") >> 15";
         }
 
         public static string Stick(string strings)
@@ -607,12 +408,9 @@ namespace hsp.rtm
                                          "private static extern IntPtr GetActiveWindow();\n";
             }
 
-            string[] p = strings.Split(',');
+            strings = Analyzer.completeArgsNum(strings, 3);
+            string[] p = Analyzer.defaultArgs("", "0", "1");
 
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
             // 変数名として正しいか
             if (Analyzer.VariableNameRule.Contains(p[0][0]))
             {
@@ -651,38 +449,21 @@ namespace hsp.rtm
                                            "return justKey;\n}\n";
             }
 
-            if (p.Count() == 1)
+            if (p[2] == "0")
             {
-                return "Variables[\"" + p[0] + "\"] = stick(0, true);";
+                p[2] = "false";
             }
-            if (p.Count() == 2)
+            if (p[2] == "1")
             {
-                return "Variables[\"" + p[0] + "\"] = stick(" + p[1] + ", true);";
+                p[2] = "true";
             }
-            if (p.Count() == 3)
-            {
-                if (p[2] == "0")
-                {
-                    p[2] = "false";
-                }
-                if (p[2] == "1")
-                {
-                    p[2] = "true";
-                }
-                return "Variables[\"" + p[0] + "\"] = stick(" + p[1] + ", " + p[2] + ");";
-            }
-            Error.AlertError("エラーが発生しました");
-            return null;
+            return "Variables[\"" + p[0] + "\"] = stick(" + p[1] + ", " + p[2] + ");";
         }
 
         public static string Objsize(string strings)
         {
-            string[] p = strings.Split(',');
-
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
+            strings = Analyzer.completeArgsNum(strings, 2);
+            string[] p = Analyzer.defaultArgs("64", "24", "0");
 
             Analyzer.ProgramField += "objsizeX = " + p[0] + ";\n" +
                                     "objsizeY = " + p[1] + ";\n" +
@@ -692,18 +473,9 @@ namespace hsp.rtm
 
         public static string Dialog(string strings)
         {
-            strings = Analyzer.StringUnEscape(strings);
-            string[] p = strings.Split(',');
+            strings = Analyzer.completeArgsNum(strings, 3);
+            string[] p = Analyzer.defaultArgs("", "0", "");
 
-            for (int i = 0; i < p.Count(); i++)
-            {
-                p[i] = p[i].Trim();
-            }
-            if (p.Count() == 1)
-            {
-                return "MessageBox.Show(" + p[0] + ".ToString(), \"\", " +
-                       "MessageBoxButtons.OK, MessageBoxIcon.Information)";
-            }
             switch (p[1])
             {
                 case "0":
