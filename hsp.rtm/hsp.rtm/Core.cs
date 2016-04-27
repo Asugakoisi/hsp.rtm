@@ -2,6 +2,7 @@
 // System.Windows.FormsとSystem.Drawingを追加
 
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace hsp.rtm
@@ -45,7 +46,11 @@ namespace hsp.rtm
                 foreach (var error in Error.ErrorMessages)
                 {
                     g.DrawString(error, font, brush, CurrentPosX, CurrentPosY);
-                    CurrentPosY += FontSize * 2;
+                    var count = error.Count(i => i == '\n');
+                    for (var i = 0; i < count; i++)
+                    {
+                        CurrentPosY += FontSize * 8;
+                    }
                 }
             }
         }

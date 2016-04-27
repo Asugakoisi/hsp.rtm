@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.IO;
 
 namespace hsp.rtm
 {
@@ -76,7 +75,7 @@ namespace hsp.rtm
         public void _Load(object sender, EventArgs e)
         {
             message = new WindowMessage();
-            message.OnReceiveData += (_o, _e) => RTM.Execute(_e.ReceiveData);
+            message.OnReceiveData += (_o, _e) => RTM.Compile(_e.ReceiveData);
         }
 
         protected override void WndProc(ref Message m)
@@ -160,7 +159,7 @@ namespace hsp.rtm
                     Delegate.CreateDelegate(eventType, oldInstance, oldInstance.GetType().GetMethod(instanceMethodName)));
         }
 
-        public static void Execute(string base64String)
+        public static void Compile(string base64String)
         {
             var ps = Process.GetProcessesByName("hsp.d");
             if (ps.Length > 0)
