@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace hsp.rtm
 {
@@ -1445,7 +1446,8 @@ namespace hsp.rtm
             int num = strings.Count(s => s == ',');
             if (argsNum - 1 - num < 0)
             {
-                Error.AlertError("エラーが発生しました");
+                //１つ前のスタックフレームからこの関数の呼び出し元を辿ってエラー出力
+                Error.AlertError(new StackFrame(1).GetMethod().Name, "エラーが発生しました, 引数の数が不正です");
                 return null;
             }
             for (int i = 0; i < argsNum - 1 - num; i++)

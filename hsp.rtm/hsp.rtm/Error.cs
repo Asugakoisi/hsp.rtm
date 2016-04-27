@@ -21,6 +21,16 @@ namespace hsp.rtm
         }
 
         /// <summary>
+        /// エラー出力
+        /// </summary>
+        /// <param name="method">エラー箇所</param>
+        /// <param name="message">エラー文</param>
+        public static void AlertError(string method, string message)
+        {
+            ErrorMessages.Add(message + "\ntracelog -> " + method);
+        }
+
+        /// <summary>
         /// C#の例外を用いたエラー出力
         /// </summary>
         /// <param name="ex">例外</param>
