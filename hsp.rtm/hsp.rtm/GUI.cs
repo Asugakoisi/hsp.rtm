@@ -181,7 +181,7 @@ namespace hsp.rtm
         public static string Circle(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 5);
-            string[] p = Analyzer.defaultArgs("0", "0", "", "", "1");
+            string[] p = Analyzer.defaultArgs(strings, "0", "0", "", "", "1");
 
             /*if (int.Parse(p[0].ToString()) > int.Parse(p[2].ToString()))
             {
@@ -210,7 +210,7 @@ namespace hsp.rtm
         public static string Boxf(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 4);
-            string[] p = Analyzer.defaultArgs("0", "0", "CurrentScreenID.Width", "CurrentScreenID.Height");
+            string[] p = Analyzer.defaultArgs(strings, "0", "0", "CurrentScreenID.Width", "CurrentScreenID.Height");
 
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
@@ -235,7 +235,7 @@ namespace hsp.rtm
         public static string Line(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 4);
-            string[] p = Analyzer.defaultArgs("", "", "CurrentPosX", "CurrentPosY");
+            string[] p = Analyzer.defaultArgs(strings, "", "", "CurrentPosX", "CurrentPosY");
 
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
@@ -266,7 +266,7 @@ namespace hsp.rtm
         public static string Color(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 3);
-            string[] p = Analyzer.defaultArgs("0", "0", "0");
+            string[] p = Analyzer.defaultArgs(strings, "0", "0", "0");
 
             return "brush = new SolidBrush(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "));\n" +
                     "pen = new Pen(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "))";
@@ -274,55 +274,59 @@ namespace hsp.rtm
 
         public static string Hsvcolor(string strings)
         {
-            strings = Analyzer.completeArgsNum(strings, 3);
-            string[] p = Analyzer.defaultArgs("0", "0", "0");
-
-            float h = float.Parse(p[0]) % 32 / 32;
-            int max = int.Parse(p[2]);
-            int min = (int)System.Math.Round((1.0 - (float.Parse(p[1]) / 255.0)) * max);
-
-            switch (int.Parse(p[0]) / 32)
+            if (!Analyzer.AddFunction[0].Contains("public void Hsvcolor"))
             {
-                case 0:
-                    p[0] = max.ToString();
-                    p[1] = System.Math.Round((h * (max - min) + min)).ToString();
-                    p[2] = min.ToString();
-                    break;
-                case 1:
-                    p[0] = System.Math.Round((h * (max - min) + min)).ToString();
-                    p[1] = max.ToString();
-                    p[2] = min.ToString();
-                    break;
-                case 2:
-                    p[0] = min.ToString();
-                    p[1] = max.ToString();
-                    p[2] = System.Math.Round((h * (max - min) + min)).ToString();
-                    break;
-                case 3:
-                    p[0] = min.ToString();
-                    p[1] = System.Math.Round((h * (max - min) + min)).ToString();
-                    p[2] = max.ToString();
-                    break;
-                case 4:
-                    p[0] = System.Math.Round((h * (max - min) + min)).ToString();
-                    p[1] = min.ToString();
-                    p[2] = max.ToString();
-                    break;
-                case 5:
-                    p[0] = max.ToString();
-                    p[1] = min.ToString();
-                    p[0] = System.Math.Round((h * (max - min) + min)).ToString();
-                    break;
+                Analyzer.AddFunction[0] += "public void Hsvcolor(Brush brush, Pen pen, int hue, int saturation, int value)\n{\n" +
+                                           "float h = float.Parse(hue.ToString()) % 32 / 32;\n" +
+                                           "int max = int.Parse(value.ToString());\n" +
+                                           "int min = (int)System.Math.Round((1.0 - (float.Parse(saturation.ToString()) / 255.0)) * max);\n\n" +
+                                           "switch (int.Parse(hue.ToString()) / 32)\n{\n" +
+                                           "case 0:\n" +
+                                           "hue = max;\n" +
+                                           "saturation = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                           "value = min;\n" +
+                                           "break;\n" +
+                                           "case 1:\n" +
+                                           "hue = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                           "saturation = max;\n" +
+                                           "value = min;\n" +
+                                           "break;\n" +
+                                           "case 2:\n" +
+                                           "hue = min;\n" +
+                                           "saturation = max;\n" +
+                                           "value = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                           "break;\n" +
+                                           "case 3:\n" +
+                                           "hue = min;\n" +
+                                           "saturation = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                         　"value = max;\n" +
+                                         　"break;\n" +
+                                           "case 4:\n" +
+                                           "hue = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                           "saturation = min;\n" +
+                                           "value = max;\n" +
+                                           "break;\n" +
+                                           "case 5:\n" +
+                                           "hue = max;\n" +
+                                           "saturation = min;\n" +
+                                           "value = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                           "break;\n" +
+                                           "}\n" +
+                                           "brush = new SolidBrush(Color.FromArgb(hue, saturation, value));\n" +
+                                           "pen = new Pen(Color.FromArgb(hue, saturation, value));\n" +
+                                           "}\n\n";
             }
 
-            return "brush = new SolidBrush(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "));\n" +
-                    "pen = new Pen(Color.FromArgb(" + p[0] + ", " + p[1] + ", " + p[2] + "))";
+            strings = Analyzer.completeArgsNum(strings, 3);
+            string[] p = Analyzer.defaultArgs(strings, "0", "0", "0");
+
+            return "Hsvcolor(brush, pen, " + p[0] + ", " + p[1] + ", " + p[2] + ")";
         }
 
         public static string Picload(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 2);
-            string[] p = Analyzer.defaultArgs("", "0");
+            string[] p = Analyzer.defaultArgs(strings, "", "0");
 
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
@@ -363,7 +367,7 @@ namespace hsp.rtm
             }
 
             strings = Analyzer.completeArgsNum(strings, 2);
-            string[] p = Analyzer.defaultArgs("", "1");
+            string[] p = Analyzer.defaultArgs(strings, "", "1");
 
             bool notExistVarialbe = false;
 
@@ -409,7 +413,7 @@ namespace hsp.rtm
             }
 
             strings = Analyzer.completeArgsNum(strings, 3);
-            string[] p = Analyzer.defaultArgs("", "0", "1");
+            string[] p = Analyzer.defaultArgs(strings, "", "0", "1");
 
             // 変数名として正しいか
             if (Analyzer.VariableNameRule.Contains(p[0][0]))
@@ -463,7 +467,7 @@ namespace hsp.rtm
         public static string Objsize(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 2);
-            string[] p = Analyzer.defaultArgs("64", "24", "0");
+            string[] p = Analyzer.defaultArgs(strings, "64", "24", "0");
 
             Analyzer.ProgramField += "objsizeX = " + p[0] + ";\n" +
                                     "objsizeY = " + p[1] + ";\n" +
@@ -474,7 +478,7 @@ namespace hsp.rtm
         public static string Dialog(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 3);
-            string[] p = Analyzer.defaultArgs("", "0", "");
+            string[] p = Analyzer.defaultArgs(strings, "", "0", "");
 
             switch (p[1])
             {
