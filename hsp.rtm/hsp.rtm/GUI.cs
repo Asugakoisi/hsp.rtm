@@ -276,42 +276,41 @@ namespace hsp.rtm
         {
             if (!Analyzer.AddFunction[0].Contains("public void Hsvcolor"))
             {
-                Analyzer.AddFunction[0] += "public void Hsvcolor(Brush brush, Pen pen, int hue, int saturation, int value)\n{\n" +
-                                           "float h = float.Parse(hue.ToString()) % 32 / 32;\n" +
-                                           "int max = int.Parse(value.ToString());\n" +
-                                           "int min = (int)System.Math.Round((1.0 - (float.Parse(saturation.ToString()) / 255.0)) * max);\n\n" +
-                                           "switch (int.Parse(hue.ToString()) / 32)\n{\n" +
+                Analyzer.AddFunction[0] += "public void Hsvcolor(ref Brush brush, ref Pen pen, int hue, int saturation, int value)\n{\n" +
+                                           "int max = value;\n" +
+                                           "int min = (int)Math.Round((1.0 - (saturation / 255.0)) * max);\n" +
+                                           "double h = hue / 32.0 - (int)Math.Floor(hue / 32.0);\n\n" +
+                                           "switch ((int)Math.Floor(hue / 32.0))\n{\n" +
                                            "case 0:\n" +
                                            "hue = max;\n" +
-                                           "saturation = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                           "saturation = (int)Math.Round((1.0 - (saturation / 255.0) * (1.0 - h)) * max);\n" +
                                            "value = min;\n" +
                                            "break;\n" +
                                            "case 1:\n" +
-                                           "hue = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                           "hue = (int)Math.Round((1.0 - (saturation / 255.0) * h) * max);\n" +
                                            "saturation = max;\n" +
                                            "value = min;\n" +
                                            "break;\n" +
                                            "case 2:\n" +
                                            "hue = min;\n" +
                                            "saturation = max;\n" +
-                                           "value = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                           "value = (int)Math.Round((1.0 - (saturation / 255.0) * (1.0 - h)) * max);\n" +
                                            "break;\n" +
                                            "case 3:\n" +
                                            "hue = min;\n" +
-                                           "saturation = (int)System.Math.Round((h * (max - min) + min));\n" +
-                                         　"value = max;\n" +
+                                           "saturation = (int)Math.Round((1.0 - (saturation / 255.0) * h) * max);\n" +
+                                         "value = max;\n" +
                                          　"break;\n" +
                                            "case 4:\n" +
-                                           "hue = (int)System.Math.Round((h * (max - min) + min));\n" +
+                                           "hue = (int)Math.Round((1.0 - (saturation / 255.0) * (1.0 - h)) * max);\n" +
                                            "saturation = min;\n" +
                                            "value = max;\n" +
                                            "break;\n" +
                                            "case 5:\n" +
                                            "hue = max;\n" +
                                            "saturation = min;\n" +
-                                           "value = (int)System.Math.Round((h * (max - min) + min));\n" +
-                                           "break;\n" +
-                                           "}\n" +
+                                           "value = (int)Math.Round((1.0 - (saturation / 255.0) * h) * max);\n" +
+                                           "break;\n}\n" +
                                            "brush = new SolidBrush(Color.FromArgb(hue, saturation, value));\n" +
                                            "pen = new Pen(Color.FromArgb(hue, saturation, value));\n" +
                                            "}\n\n";
@@ -320,7 +319,7 @@ namespace hsp.rtm
             strings = Analyzer.completeArgsNum(strings, 3);
             string[] p = Analyzer.defaultArgs(strings, "0", "0", "0");
 
-            return "Hsvcolor(brush, pen, " + p[0] + ", " + p[1] + ", " + p[2] + ")";
+            return "Hsvcolor(ref brush, ref pen, " + p[0] + ", " + p[1] + ", " + p[2] + ");\n";
         }
 
         public static string Picload(string strings)
@@ -478,7 +477,7 @@ namespace hsp.rtm
         public static string Dialog(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 3);
-            string[] p = Analyzer.defaultArgs(strings, "", "0", "");
+            string[] p = Analyzer.defaultArgs(strings, "\"\"", "0", "\"\"");
 
             switch (p[1])
             {
