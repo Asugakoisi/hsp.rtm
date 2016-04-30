@@ -181,7 +181,7 @@ namespace hsp.rtm
         public static string Circle(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 5);
-            string[] p = Analyzer.defaultArgs(strings, "0", "0", "", "", "1");
+            string[] p = Analyzer.defaultArgs(strings, "0", "0", string.Empty, string.Empty, "1");
 
             /*if (int.Parse(p[0].ToString()) > int.Parse(p[2].ToString()))
             {
@@ -235,7 +235,7 @@ namespace hsp.rtm
         public static string Line(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 4);
-            string[] p = Analyzer.defaultArgs(strings, "", "", "CurrentPosX", "CurrentPosY");
+            string[] p = Analyzer.defaultArgs(strings, string.Empty, string.Empty, "CurrentPosX", "CurrentPosY");
 
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
@@ -325,7 +325,7 @@ namespace hsp.rtm
         public static string Picload(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 2);
-            string[] p = Analyzer.defaultArgs(strings, "", "0");
+            string[] p = Analyzer.defaultArgs(strings, string.Empty, "0");
 
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
@@ -366,7 +366,7 @@ namespace hsp.rtm
             }
 
             strings = Analyzer.completeArgsNum(strings, 2);
-            string[] p = Analyzer.defaultArgs(strings, "", "1");
+            string[] p = Analyzer.defaultArgs(strings, string.Empty, "1");
 
             bool notExistVarialbe = false;
 
@@ -412,7 +412,7 @@ namespace hsp.rtm
             }
 
             strings = Analyzer.completeArgsNum(strings, 3);
-            string[] p = Analyzer.defaultArgs(strings, "", "0", "1");
+            string[] p = Analyzer.defaultArgs(strings, string.Empty, "0", "1");
 
             // 変数名として正しいか
             if (Analyzer.VariableNameRule.Contains(p[0][0]))

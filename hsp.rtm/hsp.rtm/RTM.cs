@@ -172,7 +172,8 @@ namespace hsp.rtm
                         
                     }
                     catch (Exception) { }
-                }else if (ps.Length > 1)
+                }
+                else if (ps.Length > 1)
                 {
                     var list = ps.Select(p => p.StartTime).ToList();
                     list.Sort();

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace hsp.rtm
 {
