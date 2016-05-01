@@ -301,10 +301,16 @@ namespace hsp.rtm
                 // 既に追加されているイベントを破棄
                 if (oldInstance != null)
                 {
-                    DeleteEvent("Paint", typeof(PaintEventHandler), "Paint");
+                    foreach (KeyValuePair<string, Type> pair in Analyzer.EventHandlerDictionary)
+                    {
+                        DeleteEvent(pair.Key, pair.Value, pair.Key);
+                    }
                 }
                 // 新しくコンパイルしたイベントを追加
-                AddEvent("Paint", typeof(PaintEventHandler), "Paint");
+                foreach (KeyValuePair<string, Type> pair in Analyzer.EventHandlerDictionary)
+                {
+                    AddEvent(pair.Key, pair.Value, pair.Key);
+                }
                 // リフレッシュ
                 Core.MainWindow.Refresh();
             }

@@ -603,6 +603,9 @@ namespace hsp.rtm
                         case "line":
                             hspArrayData[i] = GUI.Line(commandArguments);
                             break;
+                        case "pset":
+                            hspArrayData[i] = GUI.Pset(commandArguments);
+                            break;
                         case "cls":
                             hspArrayData[i] = GUI.Cls(commandArguments);
                             break;
@@ -1191,6 +1194,7 @@ namespace hsp.rtm
             "circle",
             "boxf",
             "line",
+            "pset",
             "cls",
             "color",
             "hsvcolor",
@@ -1371,6 +1375,7 @@ namespace hsp.rtm
             "Brush brush = new SolidBrush(Color.FromArgb(0, 0, 0));\n" +
             "Pen pen = new Pen(Color.FromArgb(0, 0, 0));\n" +
             "Font font = new Font(\"FixedSys\", FontSize);\n" +
+            "Bitmap bitmap = new Bitmap(1, 1);\n" +
             "try\n{\n"
         };
 
@@ -1410,6 +1415,13 @@ namespace hsp.rtm
             "0123456789!\"#$%&'()-^\\=~|@[`{;:]+*},./<>?".ToCharArray().ToList();
 
         public static List<Form> Window = new List<Form>();
+
+        // イベントハンドラーの管理
+        public static Dictionary<string, Type> EventHandlerDictionary = new Dictionary<string, Type>()
+        {
+            {"Paint", typeof(PaintEventHandler)}
+        };
+
 
         /// <summary>
         /// ローカル変数名を作成する関数
@@ -1457,6 +1469,12 @@ namespace hsp.rtm
             return strings;
         }
 
+        /// <summary>
+        /// 引数が空だった場合のデフォルト引数の設定
+        /// </summary>
+        /// <param name="strings"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static string[] defaultArgs(string strings, params string[] args)
         {
             string[] p = strings.Split(',');

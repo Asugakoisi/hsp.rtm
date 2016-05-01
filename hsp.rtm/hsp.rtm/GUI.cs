@@ -235,7 +235,7 @@ namespace hsp.rtm
         public static string Line(string strings)
         {
             strings = Analyzer.completeArgsNum(strings, 4);
-            string[] p = Analyzer.defaultArgs(strings, string.Empty, string.Empty, "CurrentPosX", "CurrentPosY");
+            string[] p = Analyzer.defaultArgs(strings, "0", "0", "CurrentPosX", "CurrentPosY");
 
             string str = BufferFlag ? "bgr.Graphics." : "g.";
 
@@ -243,6 +243,15 @@ namespace hsp.rtm
                     "CurrentPosX = " + p[0] + ";\nCurrentPosY = " + p[1];
         }
         
+        public static string Pset(string strings)
+        {
+            strings = Analyzer.completeArgsNum(strings, 2);
+            string[] p = Analyzer.defaultArgs(strings, "CurrentPosX", "CurrentPosY");
+
+            return "bitmap.SetPixel(0, 0, Color.FromArgb(pen.Color.R, pen.Color.G, pen.Color.B);\n)" +
+                   "g.DrawImage(bitmap, " + p[0] + ", " + p[1] + ");\n";
+        }
+
         public static string Cls(string strings)
         {
             string str = BufferFlag ? "bgr.Graphics." : "g.";
