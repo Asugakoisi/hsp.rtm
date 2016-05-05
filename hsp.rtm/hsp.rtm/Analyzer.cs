@@ -19,7 +19,10 @@ namespace hsp.rtm
         public static string GenerateCode(List<string> hspArrayData)
         {
             //C#のコードとして定義されているか
-            bool isCSharp = false;
+            bool isLocalCSharp = false,
+                isGlocalCSharp = false;
+
+            string globalCode = string.Empty;
 
             for (int i = 0; i < hspArrayData.Count; i++)
             {
@@ -74,7 +77,7 @@ namespace hsp.rtm
                         VariableList.Aggregate(string.Empty,
                             (current, v) => current + (v + " = Variables[\"" + v + "\"];\n"));
 
-                    isCSharp = true;
+                    isLocalCSharp = true;
                     continue;
                 }
 
@@ -85,13 +88,48 @@ namespace hsp.rtm
                     hspArrayData[i] = VariableList.Aggregate(string.Empty,
                         (current, v) => current + ("Variables[\"" + v + "\"] = " + v + ";\n"));
 
-                    isCSharp = false;
+                    isLocalCSharp = false;
                     continue;
                 }
 
                 // C#のコードの場合は全てエスケープ
-                if (isCSharp)
+                if (isLocalCSharp)
                 {
+                    continue;
+                }
+
+                // グローバルでC#のコードが定義する
+                // @global~@endで括られた範囲をクラス外で定義出来る
+                /*
+                 * [例]
+                 * @global
+                 * class Test
+                 * {
+                 *     static void Hello()
+                 *     {
+                 *         Console.WriteLine("Hello, World!");
+                 *     }
+                 * }
+                 * @end
+                 */
+                if (hspArrayData[i].Trim().StartsWith("@global"))
+                {
+                    isGlocalCSharp = true;
+                    hspArrayData[i] = string.Empty;
+                    continue;
+                }
+
+                if (hspArrayData[i].Trim().StartsWith("@end"))
+                {
+                    isGlocalCSharp = false;
+                    hspArrayData[i] = string.Empty;
+                    continue;
+                }
+
+                if (isGlocalCSharp)
+                {
+                    globalCode = hspArrayData[i];
+                    hspArrayData[i] = string.Empty;
                     continue;
                 }
 
@@ -718,6 +756,8 @@ namespace hsp.rtm
 
             // C#のコードを完成
             string code = string.Join("\n", Using.Select(i => "using " + i + ";"))
+                       + Namespace
+                       + globalCode
                        + ProgramHeader
                        + string.Join("\n", VariableList.Select(i => "public static dynamic " + i + ";").ToList())
                        + ProgramField
@@ -1291,7 +1331,10 @@ namespace hsp.rtm
         };
 
         // header
-        private static string ProgramHeader = "namespace NameSpace\n{\npublic class Program\n{\n";
+        private static string Namespace = "namespace NameSpace\n{\n";
+
+        // header2
+        private static string ProgramHeader = "public class Program\n{\n";
 
         // field
         public static string ProgramField = "public static DateTime pre = DateTime.Now;\n" +
@@ -1375,16 +1418,11 @@ namespace hsp.rtm
             "Brush brush = new SolidBrush(Color.FromArgb(0, 0, 0));\n" +
             "Pen pen = new Pen(Color.FromArgb(0, 0, 0));\n" +
             "Font font = new Font(\"FixedSys\", FontSize);\n" +
-            "Bitmap bitmap = new Bitmap(1, 1);\n" +
-            "try\n{\n"
+            "Bitmap bitmap = new Bitmap(1, 1);\n"
         };
 
         // footer
-        public static string ProgramFooter = "\n}\n" +
-                                            "catch(Exception)\n" +
-                                            "{\n" +
-                                            "}\n" +
-                                            "dPaint();\n" +
+        public static string ProgramFooter = "\ndPaint();\n" +
                                             "}\n" +
                                             "}\n" +
                                             "}\n\n" +
