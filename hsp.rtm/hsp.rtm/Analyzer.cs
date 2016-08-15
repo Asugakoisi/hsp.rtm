@@ -1418,11 +1418,16 @@ namespace hsp.rtm
             "Brush brush = new SolidBrush(Color.FromArgb(0, 0, 0));\n" +
             "Pen pen = new Pen(Color.FromArgb(0, 0, 0));\n" +
             "Font font = new Font(\"FixedSys\", FontSize);\n" +
-            "Bitmap bitmap = new Bitmap(1, 1);\n"
+            "Bitmap bitmap = new Bitmap(1, 1);\n" +
+            "try\n{\n"
         };
 
         // footer
-        public static string ProgramFooter = "\ndPaint();\n" +
+        public static string ProgramFooter = "\n}\n" +
+                                            "catch(Exception)\n" +
+                                            "{\n" +
+                                            "}\n" +
+                                            "\ndPaint();\n" +
                                             "}\n" +
                                             "}\n" +
                                             "}\n\n" +

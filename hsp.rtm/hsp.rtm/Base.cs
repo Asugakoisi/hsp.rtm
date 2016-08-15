@@ -232,9 +232,9 @@ namespace hsp.rtm
         {
             if (p1.Equals(string.Empty))
             {
-                return "Environment.Exit(0);";
+                return "//Environment.Exit(0);";
             }
-            return "Environment.Exit(" + p1 + ");";
+            return "//Environment.Exit(" + p1 + ");";
         }
 
         /// <summary>
