@@ -17,11 +17,11 @@ Visual Studio Codeの拡張機能として動作します
  
 ## Extension Grammar
 - @using
- - C#におけるusingと同じようなことが出来ます
+  - C#におけるusingと同じようなことが出来ます
 - @ref
- - C#におけるDLLの参照と同じようなことが出来ます
+  - C#におけるDLLの参照と同じようなことが出来ます
 - @csharp ~ @end
- - @csharpという行から@endという行までC#のコードとして解釈します
+  - @csharpという行から@endという行までC#のコードとして解釈します
 
 ```csharp
 // System.Linqはデフォルトで読み込んでいるので書く必要はない
@@ -45,14 +45,14 @@ next
 ```
 
 ## ETC
-- 複数ウィンドウには対応していません
- - バグではなく, 仕様です
-   - 対応して欲しいという要望があれば考えますが, 今のところ対応する予定はありません
-- Visual Studio Code上のシンタックスハイライトはpotato4dさんのtmLanguageファイルを利用させて頂きました
- - [https://github.com/potato4d/sublime-HSP](https://github.com/potato4d/sublime-HSP)
- - MITライセンスです([https://github.com/potato4d/sublime-HSP/blob/master/LICENSE](https://github.com/potato4d/sublime-HSP/blob/master/LICENSE))
+- 複数ウィンドウには対応していません  
+  - バグではなく, 仕様です  
+  - 対応して欲しいという要望があれば考えますが, 今のところ対応する予定はありません  
+- Visual Studio Code上のシンタックスハイライトはpotato4dさんのtmLanguageファイルを利用させて頂きました  
+  - [https://github.com/potato4d/sublime-HSP](https://github.com/potato4d/sublime-HSP)  
+  - MITライセンスです([https://github.com/potato4d/sublime-HSP/blob/master/LICENSE](https://github.com/potato4d/sublime-HSP/blob/master/LICENSE))  
 - バグが非常に多いです  
- - システムに対してクリティカルなバグはないと思っていますが, まだ開発段階であるということを理解した上でご利用下さい
+  - システムに対してクリティカルなバグはないと思っていますが, まだ開発段階であるということを理解した上でご利用下さい
 - 実装出来ている命令・コマンドは限りがあります
 
 何かありましたら[@kkrnt](https://twitter.com/kkrnt)まで連絡頂けると幸いです
